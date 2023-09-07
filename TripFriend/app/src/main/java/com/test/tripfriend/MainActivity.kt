@@ -38,11 +38,11 @@ class MainActivity : AppCompatActivity() {
                 this.selectedItemId = R.id.navigationHome
                 selectMenu = R.id.navigationHome
 
-                setOnItemReselectedListener {
-//                    //선택된 메뉴를 다시 클릭할 때 선택을 넘기는 조건문
-//                    if (it.itemId == selectedItemId){
-//                        return@setOnItemReselectedListener
-//                    }
+                setOnItemSelectedListener {
+                    //선택된 메뉴를 다시 클릭할 때 선택을 넘기는 조건문
+                    if (it.itemId == selectedItemId){
+                        return@setOnItemSelectedListener false
+                    }
                     when (it.itemId) {
                         //홈 클릭
                         R.id.navigationHome -> {
