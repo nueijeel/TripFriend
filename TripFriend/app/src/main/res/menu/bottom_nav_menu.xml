@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/navigationHome"
         android:icon="@drawable/home_24px"
-        android:title="홈" />
+        android:title="홈"
+        app:showAsAction="always|withText" />
 
     <item
         android:id="@+id/navigationTrip"
         android:icon="@drawable/flightsmode_24px"
-        android:title="여행" />
+        android:title="여행"
+        app:showAsAction="always|withText" />
 
     <item
         android:id="@+id/navigationChatting"
         android:icon="@drawable/sms_24px"
-        android:title="채팅" />
+        android:title="채팅"
+        app:showAsAction="always|withText" />
 
     <item
         android:id="@+id/navigationMyInfo"
         android:icon="@drawable/person_24px"
-        android:title="내정보" />
+        android:title="내정보"
+        app:showAsAction="always|withText" />
 
 </menu>
