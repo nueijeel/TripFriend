@@ -3,23 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigationHome">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.test.tripfriend.ui.home.HomeFragment"
+        android:id="@+id/navigationHome"
+        android:name="com.test.tripfriend.ui.home.HomeMainFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
-
+        tools:layout="@layout/fragment_home_main" />
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.test.tripfriend.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-
+        android:id="@+id/navigationTrip"
+        android:name="com.test.tripfriend.ui.trip.TripMainFragment"
+        android:label="fragment_trip_main"
+        tools:layout="@layout/fragment_trip_main" />
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.test.tripfriend.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigationChatting"
+        android:name="com.test.tripfriend.ui.chatting.ChattingFragment"
+        android:label="fragment_chatting"
+        tools:layout="@layout/fragment_chatting" />
+    <fragment
+        android:id="@+id/navigationMyInfo"
+        android:name="com.test.tripfriend.ui.myinfo.MyInfoMainFragment"
+        android:label="fragment_my_info_main"
+        tools:layout="@layout/fragment_my_info_main" />
+
 </navigation>
