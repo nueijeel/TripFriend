@@ -13,6 +13,11 @@
         android:theme="@style/Theme.TripFriend"
         tools:targetApi="31">
         <activity
+            android:name=".ui.user.LoginMainActivity"
+            android:exported="false">
+
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">
