@@ -31,5 +31,6 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        //강현구 이그노어를 위한 변경사항
     }
 }
