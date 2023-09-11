@@ -10,6 +10,7 @@ import com.test.tripfriend.databinding.ActivityMainBinding
 import com.test.tripfriend.ui.chatting.ChattingMainFragment
 import com.test.tripfriend.ui.home.HomeMainFragment
 import com.test.tripfriend.ui.myinfo.MyInfoMainFragment
+import com.test.tripfriend.ui.trip.NotificationFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         val TRIP_MAIN_FRAGMENT = "TripMainFragment"
         val CHATTING_MAIN_FRAGMENT = "ChattingMainFragment"
         val MYINFO_MAIN_FRAGMENT = "MyInfoMainFragment"
+        val NOTIFICATION_FRAGMENT = "NotificationFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,6 +88,7 @@ class MainActivity : AppCompatActivity() {
             TRIP_MAIN_FRAGMENT -> TripMainFragment()
             CHATTING_MAIN_FRAGMENT -> ChattingMainFragment()
             MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()
+            NOTIFICATION_FRAGMENT -> NotificationFragment()
 
             else -> Fragment()
         }
