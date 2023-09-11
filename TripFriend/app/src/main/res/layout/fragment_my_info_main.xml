@@ -1,22 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.myinfo.MyInfoMainFragment" >
+    tools:context=".ui.myinfo.MyInfoMainFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/materialToolbar"
+        android:id="@+id/myInfoToolbar"
+        style="@style/Theme.TripFriend.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        style="@style/Theme.TripFriend.Toolbar">
+        app:menu="@menu/my_info_toolbar_menu"
+        android:minHeight="?attr/actionBarSize">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="내 정보"
             android:layout_gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+            android:text="내 정보"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
     </com.google.android.material.appbar.MaterialToolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/soft_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:paddingBottom="15dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:src="@drawable/ic_launcher_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewMyNickname"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:text="강현구짱"
+                android:textAppearance="@style/Theme.App.Medium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewMBTI"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:text="ESFP"
+                android:textAppearance="@style/Theme.App.Medium" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/soft_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="25dp"
+            android:text="인증 수단"
+            android:textAppearance="@style/Theme.App.Medium" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewAppAuth"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="25dp"
+            android:elevation="0.3dp"
+            android:src="@drawable/mail" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewKakaoAuth"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="25dp"
+            android:src="@drawable/kakao" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewNaverAuth"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="25dp"
+            android:src="@drawable/naver_icon" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/soft_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="9"
+                android:text="친구 속도"
+                android:textAppearance="@style/Theme.App.Medium" />
+
+            <TextView
+                android:id="@+id/buttonToDetailFriendSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:text="> 자세히 보기"
+                android:textColor="@color/subColor"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="5dp"
+                android:textAppearance="@style/Theme.App.Small" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/textViewFriendSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="몇km"
+            android:textColor="@color/highLightColor"
+            android:gravity="center"/>
+
+
+            <SeekBar
+                android:id="@+id/seekbarFriendSpeed"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:max="100"
+                android:layout_gravity="center"
+                android:progress="36"
+                android:progressDrawable="@drawable/my_info_seekbar"
+                android:splitTrack="false"
+                android:thumb="@drawable/directions_run_24px" />
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="※ 동행 후기 점수에 따라 친구 속도가 변경됩니다"
+            android:textAppearance="@style/Theme.App.Small"
+            android:textColor="@color/gray"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:textAppearance="@style/Theme.App.Medium"
+                android:text="동행 점수"/>
+            <TextView
+                android:id="@+id/textViewAccompanyScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:textAppearance="@style/Theme.App.Medium"
+                android:text="7.8"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Theme.App.Medium"
+                android:text=" 점"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="25dp"
+                android:background="@color/soft_gray" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:textAppearance="@style/Theme.App.Medium"
+                android:text="동행 횟수"/>
+            <TextView
+                android:id="@+id/textViewAccompanyNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:textAppearance="@style/Theme.App.Medium"
+                android:text="9"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Theme.App.Medium"
+                android:text=" 회"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
 </LinearLayout>

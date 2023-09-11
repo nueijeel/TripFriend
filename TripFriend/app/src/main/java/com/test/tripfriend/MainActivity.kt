@@ -11,6 +11,7 @@ import com.test.tripfriend.ui.chatting.ChattingMainFragment
 import com.test.tripfriend.ui.chatting.GroupChatRoomFragment
 import com.test.tripfriend.ui.chatting.PersonalChatRoomFragment
 import com.test.tripfriend.ui.home.HomeMainFragment
+import com.test.tripfriend.ui.myinfo.MyAccompanyInfoFragment
 import com.test.tripfriend.ui.myinfo.MyInfoMainFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
 
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         val HOME_MAIN_FRAGMENT = "HomeMainFragment"
         val TRIP_MAIN_FRAGMENT = "TripMainFragment"
         val CHATTING_MAIN_FRAGMENT = "ChattingMainFragment"
+        val MY_INFO_MAIN_FRAGMENT = "MyInfoMainFragment"
+        val MY_ACCOMPANY_INFO_FRAGMENT="MyAccompanyInfoFragment"
         val MYINFO_MAIN_FRAGMENT = "MyInfoMainFragment"
         val PERSONAL_CHAT_ROOM_FRAGMENT = "PersonalChatRoomFragment"
         val GROUP_CHAT_ROOM_FRAGMENT = "GroupChatRoomFragment"
@@ -66,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                         //내정보 클릭
                         R.id.navigationMyInfo -> {
                             selectMenu = it.itemId
-                            replaceFragment(MYINFO_MAIN_FRAGMENT, false, true, null)
+                            replaceFragment(MY_INFO_MAIN_FRAGMENT, false, true, null)
                         }
                         else -> {
                             replaceFragment(HOME_MAIN_FRAGMENT, false, true, null)
@@ -89,6 +92,8 @@ class MainActivity : AppCompatActivity() {
             HOME_MAIN_FRAGMENT -> HomeMainFragment()
             TRIP_MAIN_FRAGMENT -> TripMainFragment()
             CHATTING_MAIN_FRAGMENT -> ChattingMainFragment()
+            MY_INFO_MAIN_FRAGMENT -> MyInfoMainFragment()
+            MY_ACCOMPANY_INFO_FRAGMENT->MyAccompanyInfoFragment()
             MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()
             PERSONAL_CHAT_ROOM_FRAGMENT -> PersonalChatRoomFragment()
             GROUP_CHAT_ROOM_FRAGMENT -> GroupChatRoomFragment()
