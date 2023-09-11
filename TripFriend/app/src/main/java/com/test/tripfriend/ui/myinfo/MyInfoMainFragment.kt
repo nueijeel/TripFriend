@@ -5,56 +5,59 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
+import com.test.tripfriend.MainActivity
 import com.test.tripfriend.R
+import com.test.tripfriend.databinding.FragmentMyInfoMainBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MyInfoMainFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MyInfoMainFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    lateinit var fragmentMyInfoMainBinding: FragmentMyInfoMainBinding
+    lateinit var mainActivity: MainActivity
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+        fragmentMyInfoMainBinding= FragmentMyInfoMainBinding.inflate(layoutInflater)
+        mainActivity=activity as MainActivity
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_info_main, container, false)
-    }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MyInfoMainFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MyInfoMainFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        fragmentMyInfoMainBinding.run {
+            myInfoToolbar.run {
+                setOnMenuItemClickListener {
+                    //톱니 바퀴 클릭시 앱 설정 창으로 이동
+                    true
                 }
             }
+
+            //자세히 보기 클릭 시
+            buttonToDetailFriendSpeed.setOnClickListener {
+                mainActivity.replaceFragment(MainActivity.MY_ACCOMPANY_INFO_FRAGMENT,true,false,null)
+            }
+
+            seekbarFriendSpeed.setOnSeekBarChangeListener(object:OnSeekBarChangeListener{
+                override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                    val padding=seekbarFriendSpeed.paddingLeft+seekbarFriendSpeed.paddingRight
+                    val sPos=seekbarFriendSpeed.left+seekbarFriendSpeed.paddingLeft
+                    val xPos=(seekbarFriendSpeed.width-padding)*seekbarFriendSpeed.progress/seekbarFriendSpeed.max+sPos-(textViewFriendSpeed.width/2)
+                    textViewFriendSpeed.x= xPos.toFloat()
+                    textViewFriendSpeed.text=seekbarFriendSpeed.progress.toString()
+                }
+
+                override fun onStartTrackingTouch(p0: SeekBar?) {
+
+                }
+
+                override fun onStopTrackingTouch(p0: SeekBar?) {
+
+                }
+            })
+
+        }
+
+
+        return fragmentMyInfoMainBinding.root
     }
+
+
 }
