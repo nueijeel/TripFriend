@@ -2,6 +2,7 @@ package com.test.tripfriend.ui.user
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -18,6 +19,8 @@ class LoginMainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        installSplashScreen()
 
         activityLoginMainBinding = ActivityLoginMainBinding.inflate(layoutInflater)
         setContentView(activityLoginMainBinding.root)
