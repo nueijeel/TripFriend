@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         val NOTIFICATION_FRAGMENT = "NotificationFragment"
         val MY_INFO_MAIN_FRAGMENT = "MyInfoMainFragment"
         val MY_ACCOMPANY_INFO_FRAGMENT="MyAccompanyInfoFragment"
-        val MYINFO_MAIN_FRAGMENT = "MyInfoMainFragment"
         val PERSONAL_CHAT_ROOM_FRAGMENT = "PersonalChatRoomFragment"
         val GROUP_CHAT_ROOM_FRAGMENT = "GroupChatRoomFragment"
     }

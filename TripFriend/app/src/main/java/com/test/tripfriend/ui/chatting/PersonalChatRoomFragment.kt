@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.tripfriend.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentPersonalChatRoomBinding
@@ -43,7 +42,7 @@ class PersonalChatRoomFragment : Fragment() {
 
                 // 메뉴 버튼
                 setOnMenuItemClickListener {
-                    if(it.itemId == R.id.item_personal_chat_menu)
+                    if(it.itemId == R.id.item_chat_menu)
                         drawerLayoutPersonalChatRoom.openDrawer(Gravity.RIGHT)
                     true
                 }
@@ -54,6 +53,7 @@ class PersonalChatRoomFragment : Fragment() {
                     layoutManager = LinearLayoutManager(mainActivity)
                 }
 
+                // 나가기 버튼
                 buttonPersonalChatRoomExit.run {
                     setOnClickListener {
                         //다이얼로그 띄움
@@ -63,7 +63,9 @@ class PersonalChatRoomFragment : Fragment() {
                         builder.run {
                             setTitle("채팅방 나가기")
                             setMessage("나가기를 하면 대화내용이 모두 삭제되고 채팅 목록에서도 삭제됩니다.")
-                            setPositiveButton("나가기", null)
+                            setPositiveButton("나가기") { dialogInterface: DialogInterface, i: Int ->
+
+                            }
                             setNegativeButton("취소", null)
                             show()
                         }

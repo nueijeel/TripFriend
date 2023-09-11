@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            app:menu="@menu/menu_personal_chat_room">
+            app:menu="@menu/menu_chat_room">
 
             <TextView
                 android:id="@+id/textViewPersonalChatRoomToolbarTitle"

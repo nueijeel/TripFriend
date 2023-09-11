@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:text="개인 채팅방 닉네임"
+            android:text="채팅방 닉네임"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textStyle="bold" />
 

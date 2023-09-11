@@ -1,13 +1,23 @@
 package com.test.tripfriend.ui.chatting
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.test.tripfriend.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentGroupChatRoomBinding
+import com.test.tripfriend.databinding.RowChatRoomOpponentBinding
+import com.test.tripfriend.databinding.RowChatRoomUserBinding
+import com.test.tripfriend.databinding.RowGroupChatRoomBinding
 
 class GroupChatRoomFragment : Fragment() {
 
@@ -22,19 +32,139 @@ class GroupChatRoomFragment : Fragment() {
         mainActivity = activity as MainActivity
         fragmentGroupChatRoomBinding = FragmentGroupChatRoomBinding.inflate(layoutInflater)
 
+        //하단 nav bar 안보이게
+        mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
+
         fragmentGroupChatRoomBinding.run {
 
             materialGroupChatRoomToolbar.run {
                 // 백버튼
                 setNavigationIcon(R.drawable.arrow_back_24px)
                 setNavigationOnClickListener {
-//                    mainActivity.removeFragment(MainActivity.)
+                    mainActivity.removeFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT)
+                }
+
+                // 메뉴 버튼
+                setOnMenuItemClickListener {
+                    if(it.itemId == R.id.item_chat_menu)
+                        drawerLayoutGroupChatRoom.openDrawer(Gravity.RIGHT)
+                    true
+                }
+
+                // 참가자 리사이클러 뷰
+                recyclerViewGroupChatRoomParticipants.run {
+                    adapter = ParticipantsAdapter()
+                    layoutManager = LinearLayoutManager(mainActivity)
+                }
+
+                // 채팅 리사이클러 뷰
+                recyclerViewGroupChatRoom.run {
+                    adapter = GroupChatRoomAdapter()
+                    layoutManager = LinearLayoutManager(mainActivity)
+                }
+
+                // 나가기 버튼
+                buttonGroupChatRoomExit.run {
+                    setOnClickListener {
+                        //다이얼로그 띄움
+                        val builder = AlertDialog.Builder(
+                            mainActivity
+                        )
+                        builder.run {
+                            setTitle("채팅방 나가기")
+                            setMessage("나가기를 하면 대화내용이 모두 삭제되며 동행 신청이 취소되고 채팅 목록에서도 삭제됩니다.")
+                            setPositiveButton("나가기") { dialogInterface: DialogInterface, i: Int ->
+
+                            }
+                            setNegativeButton("취소", null)
+                            show()
+                        }
+                    }
                 }
             }
+
+
         }
 
         return fragmentGroupChatRoomBinding.root
     }
+
+
+    // Participants 어댑터
+    inner class ParticipantsAdapter :
+        RecyclerView.Adapter<ParticipantsAdapter.ParticipantsViewHolder>() {
+
+        inner class ParticipantsViewHolder(rowGroupChatRoomBinding: RowGroupChatRoomBinding) :
+            RecyclerView.ViewHolder(rowGroupChatRoomBinding.root) {
+            val imageViewGroupChatRoomImage: ImageView
+            val textViewGroupChatRoomName: TextView
+
+            init {
+                imageViewGroupChatRoomImage = rowGroupChatRoomBinding.imageViewGroupChatRoomImage
+                textViewGroupChatRoomName = rowGroupChatRoomBinding.textViewGroupChatRoomName
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParticipantsViewHolder {
+            val rowGroupChatRoomBinding = RowGroupChatRoomBinding.inflate(layoutInflater)
+
+            rowGroupChatRoomBinding.root.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            return ParticipantsViewHolder(rowGroupChatRoomBinding)
+        }
+
+        override fun getItemCount(): Int {
+            return 3
+        }
+
+        override fun onBindViewHolder(holder: ParticipantsViewHolder, position: Int) {
+            holder.textViewGroupChatRoomName.text = "참여자 $position"
+        }
+    }
+
+
+    // GroupChatRoom 어댑터
+    inner class GroupChatRoomAdapter :
+        RecyclerView.Adapter<GroupChatRoomAdapter.GroupChatRoomViewHolder>() {
+
+        inner class GroupChatRoomViewHolder(rowChatRoomOpponentBinding: RowChatRoomOpponentBinding) :
+            RecyclerView.ViewHolder(rowChatRoomOpponentBinding.root) {
+            val textViewRowChatRoomOpponent: TextView
+
+            init {
+                textViewRowChatRoomOpponent = rowChatRoomOpponentBinding.textViewRowChatRoomOpponent
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupChatRoomViewHolder {
+            val rowChatRoomOpponentBinding = RowChatRoomOpponentBinding.inflate(layoutInflater)
+
+            rowChatRoomOpponentBinding.root.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            return GroupChatRoomViewHolder(rowChatRoomOpponentBinding)
+        }
+
+        override fun getItemCount(): Int {
+            return 10
+        }
+
+        override fun onBindViewHolder(holder: GroupChatRoomViewHolder, position: Int) {
+            holder.textViewRowChatRoomOpponent.text = "채팅 $position"
+        }
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.VISIBLE
+    }
+
 
 //    class RecyclerMessagesAdapter(
 //        val context: Context,

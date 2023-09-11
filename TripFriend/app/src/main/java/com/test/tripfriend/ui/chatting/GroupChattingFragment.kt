@@ -52,6 +52,11 @@ class GroupChattingFragment : Fragment() {
                 textViewRowGroupChattingNumber = rowChattingGroupBinding.textViewRowGroupChattingNumber
                 textViewRowGroupChattingMessage = rowChattingGroupBinding.textViewRowGroupChattingMessage
                 textViewRowGroupChattingDate = rowChattingGroupBinding.textViewRowGroupChattingDate
+
+                rowChattingGroupBinding.root.setOnClickListener {
+                    val chatRoomIdx = adapterPosition
+                    mainActivity.replaceFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT, true, true, null)
+                }
             }
         }
 
