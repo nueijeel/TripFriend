@@ -15,6 +15,7 @@ class LoginMainActivity : AppCompatActivity() {
 
     companion object {
         val LOGIN_MAIN_FRAGMENT = "LoginMainFragment"
+        val EMAIL_LOGIN_FRAGMENT = "EmailLoginFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +36,7 @@ class LoginMainActivity : AppCompatActivity() {
         // 새로운 Fragment를 담을 변수
         var newFragment = when(name){
             LOGIN_MAIN_FRAGMENT -> LoginMainFragment()
+            EMAIL_LOGIN_FRAGMENT -> EmailLoginFragment()
             else -> Fragment()
         }
 
