@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.test.tripfriend.databinding.ActivityMainBinding
 import com.test.tripfriend.ui.chatting.ChattingMainFragment
+import com.test.tripfriend.ui.chatting.GroupChatRoomFragment
+import com.test.tripfriend.ui.chatting.PersonalChatRoomFragment
 import com.test.tripfriend.ui.home.HomeMainFragment
 import com.test.tripfriend.ui.myinfo.MyInfoMainFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
@@ -22,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         val TRIP_MAIN_FRAGMENT = "TripMainFragment"
         val CHATTING_MAIN_FRAGMENT = "ChattingMainFragment"
         val MYINFO_MAIN_FRAGMENT = "MyInfoMainFragment"
+        val PERSONAL_CHAT_ROOM_FRAGMENT = "PersonalChatRoomFragment"
+        val GROUP_CHAT_ROOM_FRAGMENT = "GroupChatRoomFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,6 +90,8 @@ class MainActivity : AppCompatActivity() {
             TRIP_MAIN_FRAGMENT -> TripMainFragment()
             CHATTING_MAIN_FRAGMENT -> ChattingMainFragment()
             MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()
+            PERSONAL_CHAT_ROOM_FRAGMENT -> PersonalChatRoomFragment()
+            GROUP_CHAT_ROOM_FRAGMENT -> GroupChatRoomFragment()
 
             else -> Fragment()
         }

@@ -29,6 +29,7 @@ class PersonalChattingFragment : Fragment() {
         fragmentPersonalChattingBinding = FragmentPersonalChattingBinding.inflate(layoutInflater)
 
         fragmentPersonalChattingBinding.run {
+            // 리사이클러 뷰
             recyclerViewPersonalChatting.run {
                 adapter = PersonalChattingAdapter()
                 layoutManager = LinearLayoutManager(mainActivity)
@@ -54,6 +55,11 @@ class PersonalChattingFragment : Fragment() {
                 textViewRowPersonalChattingName = rowChattingPersonalBinding.textViewRowPersonalChattingName
                 textViewRowPersonalChattingMessage = rowChattingPersonalBinding.textViewRowPersonalChattingMessage
                 textViewRowPersonalChattingDate = rowChattingPersonalBinding.textViewRowPersonalChattingDate
+
+                rowChattingPersonalBinding.root.setOnClickListener {
+                    val chatRoomIdx = adapterPosition
+                    mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, null)
+                }
             }
         }
 

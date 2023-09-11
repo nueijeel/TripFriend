@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.chatting.GroupChatRoomFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialGroupChatRoomToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        style="@style/Theme.TripFriend.Toolbar">
+
+        <TextView
+            android:id="@+id/textViewGroupChatRoomToolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="채팅"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    </com.google.android.material.appbar.MaterialToolbar>
+
+</LinearLayout>
