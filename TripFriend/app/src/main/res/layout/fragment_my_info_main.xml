@@ -98,8 +98,9 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageViewKakaoAuth"
             android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_height="31dp"
             android:layout_marginLeft="25dp"
+
             android:src="@drawable/kakao" />
 
         <de.hdodenhof.circleimageview.CircleImageView

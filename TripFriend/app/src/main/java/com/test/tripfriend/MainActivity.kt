@@ -9,7 +9,9 @@ import androidx.fragment.app.FragmentTransaction
 import com.test.tripfriend.databinding.ActivityMainBinding
 import com.test.tripfriend.ui.chatting.ChattingMainFragment
 import com.test.tripfriend.ui.home.HomeMainFragment
+import com.test.tripfriend.ui.myinfo.ModifyMyInfoFragment
 import com.test.tripfriend.ui.myinfo.MyAccompanyInfoFragment
+import com.test.tripfriend.ui.myinfo.MyAppSettingFragment
 import com.test.tripfriend.ui.myinfo.MyInfoMainFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
 
@@ -24,6 +26,8 @@ class MainActivity : AppCompatActivity() {
         val CHATTING_MAIN_FRAGMENT = "ChattingMainFragment"
         val MY_INFO_MAIN_FRAGMENT = "MyInfoMainFragment"
         val MY_ACCOMPANY_INFO_FRAGMENT="MyAccompanyInfoFragment"
+        val MY_APP_SETTING_FRAGMENT="MyAppSettingFragment"
+        val MODIFY_MY_INFO_FRAGMENT="ModifyMyInfoFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,6 +93,8 @@ class MainActivity : AppCompatActivity() {
             CHATTING_MAIN_FRAGMENT -> ChattingMainFragment()
             MY_INFO_MAIN_FRAGMENT -> MyInfoMainFragment()
             MY_ACCOMPANY_INFO_FRAGMENT->MyAccompanyInfoFragment()
+            MY_APP_SETTING_FRAGMENT->MyAppSettingFragment()
+            MODIFY_MY_INFO_FRAGMENT->ModifyMyInfoFragment()
 
             else -> Fragment()
         }
