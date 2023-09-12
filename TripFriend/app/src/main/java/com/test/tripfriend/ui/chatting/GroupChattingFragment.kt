@@ -27,10 +27,20 @@ class GroupChattingFragment : Fragment() {
         fragmentGroupChattingBinding = FragmentGroupChattingBinding.inflate(layoutInflater)
 
         fragmentGroupChattingBinding.run {
-            recyclerViewGroupChatting.run {
-                adapter = GroupChattingAdapter()
-                layoutManager = LinearLayoutManager(mainActivity)
+
+            if(true) {      // 채팅방 존재할 경우
+                textViewGroupChatting.visibility = View.GONE
+                // 그룹 채팅 목록 리사이클러 뷰
+                recyclerViewGroupChatting.run {
+                    visibility = View.VISIBLE
+                    adapter = GroupChattingAdapter()
+                    layoutManager = LinearLayoutManager(mainActivity)
+                }
+            } else {        // 채팅방 없는 경우
+                textViewGroupChatting.visibility = View.VISIBLE
+                recyclerViewGroupChatting.visibility = View.GONE
             }
+
         }
 
         return fragmentGroupChattingBinding.root
