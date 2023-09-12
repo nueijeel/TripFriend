@@ -5,17 +5,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.test.tripfriend.MainActivity
 import com.test.tripfriend.R
+import com.test.tripfriend.databinding.FragmentHomeMapBinding
 
 class HomeMapFragment : Fragment() {
+    lateinit var fragmentHomeMapBinding: FragmentHomeMapBinding
+    lateinit var mainActivity: MainActivity
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        fragmentHomeMapBinding = FragmentHomeMapBinding.inflate(layoutInflater)
+        mainActivity = activity as MainActivity
 
-
-        return inflater.inflate(R.layout.fragment_home_map, container, false)
+        return fragmentHomeMapBinding.root
 
 
     }
