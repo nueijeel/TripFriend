@@ -34,11 +34,11 @@ class JoinStepThreeFragment : Fragment() {
             progressBarJoinStepThree.run {
                 setOnStateItemClickListener { stateProgressBar, stateItem, stateNumber, isCurrentState ->
                     when(stateNumber){
-                        1-> {}
+                        1-> {
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_THREE_FRAGMENT)
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_TWO_FRAGMENT)
+                        }
                         2-> { loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_THREE_FRAGMENT) }
-                        3-> {}
-                        4-> { loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT, true, true, null) }
-                        5-> {}
                     }
                 }
             }

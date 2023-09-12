@@ -36,16 +36,6 @@ class JoinStepOneFragment : Fragment() {
             //프로그래스바 설정
             progressBarJoinStepOne.run {
                 //setStateNumberTypeface("nanumbarunpenregular")
-
-                setOnStateItemClickListener { stateProgressBar, stateItem, stateNumber, isCurrentState ->
-                    when(stateNumber){
-                        1->{}
-                        2->{ loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_TWO_FRAGMENT, true, true, null) }
-                        3->{}
-                        4->{}
-                        5->{}
-                    }
-                }
             }
 
             //버튼 클릭 화면 전환

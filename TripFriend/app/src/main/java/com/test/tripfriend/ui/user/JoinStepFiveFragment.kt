@@ -40,11 +40,22 @@ class JoinStepFiveFragment : Fragment() {
             progressBarJoinStepFive.run {
                 setOnStateItemClickListener { stateProgressBar, stateItem, stateNumber, isCurrentState ->
                     when(stateNumber){
-                        1-> {}
-                        2-> {}
-                        3-> {}
+                        1-> {
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FIVE_FRAGMENT)
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT)
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_THREE_FRAGMENT)
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_TWO_FRAGMENT)
+                        }
+                        2-> {
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FIVE_FRAGMENT)
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT)
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_THREE_FRAGMENT)
+                        }
+                        3-> {
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FIVE_FRAGMENT)
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT)
+                        }
                         4-> { loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FIVE_FRAGMENT) }
-                        5-> {}
                     }
                 }
             }

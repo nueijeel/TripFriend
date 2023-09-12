@@ -37,10 +37,6 @@ class JoinStepTwoFragment : Fragment() {
                 setOnStateItemClickListener { stateProgressBar, stateItem, stateNumber, isCurrentState ->
                     when(stateNumber){
                         1-> { loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_TWO_FRAGMENT) }
-                        2-> {}
-                        3-> { loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_THREE_FRAGMENT, true, true, null) }
-                        4-> {}
-                        5-> {}
                     }
                 }
             }
