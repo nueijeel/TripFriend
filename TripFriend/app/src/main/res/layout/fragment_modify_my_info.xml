@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".ui.myinfo.ModifyMyInfoFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/myAccompanyInfoToolbar"
+        style="@style/Theme.TripFriend.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:text="계정 정보 수정"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/soft_gray" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/ic_launcher_background" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:text="닉네임"
+                android:textAppearance="@style/Theme.App.Medium"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutLoginId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="30dp"
+                app:boxStrokeColor="@color/highLightColor"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/highLightColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextLoginId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="아이디"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textAppearance="@style/Theme.App.Large"
+                    android:textColor="@color/highLightColor" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

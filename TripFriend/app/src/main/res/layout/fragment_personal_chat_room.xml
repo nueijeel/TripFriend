@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayoutPersonalChatRoom"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.chatting.PersonalChatRoomFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/materialPersonalChatRoomToolbar"
+            style="@style/Theme.TripFriend.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:menu="@menu/menu_chat_room">
+
+            <TextView
+                android:id="@+id/textViewPersonalChatRoomToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="채팅"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewPersonalChatRoom"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="10dp" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutPersonalChatRoomSearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:transitionGroup="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextPersonalChatRoomSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/edit_text_box"
+                    android:inputType="textMultiLine|textNoSuggestions" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/buttonPersonalChatRoomSend"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="5dp"
+                android:padding="0dp"
+                android:text="전송"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/black" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationViewPersonalChatRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:transitionGroup="true"
+        app:itemIconTint="@color/highLightColor"
+        app:itemTextColor="@color/highLightColor">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="name 님과의 대화"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="현재 대화 참여자"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageViewPersonalChattingUserImage"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@mipmap/ic_trip_friend" />
+
+                <TextView
+                    android:id="@+id/textViewPersonalChattingUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="개인 채팅방 닉네임"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/buttonPersonalChatRoomExit"
+                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:backgroundTint="@color/mainColor"
+                    android:padding="0dp"
+                    android:text="나가기"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageViewPersonalChattingImage"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    app:srcCompat="@mipmap/ic_trip_friend" />
+
+                <TextView
+                    android:id="@+id/textViewPersonalChattingName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="개인 채팅방 닉네임"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/highLightColor" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </com.google.android.material.navigation.NavigationView>
+</androidx.drawerlayout.widget.DrawerLayout>

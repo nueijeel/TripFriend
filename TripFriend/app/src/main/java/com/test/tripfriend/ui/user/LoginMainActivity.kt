@@ -2,12 +2,16 @@ package com.test.tripfriend.ui.user
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.ActivityLoginMainBinding
+import kotlin.concurrent.thread
 
 class LoginMainActivity : AppCompatActivity() {
 
@@ -15,6 +19,10 @@ class LoginMainActivity : AppCompatActivity() {
 
     companion object {
         val LOGIN_MAIN_FRAGMENT = "LoginMainFragment"
+        val EMAIL_LOGIN_FRAGMENT = "EmailLoginFragment"
+        val JOIN_STEP_ONE_FRAGMENT = "JoinStepOneFragment"
+        val JOIN_STEP_TWO_FRAGMENT = "JoinStepTwoFragment"
+        val JOIN_STEP_THREE_FRAGMENT = "JoinStepThreeFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +43,10 @@ class LoginMainActivity : AppCompatActivity() {
         // 새로운 Fragment를 담을 변수
         var newFragment = when(name){
             LOGIN_MAIN_FRAGMENT -> LoginMainFragment()
+            EMAIL_LOGIN_FRAGMENT -> EmailLoginFragment()
+            JOIN_STEP_ONE_FRAGMENT -> JoinStepOneFragment()
+            JOIN_STEP_TWO_FRAGMENT -> JoinStepTwoFragment()
+            JOIN_STEP_THREE_FRAGMENT -> JoinStepThreeFragment()
             else -> Fragment()
         }
 
