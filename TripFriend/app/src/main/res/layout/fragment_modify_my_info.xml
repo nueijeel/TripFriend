@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.myinfo.ModifyMyInfoFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/myAccompanyInfoToolbar"
+        android:id="@+id/toolbarModifyMyInfo"
         style="@style/Theme.TripFriend.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,6 +37,7 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageViewMyProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -54,26 +55,149 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutLoginId"
+                android:id="@+id/textInputLayoutNickName"
+                style="Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="40dp"
+                android:hint="닉네임을 입력하세요"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="5dp"
+                app:boxCornerRadiusBottomStart="5dp"
+                app:boxCornerRadiusTopEnd="5dp"
+                app:boxCornerRadiusTopStart="5dp"
                 app:boxStrokeColor="@color/highLightColor"
                 app:endIconMode="clear_text"
                 app:hintTextColor="@color/highLightColor">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditTextLoginId"
+                    android:id="@+id/textInputEditTextModifyNickName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="아이디"
                     android:inputType="text"
-                    android:singleLine="true"
-                    android:textAppearance="@style/Theme.App.Large"
-                    android:textColor="@color/highLightColor" />
+                    android:padding="20dp"
+                    android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="40dp">
+                <Button
+                    android:id="@+id/buttonNickNameCheck"
+                    style="@style/Widget.Material3.Button.TextButton.Icon"
+                    android:layout_width="110dp"
+                    android:layout_height="40dp"
+                    android:backgroundTint="@color/subColor"
+                    android:layout_gravity="left"
+                    android:text="중복체크"
+                    android:textAppearance="@style/Theme.App.Small"
+                    android:textColor="@color/black"
+                    app:icon="@drawable/verified_24px" />
+
+                <TextView
+                    android:id="@+id/textViewWarningNickName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="⊗ 이미 존재하는 닉네임입니다"/>
+                <TextView
+                    android:id="@+id/textViewCompleteCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="gone"
+                    android:layout_marginLeft="10dp"
+                    android:text="◎ 사용 가능한 닉네임입니다"/>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
+                android:text="비밀번호"
+                android:textAppearance="@style/Theme.App.Medium"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutPassword"
+                style="Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="40dp"
+                android:hint="비밀번호를 입력하세요"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="5dp"
+                app:boxCornerRadiusBottomStart="5dp"
+                app:boxCornerRadiusTopEnd="5dp"
+                app:boxCornerRadiusTopStart="5dp"
+                app:boxStrokeColor="@color/highLightColor"
+                app:endIconMode="password_toggle"
+                app:hintTextColor="@color/highLightColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextPasswordToModify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:padding="20dp"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutPasswordCheck"
+                style="Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="40dp"
+                android:hint="비밀번호 확인"
+                app:boxBackgroundColor="#FFFFFF"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="5dp"
+                app:boxCornerRadiusBottomStart="5dp"
+                app:boxCornerRadiusTopEnd="5dp"
+                app:boxCornerRadiusTopStart="5dp"
+                app:boxStrokeColor="@color/highLightColor"
+                app:endIconMode="password_toggle"
+                app:hintTextColor="@color/highLightColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextPasswordCheck"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:padding="20dp"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/buttonModifyMyInfo"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="25dp"
+                android:backgroundTint="@color/subColor"
+                android:elevation="10dp"
+                android:text="저장하기"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+
 
 
         </LinearLayout>
