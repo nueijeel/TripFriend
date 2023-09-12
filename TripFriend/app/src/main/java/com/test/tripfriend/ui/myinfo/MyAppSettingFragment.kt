@@ -38,7 +38,7 @@ class MyAppSettingFragment : Fragment() {
 
             //계정 정보 수정 버튼
             buttonChangeMyInfo.setOnClickListener {
-
+                mainActivity.replaceFragment(MainActivity.MODIFY_MY_INFO_FRAGMENT,true,false,null)
             }
 
             //로그아웃 버튼
