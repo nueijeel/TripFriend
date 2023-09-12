@@ -12,6 +12,8 @@ import com.test.tripfriend.databinding.ActivityMainBinding
 import com.test.tripfriend.ui.accompany.AccompanyRegisterFragment1
 import com.test.tripfriend.ui.chatting.ChattingMainFragment
 import com.test.tripfriend.ui.home.HomeListFragment
+import com.test.tripfriend.ui.chatting.GroupChatRoomFragment
+import com.test.tripfriend.ui.chatting.PersonalChatRoomFragment
 import com.test.tripfriend.ui.home.HomeMainFragment
 import com.test.tripfriend.ui.home.HomeMapFragment
 import com.test.tripfriend.ui.myinfo.MyAccompanyInfoFragment
@@ -40,6 +42,8 @@ class MainActivity : AppCompatActivity() {
         val MY_ACCOMPANY_INFO_FRAGMENT="MyAccompanyInfoFragment"
         val ACCOMPANYREGISTERFRAGMENT1 = "AccompanyRegisterFragment1"
 
+        val PERSONAL_CHAT_ROOM_FRAGMENT = "PersonalChatRoomFragment"
+        val GROUP_CHAT_ROOM_FRAGMENT = "GroupChatRoomFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,6 +113,9 @@ class MainActivity : AppCompatActivity() {
             MY_INFO_MAIN_FRAGMENT -> MyInfoMainFragment()
             MY_ACCOMPANY_INFO_FRAGMENT->MyAccompanyInfoFragment()
             ACCOMPANYREGISTERFRAGMENT1 -> AccompanyRegisterFragment1()
+            MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()
+            PERSONAL_CHAT_ROOM_FRAGMENT -> PersonalChatRoomFragment()
+            GROUP_CHAT_ROOM_FRAGMENT -> GroupChatRoomFragment()
 
             else -> Fragment()
         }
