@@ -24,6 +24,7 @@ class LoginMainActivity : AppCompatActivity() {
         val JOIN_STEP_TWO_FRAGMENT = "JoinStepTwoFragment"
         val JOIN_STEP_THREE_FRAGMENT = "JoinStepThreeFragment"
         val JOIN_STEP_FOUR_FRAGMENT = "JoinStepFourFragment"
+        val JOIN_STEP_FIVE_FRAGMENT = "JoinStepFiveFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +50,7 @@ class LoginMainActivity : AppCompatActivity() {
             JOIN_STEP_TWO_FRAGMENT -> JoinStepTwoFragment()
             JOIN_STEP_THREE_FRAGMENT -> JoinStepThreeFragment()
             JOIN_STEP_FOUR_FRAGMENT -> JoinStepFourFragment()
+            JOIN_STEP_FIVE_FRAGMENT -> JoinStepFiveFragment()
             else -> Fragment()
         }
 
