@@ -106,10 +106,6 @@
     </style>
 
 
-
-
-
-
     <!--스위치 디자인-->
     <style name="Widget.App.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Switch</item>
@@ -134,6 +130,12 @@
     <style name="tab_text_appearance" parent="TextAppearance.Design.Tab">
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/font</item>
+    </style>
+
+    <!--용진이 버전 칩 색상 변경-->
+    <style name="Colors_Widget.MaterialComponents.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/chipbackgroundcolorselector</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
 </resources>
