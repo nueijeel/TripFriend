@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.TripFriend" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Base.Theme.TripFriend" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- 기본 색 -->
         <item name="colorPrimary">@color/mainColor</item>
         <!-- 상태바 색상 및 아이콘 색상 -->
@@ -104,6 +104,12 @@
         <item name="cornerFamily">rounded</item>
     </style>
 
+    <!-- chip style -->
+    <style name="custom_suggestion_chip_style" parent="Widget.Material3.Chip.Suggestion.Elevated">
+        <item name="chipBackgroundColor">@color/suggestion_chip_background_color_selector</item>
+        <item name="android:textColor">@color/suggestion_chip_text_color_selector</item>
+        <item name="android:fontFamily">@font/font</item>
+    </style>
 
     <!--스위치 디자인-->
     <style name="Widget.App.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
@@ -116,9 +122,6 @@
         <item name="thumbIcon">@drawable/done_24px</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorOutline">@color/gray</item>
-
-
-
     </style>
 
     <!--스플래시 화면 디자인-->
