@@ -28,6 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabIndicatorColor="@color/highLightColor"
+        app:tabSelectedTextAppearance="@font/font"
+        app:tabTextAppearance="@style/tab_text_appearance"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/highLightColor">
 

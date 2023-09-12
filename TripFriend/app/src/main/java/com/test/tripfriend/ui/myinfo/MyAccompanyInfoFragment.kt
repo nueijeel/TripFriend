@@ -29,8 +29,8 @@ class MyAccompanyInfoFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        mainActivity=activity as MainActivity
-        fragmentMyAccompanyInfoBinding= FragmentMyAccompanyInfoBinding.inflate(layoutInflater)
+        mainActivity = activity as MainActivity
+        fragmentMyAccompanyInfoBinding = FragmentMyAccompanyInfoBinding.inflate(layoutInflater)
 
 
 
@@ -45,13 +45,13 @@ class MyAccompanyInfoFragment : Fragment() {
                 }
             }
 
-            //내 친구 속도 수치를 textView로 보여주기 위한 작업(프로그래스 thumb를 따라다님)
+            //내 친구 속도 수치를 textView로 보여주기 위한 작업(프로그래스 thumb를 따라다니도록)
             seekbarFriendSpeed2.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                     val padding=seekbarFriendSpeed2.paddingLeft+seekbarFriendSpeed2.paddingRight
-                    val sPos=seekbarFriendSpeed2.left+seekbarFriendSpeed2.paddingLeft
-                    val xPos=(seekbarFriendSpeed2.width-padding)*seekbarFriendSpeed2.progress/seekbarFriendSpeed2.max+sPos-(textViewFriendSpeed2.width/2)
-                    textViewFriendSpeed2.x= xPos.toFloat()
+                    val sPos = seekbarFriendSpeed2.left+seekbarFriendSpeed2.paddingLeft
+                    val xPos = (seekbarFriendSpeed2.width-padding)*seekbarFriendSpeed2.progress/seekbarFriendSpeed2.max+sPos-(textViewFriendSpeed2.width/2)
+                    textViewFriendSpeed2.x = xPos.toFloat()
                     textViewFriendSpeed2.text=seekbarFriendSpeed2.progress.toString()
                 }
 
@@ -66,8 +66,8 @@ class MyAccompanyInfoFragment : Fragment() {
 
             //동행 후기 리사이클러뷰
             recyclerViewMyAccount.run {
-                adapter=ReviewItemAdapter()
-                layoutManager=LinearLayoutManager(mainActivity)
+                adapter = ReviewItemAdapter()
+                layoutManager = LinearLayoutManager(mainActivity)
             }
 
         }
@@ -106,15 +106,15 @@ class MyAccompanyInfoFragment : Fragment() {
             val rootViewMyStyleReviewFromPartner:LinearLayout
 
             init {
-                this.textViewReviewerNickName=myAccompanyItemRow.textViewReviewerNickName
-                this.textViewMyReviewScoreFromPartner=myAccompanyItemRow.textViewMyReviewScoreFromPartner
+                this.textViewReviewerNickName = myAccompanyItemRow.textViewReviewerNickName
+                this.textViewMyReviewScoreFromPartner = myAccompanyItemRow.textViewMyReviewScoreFromPartner
                 //파트너가 설정한 내 스타일 카드를 addView하기 위한 root뷰
-                this.rootViewMyStyleReviewFromPartner=myAccompanyItemRow.rootViewMyStyleReviewFromPartner
+                this.rootViewMyStyleReviewFromPartner = myAccompanyItemRow.rootViewMyStyleReviewFromPartner
             }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val myAccompanyItemRow=MyAccompanyItemRowBinding.inflate(layoutInflater)
+            val myAccompanyItemRow = MyAccompanyItemRowBinding.inflate(layoutInflater)
             myAccompanyItemRow.root.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT

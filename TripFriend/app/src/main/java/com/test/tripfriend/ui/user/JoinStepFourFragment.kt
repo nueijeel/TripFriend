@@ -2,17 +2,17 @@ package com.test.tripfriend.ui.user
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.test.tripfriend.R
-import com.test.tripfriend.databinding.FragmentJoinStepThreeBinding
-import kotlin.math.log
+import com.test.tripfriend.databinding.FragmentJoinStepFourBinding
 
-class JoinStepThreeFragment : Fragment() {
+class JoinStepFourFragment : Fragment() {
 
-    lateinit var fragmentJoinStepThreeBinding: FragmentJoinStepThreeBinding
+    lateinit var fragmentJoinStepFourBinding: FragmentJoinStepFourBinding
     lateinit var loginMainActivity: LoginMainActivity
 
     override fun onCreateView(
@@ -20,11 +20,11 @@ class JoinStepThreeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        fragmentJoinStepThreeBinding = FragmentJoinStepThreeBinding.inflate(inflater)
+        fragmentJoinStepFourBinding = FragmentJoinStepFourBinding.inflate(inflater)
         loginMainActivity = activity as LoginMainActivity
 
-        fragmentJoinStepThreeBinding.run {
-            materialToolbarJoinStepThree.run {
+        fragmentJoinStepFourBinding.run {
+            materialToolbarJoinStepFour.run {
                 setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
                 setNavigationIconTint(Color.BLACK)
                 setNavigationOnClickListener {
@@ -32,23 +32,23 @@ class JoinStepThreeFragment : Fragment() {
                 }
             }
 
-            progressBarJoinStepThree.run {
+            progressBarJoinStepFour.run {
                 setOnStateItemClickListener { stateProgressBar, stateItem, stateNumber, isCurrentState ->
                     when(stateNumber){
                         1-> {}
-                        2-> { loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_THREE_FRAGMENT) }
-                        3-> {}
-                        4-> { loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT, true, true, null) }
-                        5-> {}
+                        2-> {}
+                        3-> { loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT) }
+                        4-> {}
+                        5-> { loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_FIVE_FRAGMENT, true, true, null) }
                     }
                 }
             }
 
-            buttonJoinStepThreeNext.setOnClickListener {
-                loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT, true, true, null)
+            buttonJoinStepFourNext.setOnClickListener {
+                loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_FIVE_FRAGMENT, true, true, null)
             }
         }
 
-        return fragmentJoinStepThreeBinding.root
+        return fragmentJoinStepFourBinding.root
     }
 }
