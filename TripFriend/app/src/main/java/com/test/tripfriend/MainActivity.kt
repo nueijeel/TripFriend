@@ -8,11 +8,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.test.tripfriend.databinding.ActivityMainBinding
 import com.test.tripfriend.ui.chatting.ChattingMainFragment
+import com.test.tripfriend.ui.chatting.GroupChatRoomFragment
+import com.test.tripfriend.ui.chatting.PersonalChatRoomFragment
 import com.test.tripfriend.ui.home.HomeMainFragment
 import com.test.tripfriend.ui.myinfo.ModifyMyInfoFragment
 import com.test.tripfriend.ui.myinfo.MyAccompanyInfoFragment
 import com.test.tripfriend.ui.myinfo.MyAppSettingFragment
 import com.test.tripfriend.ui.myinfo.MyInfoMainFragment
+import com.test.tripfriend.ui.trip.NotificationFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
 
 class MainActivity : AppCompatActivity() {
@@ -24,10 +27,14 @@ class MainActivity : AppCompatActivity() {
         val HOME_MAIN_FRAGMENT = "HomeMainFragment"
         val TRIP_MAIN_FRAGMENT = "TripMainFragment"
         val CHATTING_MAIN_FRAGMENT = "ChattingMainFragment"
+        val MYINFO_MAIN_FRAGMENT = "MyInfoMainFragment"
+        val NOTIFICATION_FRAGMENT = "NotificationFragment"
         val MY_INFO_MAIN_FRAGMENT = "MyInfoMainFragment"
         val MY_ACCOMPANY_INFO_FRAGMENT="MyAccompanyInfoFragment"
         val MY_APP_SETTING_FRAGMENT="MyAppSettingFragment"
         val MODIFY_MY_INFO_FRAGMENT="ModifyMyInfoFragment"
+        val PERSONAL_CHAT_ROOM_FRAGMENT = "PersonalChatRoomFragment"
+        val GROUP_CHAT_ROOM_FRAGMENT = "GroupChatRoomFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,10 +98,15 @@ class MainActivity : AppCompatActivity() {
             HOME_MAIN_FRAGMENT -> HomeMainFragment()
             TRIP_MAIN_FRAGMENT -> TripMainFragment()
             CHATTING_MAIN_FRAGMENT -> ChattingMainFragment()
+            MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()
+            NOTIFICATION_FRAGMENT -> NotificationFragment()
             MY_INFO_MAIN_FRAGMENT -> MyInfoMainFragment()
             MY_ACCOMPANY_INFO_FRAGMENT->MyAccompanyInfoFragment()
             MY_APP_SETTING_FRAGMENT->MyAppSettingFragment()
             MODIFY_MY_INFO_FRAGMENT->ModifyMyInfoFragment()
+            MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()
+            PERSONAL_CHAT_ROOM_FRAGMENT -> PersonalChatRoomFragment()
+            GROUP_CHAT_ROOM_FRAGMENT -> GroupChatRoomFragment()
 
             else -> Fragment()
         }
