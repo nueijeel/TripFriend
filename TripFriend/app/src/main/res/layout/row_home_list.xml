@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginTop="20dp"
+        android:elevation="30dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewHomeMainListRowTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:text="TextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <TextView
+                android:id="@+id/textViewHomeMainListDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:drawableStart="@drawable/calendar_month_20px"
+                android:gravity="center_vertical"
+                android:text="TextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#000000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewHomeMainListRowNOP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    android:drawableStart="@drawable/group_20px"
+                    android:text="TextView"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/textViewHomeMainListRowLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:drawableStart="@drawable/location_20px"
+                    android:text="TextView"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipHomeMainListRowCategory1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="#FFFFFF"
+                        android:clickable="false"
+                        android:text="축제"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="10sp"
+                        app:chipBackgroundColor="#FFFFFF"
+                        app:chipIcon="@drawable/festival_20px"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipHomeMainListRowCategory2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="#FFFFFF"
+                        android:clickable="false"
+                        android:text="쇼핑"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="10sp"
+                        app:chipBackgroundColor="#FFFFFF"
+                        app:chipIcon="@drawable/shopping_bag_20px"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipHomeMainListRowCategory3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="#FFFFFF"
+                        android:clickable="false"
+                        android:text="액티비티"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="10sp"
+                        app:chipBackgroundColor="#FFFFFF"
+                        app:chipIcon="@drawable/activity_20px"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
+
+                </LinearLayout>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:id="@+id/textViewHomeMainListRowHashTag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="TextView" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
