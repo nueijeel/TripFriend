@@ -22,6 +22,7 @@ class LoginMainActivity : AppCompatActivity() {
         val EMAIL_LOGIN_FRAGMENT = "EmailLoginFragment"
         val JOIN_STEP_ONE_FRAGMENT = "JoinStepOneFragment"
         val JOIN_STEP_TWO_FRAGMENT = "JoinStepTwoFragment"
+        val JOIN_STEP_THREE_FRAGMENT = "JoinStepThreeFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +46,7 @@ class LoginMainActivity : AppCompatActivity() {
             EMAIL_LOGIN_FRAGMENT -> EmailLoginFragment()
             JOIN_STEP_ONE_FRAGMENT -> JoinStepOneFragment()
             JOIN_STEP_TWO_FRAGMENT -> JoinStepTwoFragment()
+            JOIN_STEP_THREE_FRAGMENT -> JoinStepThreeFragment()
             else -> Fragment()
         }
 
