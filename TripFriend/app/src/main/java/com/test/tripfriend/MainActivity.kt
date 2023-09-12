@@ -14,7 +14,9 @@ import com.test.tripfriend.ui.chatting.ChattingMainFragment
 import com.test.tripfriend.ui.home.HomeListFragment
 import com.test.tripfriend.ui.home.HomeMainFragment
 import com.test.tripfriend.ui.home.HomeMapFragment
+import com.test.tripfriend.ui.myinfo.MyAccompanyInfoFragment
 import com.test.tripfriend.ui.myinfo.MyInfoMainFragment
+import com.test.tripfriend.ui.trip.NotificationFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
 import kotlin.concurrent.thread
 
@@ -33,6 +35,9 @@ class MainActivity : AppCompatActivity() {
         val TRIP_MAIN_FRAGMENT = "TripMainFragment"
         val CHATTING_MAIN_FRAGMENT = "ChattingMainFragment"
         val MYINFO_MAIN_FRAGMENT = "MyInfoMainFragment"
+        val NOTIFICATION_FRAGMENT = "NotificationFragment"
+        val MY_INFO_MAIN_FRAGMENT = "MyInfoMainFragment"
+        val MY_ACCOMPANY_INFO_FRAGMENT="MyAccompanyInfoFragment"
         val ACCOMPANYREGISTERFRAGMENT1 = "AccompanyRegisterFragment1"
 
     }
@@ -100,6 +105,9 @@ class MainActivity : AppCompatActivity() {
             TRIP_MAIN_FRAGMENT -> TripMainFragment()
             CHATTING_MAIN_FRAGMENT -> ChattingMainFragment()
             MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()
+            NOTIFICATION_FRAGMENT -> NotificationFragment()
+            MY_INFO_MAIN_FRAGMENT -> MyInfoMainFragment()
+            MY_ACCOMPANY_INFO_FRAGMENT->MyAccompanyInfoFragment()
             ACCOMPANYREGISTERFRAGMENT1 -> AccompanyRegisterFragment1()
 
             else -> Fragment()

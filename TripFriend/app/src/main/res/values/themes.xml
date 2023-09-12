@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.TripFriend" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Base.Theme.TripFriend" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- 기본 색 -->
         <item name="colorPrimary">@color/mainColor</item>
         <!-- 상태바 색상 및 아이콘 색상 -->
@@ -22,6 +22,8 @@
         <item name="android:checkboxStyle">@style/CheckBoxStyle</item>
         <item name="android:spinnerStyle">@style/SpinnerStyle</item>
     </style>
+
+    <style name="Theme.TripFriend" parent="Base.Theme.TripFriend" />
 
     <!-- 글꼴 크키별 스타일 -->
     <style name="Theme.App.Large" parent="Theme.TripFriend">
@@ -65,5 +67,13 @@
     <style name="Widget.App.Button" parent="Widget.Material3.Button.TextButton.Dialog">
         <item name="android:textColor">@color/highLightColor</item>
     </style>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/sp_ver3</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/Theme.TripFriend</item>
+    </style>
+
 
 </resources>

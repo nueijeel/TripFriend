@@ -2,22 +2,32 @@ package com.test.tripfriend.ui.user
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.ActivityLoginMainBinding
+import kotlin.concurrent.thread
 
 class LoginMainActivity : AppCompatActivity() {
+
+    private val SPLASH_SCREEN_DELAY = 3000L
 
     lateinit var activityLoginMainBinding: ActivityLoginMainBinding
 
     companion object {
         val LOGIN_MAIN_FRAGMENT = "LoginMainFragment"
+        val EMAIL_LOGIN_FRAGMENT = "EmailLoginFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        installSplashScreen()
 
         activityLoginMainBinding = ActivityLoginMainBinding.inflate(layoutInflater)
         setContentView(activityLoginMainBinding.root)
@@ -32,6 +42,7 @@ class LoginMainActivity : AppCompatActivity() {
         // 새로운 Fragment를 담을 변수
         var newFragment = when(name){
             LOGIN_MAIN_FRAGMENT -> LoginMainFragment()
+            EMAIL_LOGIN_FRAGMENT -> EmailLoginFragment()
             else -> Fragment()
         }
 
