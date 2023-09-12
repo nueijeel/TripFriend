@@ -12,11 +12,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.tripfriend.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentGroupChatRoomBinding
 import com.test.tripfriend.databinding.RowChatRoomOpponentBinding
-import com.test.tripfriend.databinding.RowChatRoomUserBinding
 import com.test.tripfriend.databinding.RowGroupChatRoomBinding
 
 class GroupChatRoomFragment : Fragment() {
@@ -67,16 +67,13 @@ class GroupChatRoomFragment : Fragment() {
                 buttonGroupChatRoomExit.run {
                     setOnClickListener {
                         //다이얼로그 띄움
-                        val builder = AlertDialog.Builder(
-                            mainActivity
-                        )
-                        builder.run {
+                        MaterialAlertDialogBuilder(mainActivity,R.style.DialogTheme).run {
                             setTitle("채팅방 나가기")
                             setMessage("나가기를 하면 대화내용이 모두 삭제되며 동행 신청이 취소되고 채팅 목록에서도 삭제됩니다.")
+                            setNegativeButton("취소", null)
                             setPositiveButton("나가기") { dialogInterface: DialogInterface, i: Int ->
 
                             }
-                            setNegativeButton("취소", null)
                             show()
                         }
                     }
