@@ -15,13 +15,13 @@ import kotlin.concurrent.thread
 
 class LoginMainActivity : AppCompatActivity() {
 
-    private val SPLASH_SCREEN_DELAY = 3000L
-
     lateinit var activityLoginMainBinding: ActivityLoginMainBinding
 
     companion object {
         val LOGIN_MAIN_FRAGMENT = "LoginMainFragment"
         val EMAIL_LOGIN_FRAGMENT = "EmailLoginFragment"
+        val JOIN_STEP_ONE_FRAGMENT = "JoinStepOneFragment"
+        val JOIN_STEP_TWO_FRAGMENT = "JoinStepTwoFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +43,8 @@ class LoginMainActivity : AppCompatActivity() {
         var newFragment = when(name){
             LOGIN_MAIN_FRAGMENT -> LoginMainFragment()
             EMAIL_LOGIN_FRAGMENT -> EmailLoginFragment()
+            JOIN_STEP_ONE_FRAGMENT -> JoinStepOneFragment()
+            JOIN_STEP_TWO_FRAGMENT -> JoinStepTwoFragment()
             else -> Fragment()
         }
 

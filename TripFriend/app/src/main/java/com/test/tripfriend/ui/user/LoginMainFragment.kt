@@ -21,8 +21,13 @@ class LoginMainFragment : Fragment() {
         fragmentLoginMainBinding = FragmentLoginMainBinding.inflate(inflater)
 
         fragmentLoginMainBinding.run {
+
             buttonLoginMainEmailLogin.setOnClickListener {
                 loginMainActivity.replaceFragment(LoginMainActivity.EMAIL_LOGIN_FRAGMENT, true, true, null)
+            }
+
+            textViewLoginMainJoin.setOnClickListener {
+                loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_ONE_FRAGMENT, true, true, null)
             }
         }
 
