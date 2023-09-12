@@ -24,8 +24,8 @@ class MyAppSettingFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        fragmentMyAppSettingBinding= FragmentMyAppSettingBinding.inflate(layoutInflater)
-        mainActivity=activity as MainActivity
+        fragmentMyAppSettingBinding = FragmentMyAppSettingBinding.inflate(layoutInflater)
+        mainActivity = activity as MainActivity
 
         fragmentMyAppSettingBinding.run {
 

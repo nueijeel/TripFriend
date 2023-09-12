@@ -18,8 +18,8 @@ class ModifyMyInfoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        fragmentModifyMyInfoBinding= FragmentModifyMyInfoBinding.inflate(layoutInflater)
-        mainActivity=activity as MainActivity
+        fragmentModifyMyInfoBinding = FragmentModifyMyInfoBinding.inflate(layoutInflater)
+        mainActivity = activity as MainActivity
 
         fragmentModifyMyInfoBinding.run {
 
