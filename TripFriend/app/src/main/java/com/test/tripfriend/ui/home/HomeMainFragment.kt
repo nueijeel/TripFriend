@@ -1,20 +1,16 @@
 package com.test.tripfriend.ui.home
 
-import android.app.Dialog
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams
-import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.test.tripfriend.MainActivity
 import com.test.tripfriend.R
@@ -37,17 +33,41 @@ class HomeMainFragment : Fragment() {
         fragmentHomeMainBinding = FragmentHomeMainBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
-
         fragmentHomeMainBinding.run {
             // 스피너
             spinnerHomeMainSearch.run {
                 spinnerClick()
             }
 
-            // 필터 다이얼로그 - 참조(https://magicalcode.tistory.com/entry/%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-%EC%BD%94%ED%8B%80%EB%A6%B0-Custom-Dialog)
+            // 필터 다이얼로그
             imageButtonHomeMainFilter.run {
                 setOnClickListener {
-                    DialogFilter().dig()
+                    val builder = MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+                        val dialogHomeMainFilterBinding : DialogHomeMainFilterBinding = DialogHomeMainFilterBinding.inflate(layoutInflater)
+
+                        setView(dialogHomeMainFilterBinding.root)
+
+                        setNegativeButton("취소", null)
+                        setPositiveButton("적용", null)
+
+//                        // 데이트 피커
+//                        dialogHomeMainFilterBinding.button.setOnClickListener {
+//                            val dateRangePicker =
+//                                MaterialDatePicker.Builder.dateRangePicker()
+//                                    .setTitleText("Select dates")
+//                                    .setSelection(
+//                                        Pair(
+//                                            MaterialDatePicker.thisMonthInUtcMilliseconds(),
+//                                            MaterialDatePicker.todayInUtcMilliseconds()
+//                                        )
+//                                    )
+//                                    .build()
+//
+//                            dateRangePicker.show()
+//                        }
+                    }
+
+                    builder.show()
                 }
             }
 
@@ -67,7 +87,7 @@ class HomeMainFragment : Fragment() {
             // 플로팅버튼
             floatingActionButtonHomeMain.run {
                 setOnClickListener {
-                    mainActivity.replaceFragment(MainActivity.ACCOMPANYREGISTERFRAGMENT1, true, true, null)
+                    mainActivity.replaceFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT1, true, true, null)
                 }
             }
         }
@@ -126,35 +146,6 @@ class HomeMainFragment : Fragment() {
                 else -> HomeListFragment()
             }
             return resultFragment
-        }
-    }
-
-    // 다이얼로그
-    inner class DialogFilter() {
-        val dialog = Dialog(mainActivity)
-
-        fun dig() {
-            val dialogHomeMainFilterBinding : DialogHomeMainFilterBinding
-
-            dialogHomeMainFilterBinding = DialogHomeMainFilterBinding.inflate(layoutInflater)
-            dialog.setContentView(dialogHomeMainFilterBinding.root)
-
-            dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
-            dialog.setCanceledOnTouchOutside(false)
-            dialog.setCancelable(true)
-
-            dialogHomeMainFilterBinding.run {
-                buttonDialogFilterCancel.setOnClickListener {
-                    dialog.dismiss()
-                }
-
-                buttonDialogFilterDone.setOnClickListener {
-                    dialog.dismiss()
-                }
-            }
-
-
-            dialog.show()
         }
     }
 }

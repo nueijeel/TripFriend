@@ -1,125 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textViewHomeListTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="TextView"
-            android:textSize="@dimen/text_size_1" />
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginTop="20dp"
+        android:elevation="30dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/baseline_calendar_today_24" />
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textViewHomeListDate"
+                android:id="@+id/textViewHomeMainListRowTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
                 android:text="TextView"
-                android:textSize="@dimen/text_size_2" />
-        </LinearLayout>
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewHomeMainListDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:drawableStart="@drawable/calendar_month_20px"
+                android:gravity="center_vertical"
+                android:text="TextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#000000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewHomeMainListRowNOP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="5dp"
+                    android:drawableStart="@drawable/group_20px"
+                    android:text="TextView"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/textViewHomeMainListRowLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:drawableStart="@drawable/location_20px"
+                    android:text="TextView"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#000000" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:gravity="left|center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
 
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/person_24px" />
-
-                <TextView
-                    android:id="@+id/textViewHomeListHeadCount"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView"
-                    android:textSize="@dimen/text_size_2" />
-            </LinearLayout>
+                    android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipHomeMainListRowCategory1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="#FFFFFF"
+                        android:clickable="false"
+                        android:text="축제"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="10sp"
+                        app:chipBackgroundColor="#FFFFFF"
+                        app:chipIcon="@drawable/festival_20px"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
 
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/baseline_location_city_24" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipHomeMainListRowCategory2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="#FFFFFF"
+                        android:clickable="false"
+                        android:text="쇼핑"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="10sp"
+                        app:chipBackgroundColor="#FFFFFF"
+                        app:chipIcon="@drawable/shopping_bag_20px"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
 
-                <TextView
-                    android:id="@+id/textViewHomeListCity"
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipHomeMainListRowCategory3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="#FFFFFF"
+                        android:clickable="false"
+                        android:text="액티비티"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColorHighlight="@color/highLightColor"
+                        android:textSize="10sp"
+                        app:chipBackgroundColor="#FFFFFF"
+                        app:chipIcon="@drawable/activity_20px"
+                        app:chipStrokeColor="@color/highLightColor"
+                        app:chipStrokeWidth="1dp" />
+
+                </LinearLayout>
+
+                <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView"
-                    android:textSize="@dimen/text_size_2" />
+                    android:layout_height="match_parent">
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/imageViewHomeListLiked"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/favorite_24px" />
-
-                <TextView
-                    android:id="@+id/textViewHomeListLikedCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView" />
+                        <TextView
+                            android:id="@+id/textViewHomeMainListRowHashTag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="TextView" />
+                    </LinearLayout>
+                </HorizontalScrollView>
             </LinearLayout>
 
         </LinearLayout>
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipHomeListHashTag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipHomeListCategory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

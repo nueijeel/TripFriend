@@ -44,8 +44,7 @@ class MainActivity : AppCompatActivity() {
         val MY_ACCOMPANY_INFO_FRAGMENT="MyAccompanyInfoFragment"
         val MY_APP_SETTING_FRAGMENT="MyAppSettingFragment"
         val MODIFY_MY_INFO_FRAGMENT="ModifyMyInfoFragment"
-        val ACCOMPANYREGISTERFRAGMENT1 = "AccompanyRegisterFragment1"
-
+        val ACCOMPANY_REGISTER_FRAGMENT1 = "AccompanyRegisterFragment1"
         val PERSONAL_CHAT_ROOM_FRAGMENT = "PersonalChatRoomFragment"
         val GROUP_CHAT_ROOM_FRAGMENT = "GroupChatRoomFragment"
     }
@@ -116,7 +115,7 @@ class MainActivity : AppCompatActivity() {
             NOTIFICATION_FRAGMENT -> NotificationFragment()
             MY_INFO_MAIN_FRAGMENT -> MyInfoMainFragment()
             MY_ACCOMPANY_INFO_FRAGMENT->MyAccompanyInfoFragment()
-            ACCOMPANYREGISTERFRAGMENT1 -> AccompanyRegisterFragment1()
+            ACCOMPANY_REGISTER_FRAGMENT1 -> AccompanyRegisterFragment1()
             MY_APP_SETTING_FRAGMENT->MyAppSettingFragment()
             MODIFY_MY_INFO_FRAGMENT->ModifyMyInfoFragment()
             MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()

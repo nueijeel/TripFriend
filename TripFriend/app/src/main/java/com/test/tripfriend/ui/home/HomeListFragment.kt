@@ -38,18 +38,18 @@ class HomeListFragment : Fragment() {
 
     inner class HomeListAdapter : RecyclerView.Adapter<HomeListAdapter.HomeListViewHolder>() {
         inner class HomeListViewHolder(rowHomeListBinding: RowHomeListBinding) : RecyclerView.ViewHolder(rowHomeListBinding.root) {
-            val textViewHomeListTitle: TextView
-            val textViewHomeListDate: TextView
-            val textViewHomeListHeadCount: TextView
-            val textViewHomeListCity: TextView
-            val textViewHomeListLikedCount: TextView
+            val textViewHomeMainListRowTitle: TextView
+            val textViewHomeMainListDate: TextView
+            val textViewHomeMainListRowNOP: TextView
+            val textViewHomeMainListRowLocation: TextView
+            val textViewHomeMainListRowHashTag: TextView
 
             init {
-                textViewHomeListTitle = rowHomeListBinding.textViewHomeListTitle
-                textViewHomeListDate = rowHomeListBinding.textViewHomeListDate
-                textViewHomeListHeadCount = rowHomeListBinding.textViewHomeListHeadCount
-                textViewHomeListCity = rowHomeListBinding.textViewHomeListHeadCount
-                textViewHomeListLikedCount = rowHomeListBinding.textViewHomeListLikedCount
+                textViewHomeMainListRowTitle = rowHomeListBinding.textViewHomeMainListRowTitle
+                textViewHomeMainListDate = rowHomeListBinding.textViewHomeMainListDate
+                textViewHomeMainListRowNOP = rowHomeListBinding.textViewHomeMainListRowNOP
+                textViewHomeMainListRowLocation = rowHomeListBinding.textViewHomeMainListRowLocation
+                textViewHomeMainListRowHashTag = rowHomeListBinding.textViewHomeMainListRowHashTag
 
             }
         }
@@ -69,11 +69,11 @@ class HomeListFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: HomeListViewHolder, position: Int) {
-            holder.textViewHomeListTitle.text = "부산 여행갈분"
-            holder.textViewHomeListDate.text = "2023.09.29 ~ 2023.09.30"
-            holder.textViewHomeListHeadCount.text = "4명"
-            holder.textViewHomeListCity.text = "부산"
-            holder.textViewHomeListLikedCount.text = "10"
+            holder.textViewHomeMainListRowTitle.text = "부산 여행갈분"
+            holder.textViewHomeMainListDate.text = "2023.09.29 ~ 2023.09.30"
+            holder.textViewHomeMainListRowNOP.text = "4명"
+            holder.textViewHomeMainListRowLocation.text = "부산"
+            holder.textViewHomeMainListRowHashTag.text = "#식도락"
         }
     }
 }

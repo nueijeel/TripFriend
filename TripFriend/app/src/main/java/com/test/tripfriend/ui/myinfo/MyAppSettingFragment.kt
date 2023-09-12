@@ -62,11 +62,7 @@ class MyAppSettingFragment : Fragment() {
                     show()
                 }
             }
-
         }
-
-
-
         return fragmentMyAppSettingBinding.root
     }
 
