@@ -24,186 +24,201 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/soft_gray" />
-    <LinearLayout
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:elevation="10dp"
-        android:orientation="vertical">
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_weight="9"
-                android:text="친구 속도"
-                android:textAppearance="@style/Theme.App.Medium" />
-
-
-        </LinearLayout>
-        <TextView
-            android:id="@+id/textViewFriendSpeed2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="몇km"
-            android:textColor="@color/highLightColor"
-            android:gravity="center"/>
-
-
-        <SeekBar
-            android:id="@+id/seekbarFriendSpeed2"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:max="100"
-            android:layout_gravity="center"
-            android:progress="36"
-            android:progressDrawable="@drawable/my_info_seekbar"
-            android:splitTrack="false"
-            android:thumb="@drawable/directions_run_24px" />
-
-        <TextView
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="※ 동행 후기 점수에 따라 친구 속도가 변경됩니다"
-            android:textAppearance="@style/Theme.App.Small"
-            android:textColor="@color/gray"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="30dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_weight="0.7"
-                android:textAppearance="@style/Theme.App.Medium"
-                android:text="동행 점수"/>
-
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/textViewMyAccompanyScore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/Theme.App.Medium"
-                    android:text="7.8"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="10dp"
+                android:orientation="vertical">
 
-                    android:textAppearance="@style/Theme.App.Medium"
-                    android:text=" 점/"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_weight="9"
+                        android:text="친구 속도"
+                        android:textAppearance="@style/Theme.App.Medium" />
+
+
+                </LinearLayout>
                 <TextView
+                    android:id="@+id/textViewFriendSpeed2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="몇km"
+                    android:textColor="@color/highLightColor"
+                    android:gravity="center"/>
 
-                    android:textAppearance="@style/Theme.App.Medium"
-                    android:text="10 점"/>
+
+                <SeekBar
+                    android:id="@+id/seekbarFriendSpeed2"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:max="100"
+                    android:layout_gravity="center"
+                    android:progress="36"
+                    android:progressDrawable="@drawable/my_info_seekbar"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/directions_run_24px" />
+
+                <TextView
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="※ 동행 후기 점수에 따라 친구 속도가 변경됩니다"
+                    android:textAppearance="@style/Theme.App.Small"
+                    android:textColor="@color/gray"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="30dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_weight="0.7"
+                        android:textAppearance="@style/Theme.App.Medium"
+                        android:text="동행 점수"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/textViewMyAccompanyScore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/Theme.App.Medium"
+                            android:text="7.8"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:textAppearance="@style/Theme.App.Medium"
+                            android:text=" 점/"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:textAppearance="@style/Theme.App.Medium"
+                            android:text="10 점"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_weight="0.7"
+                        android:textAppearance="@style/Theme.App.Medium"
+                        android:text="매칭 횟수"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/textViewAccompanyCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/Theme.App.Medium"
+                            android:text="9"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:textAppearance="@style/Theme.App.Medium"
+                            android:text=" 회"/>
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_weight="0.7"
-                android:textAppearance="@style/Theme.App.Medium"
-                android:text="매칭 횟수"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/textViewAccompanyCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/Theme.App.Medium"
-                    android:text="9"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:textAppearance="@style/Theme.App.Medium"
-                    android:text=" 회"/>
+                    android:text="총" />
+                <TextView
+                    android:id="@+id/textViewMyAccompanyReviewTotalCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/highLightColor"
+                    android:textStyle="bold"
+                    android:textAppearance="@style/Theme.App.Medium"
+                    android:text="9" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/highLightColor"
+                    android:textStyle="bold"
+                    android:textAppearance="@style/Theme.App.Medium"
+                    android:text=" 개" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textAppearance="@style/Theme.App.Medium"
+                    android:text="의 동행 후기가 있습니다" />
+
             </LinearLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewMyAccount"
+                android:layout_marginTop="10dp"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textAppearance="@style/Theme.App.Medium"
-            android:text="총" />
-        <TextView
-            android:id="@+id/textViewMyAccompanyReviewTotalCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/highLightColor"
-            android:textStyle="bold"
-            android:textAppearance="@style/Theme.App.Medium"
-            android:text="9" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/highLightColor"
-            android:textStyle="bold"
-            android:textAppearance="@style/Theme.App.Medium"
-            android:text=" 개" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textAppearance="@style/Theme.App.Medium"
-            android:text="의 동행 후기가 있습니다" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewMyAccount"
-        android:layout_marginTop="10dp"
-        android:padding="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 
 </LinearLayout>

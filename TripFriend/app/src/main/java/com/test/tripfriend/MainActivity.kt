@@ -20,7 +20,10 @@ import com.test.tripfriend.ui.myinfo.ModifyMyInfoFragment
 import com.test.tripfriend.ui.myinfo.MyAccompanyInfoFragment
 import com.test.tripfriend.ui.myinfo.MyAppSettingFragment
 import com.test.tripfriend.ui.myinfo.MyInfoMainFragment
+import com.test.tripfriend.ui.trip.ModifyPostFragment
 import com.test.tripfriend.ui.trip.NotificationFragment
+import com.test.tripfriend.ui.trip.ReadPostFragment
+import com.test.tripfriend.ui.trip.ReviewFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
 import kotlin.concurrent.thread
 
@@ -49,6 +52,9 @@ class MainActivity : AppCompatActivity() {
         val ACCOMPANY_REGISTER_FRAGMENT1 = "AccompanyRegisterFragment1"
         val PERSONAL_CHAT_ROOM_FRAGMENT = "PersonalChatRoomFragment"
         val GROUP_CHAT_ROOM_FRAGMENT = "GroupChatRoomFragment"
+        val READ_POST_FRAGMENT = "ReadPostFragment"
+        val MODFY_POST_FRAGMENT = "ModifyPostFragment"
+        val REVIEW_FRAGMENT = "ReviewFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,6 +129,9 @@ class MainActivity : AppCompatActivity() {
             MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()
             PERSONAL_CHAT_ROOM_FRAGMENT -> PersonalChatRoomFragment()
             GROUP_CHAT_ROOM_FRAGMENT -> GroupChatRoomFragment()
+            READ_POST_FRAGMENT -> ReadPostFragment()
+            MODFY_POST_FRAGMENT ->ModifyPostFragment()
+            REVIEW_FRAGMENT -> ReviewFragment()
 
             else -> Fragment()
         }

@@ -2,6 +2,7 @@ package com.test.tripfriend.ui.chatting
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.tripfriend.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentPersonalChatRoomBinding
@@ -57,16 +60,13 @@ class PersonalChatRoomFragment : Fragment() {
                 buttonPersonalChatRoomExit.run {
                     setOnClickListener {
                         //다이얼로그 띄움
-                        val builder = AlertDialog.Builder(
-                            mainActivity
-                        )
-                        builder.run {
+                        MaterialAlertDialogBuilder(mainActivity,R.style.DialogTheme).run {
                             setTitle("채팅방 나가기")
                             setMessage("나가기를 하면 대화내용이 모두 삭제되고 채팅 목록에서도 삭제됩니다.")
+                            setNegativeButton("취소", null)
                             setPositiveButton("나가기") { dialogInterface: DialogInterface, i: Int ->
 
                             }
-                            setNegativeButton("취소", null)
                             show()
                         }
                     }
