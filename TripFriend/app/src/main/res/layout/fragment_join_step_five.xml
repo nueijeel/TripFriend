@@ -1,14 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".ui.user.JoinStepFiveFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbarJoinStepFive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/Theme.TripFriend.Toolbar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:text="회원가입"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/soft_gray" />
+
+    <com.kofigyan.stateprogressbar.StateProgressBar
+        android:id="@+id/progressBarJoinStepFive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:spb_animateToCurrentProgressState="true"
+        app:spb_checkStateCompleted="true"
+        app:spb_currentStateNumber="five"
+        app:spb_maxStateNumber="five"
+        app:spb_stateBackgroundColor="@color/mainColor"
+        app:spb_stateForegroundColor="@color/highLightColor"
+        app:spb_stateLineThickness="7dp"
+        app:spb_stateNumberBackgroundColor="@color/white"
+        app:spb_stateNumberForegroundColor="@color/white"
+        app:spb_stateSize="40dp"
+        app:spb_stateTextSize="20dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_gravity="center">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/textViewJoinStepFive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:text="MBTI를 선택해주세요"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_size_1"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewJoinStepFive">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupJoinStepFiveMBTIChips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:chipSpacingHorizontal="20dp"
+                app:chipSpacingVertical="10dp"
+                app:singleLine="false"
+                app:singleSelection="true"
+                tools:layout_editor_absoluteY="67dp">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveENFP"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="ENFP"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveENFJ"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="ENFJ"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveENTP"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="ENTP"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveENTJ"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="ENTJ"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveESFP"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="ESFP"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveESFJ"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="ESFJ"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveESTP"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="ESTP"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveESTJ"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="ESTJ"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveINFP"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="INFP"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveINFJ"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="INFJ"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveINTP"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="INTP"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveINTJ"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="INTJ"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveISFP"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="ISFP"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveISFJ"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="ISFJ"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveISTP"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="ISTP"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveISTJ"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="3dp"
+                    android:text="ISTJ"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJoinStepFiveNon"
+                    style="@style/custom_suggestion_chip_style"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="100dp"
+                    android:elevation="3dp"
+                    android:text="모름"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/custom_suggestion_chip_style"
+                    android:textSize="@dimen/text_size_2" />
+
+            </com.google.android.material.chip.ChipGroup>
+        </FrameLayout>
+
+
+        <Button
+            android:id="@+id/buttonJoinStepFiveSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:text="회원가입 완료"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
