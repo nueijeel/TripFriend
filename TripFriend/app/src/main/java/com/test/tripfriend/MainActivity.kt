@@ -1,27 +1,40 @@
 package com.test.tripfriend
 
 import android.os.Bundle
-import android.util.Log
+import android.os.SystemClock
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.test.tripfriend.databinding.ActivityMainBinding
+import com.test.tripfriend.ui.accompany.AccompanyRegisterFragment1
 import com.test.tripfriend.ui.chatting.ChattingMainFragment
+import com.test.tripfriend.ui.home.HomeListFragment
 import com.test.tripfriend.ui.home.HomeMainFragment
+import com.test.tripfriend.ui.home.HomeMapFragment
 import com.test.tripfriend.ui.myinfo.MyInfoMainFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
-
     lateinit var activityMainBinding: ActivityMainBinding
+
+    // 키보드 관리자
+    lateinit var inputMethodManager: InputMethodManager
+
     var selectMenu = 0
 
     companion object {
         val HOME_MAIN_FRAGMENT = "HomeMainFragment"
+        val HOME_LIST_FRAGMENT = "HomeListFragment"
+        val HOME_MAP_FRAGMENT = "HomeMapFragment"
         val TRIP_MAIN_FRAGMENT = "TripMainFragment"
         val CHATTING_MAIN_FRAGMENT = "ChattingMainFragment"
         val MYINFO_MAIN_FRAGMENT = "MyInfoMainFragment"
+        val ACCOMPANYREGISTERFRAGMENT1 = "AccompanyRegisterFragment1"
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +85,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     // 지정한 Fragment를 보여주는 메서드
@@ -83,9 +95,12 @@ class MainActivity : AppCompatActivity() {
         // 새로운 Fragment를 담을 변수
         var newFragment = when (name) {
             HOME_MAIN_FRAGMENT -> HomeMainFragment()
+            HOME_LIST_FRAGMENT -> HomeListFragment()
+            HOME_MAP_FRAGMENT -> HomeMapFragment()
             TRIP_MAIN_FRAGMENT -> TripMainFragment()
             CHATTING_MAIN_FRAGMENT -> ChattingMainFragment()
             MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()
+            ACCOMPANYREGISTERFRAGMENT1 -> AccompanyRegisterFragment1()
 
             else -> Fragment()
         }
@@ -93,7 +108,6 @@ class MainActivity : AppCompatActivity() {
         newFragment.arguments = bundle
 
         if (newFragment != null) {
-
             // Fragment를 교체한다.
             fragmentTransaction.replace(R.id.fragmentContainerMain, newFragment)
 
@@ -115,5 +129,22 @@ class MainActivity : AppCompatActivity() {
     // Fragment를 BackStack에서 제거한다.
     fun removeFragment(name: String) {
         supportFragmentManager.popBackStack(name, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    // 키보드를 올려주는 메서드
+    fun showSoftInput(view: View, delay:Long){
+        view.requestFocus()
+        thread {
+            SystemClock.sleep(delay)
+            inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+        }
+    }
+
+    // 키보드를 내려주는 메서드
+    fun hideSoftInput(){
+        if(currentFocus != null){
+
+            inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        }
     }
 }
