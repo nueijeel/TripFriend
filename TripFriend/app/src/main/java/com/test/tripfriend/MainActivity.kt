@@ -11,7 +11,9 @@ import com.test.tripfriend.ui.chatting.ChattingMainFragment
 import com.test.tripfriend.ui.chatting.GroupChatRoomFragment
 import com.test.tripfriend.ui.chatting.PersonalChatRoomFragment
 import com.test.tripfriend.ui.home.HomeMainFragment
+import com.test.tripfriend.ui.myinfo.ModifyMyInfoFragment
 import com.test.tripfriend.ui.myinfo.MyAccompanyInfoFragment
+import com.test.tripfriend.ui.myinfo.MyAppSettingFragment
 import com.test.tripfriend.ui.myinfo.MyInfoMainFragment
 import com.test.tripfriend.ui.trip.NotificationFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
@@ -29,6 +31,8 @@ class MainActivity : AppCompatActivity() {
         val NOTIFICATION_FRAGMENT = "NotificationFragment"
         val MY_INFO_MAIN_FRAGMENT = "MyInfoMainFragment"
         val MY_ACCOMPANY_INFO_FRAGMENT="MyAccompanyInfoFragment"
+        val MY_APP_SETTING_FRAGMENT="MyAppSettingFragment"
+        val MODIFY_MY_INFO_FRAGMENT="ModifyMyInfoFragment"
         val PERSONAL_CHAT_ROOM_FRAGMENT = "PersonalChatRoomFragment"
         val GROUP_CHAT_ROOM_FRAGMENT = "GroupChatRoomFragment"
     }
@@ -71,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                         //내정보 클릭
                         R.id.navigationMyInfo -> {
                             selectMenu = it.itemId
-                            replaceFragment(MYINFO_MAIN_FRAGMENT, false, true, null)
+                            replaceFragment(MY_INFO_MAIN_FRAGMENT, false, true, null)
                         }
                         else -> {
                             replaceFragment(HOME_MAIN_FRAGMENT, false, true, null)
@@ -98,6 +102,8 @@ class MainActivity : AppCompatActivity() {
             NOTIFICATION_FRAGMENT -> NotificationFragment()
             MY_INFO_MAIN_FRAGMENT -> MyInfoMainFragment()
             MY_ACCOMPANY_INFO_FRAGMENT->MyAccompanyInfoFragment()
+            MY_APP_SETTING_FRAGMENT->MyAppSettingFragment()
+            MODIFY_MY_INFO_FRAGMENT->ModifyMyInfoFragment()
             MYINFO_MAIN_FRAGMENT -> MyInfoMainFragment()
             PERSONAL_CHAT_ROOM_FRAGMENT -> PersonalChatRoomFragment()
             GROUP_CHAT_ROOM_FRAGMENT -> GroupChatRoomFragment()

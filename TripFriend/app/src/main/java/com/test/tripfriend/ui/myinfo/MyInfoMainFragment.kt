@@ -26,6 +26,8 @@ class MyInfoMainFragment : Fragment() {
             myInfoToolbar.run {
                 setOnMenuItemClickListener {
                     //톱니 바퀴 클릭시 앱 설정 창으로 이동
+                    mainActivity.replaceFragment(MainActivity.MY_APP_SETTING_FRAGMENT,true,false,null)
+                    mainActivity.activityMainBinding.bottomNavigationViewMain.visibility=View.GONE
                     true
                 }
             }
@@ -33,8 +35,10 @@ class MyInfoMainFragment : Fragment() {
             //자세히 보기 클릭 시
             buttonToDetailFriendSpeed.setOnClickListener {
                 mainActivity.replaceFragment(MainActivity.MY_ACCOMPANY_INFO_FRAGMENT,true,false,null)
+                mainActivity.activityMainBinding.bottomNavigationViewMain.visibility=View.GONE
             }
 
+            //내 친구 속도 수치를 textView로 보여주기 위한 작업(프로그래스 thumb를 따라다님)
             seekbarFriendSpeed.setOnSeekBarChangeListener(object:OnSeekBarChangeListener{
                 override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                     val padding=seekbarFriendSpeed.paddingLeft+seekbarFriendSpeed.paddingRight
