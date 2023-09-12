@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".ui.myinfo.MyAppSettingFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/appSettingToolbar"
+        style="@style/Theme.TripFriend.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:text="설정"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/soft_gray" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="알림 설정"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:textAppearance="@style/Theme.App.Medium"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="채팅 알림 수신 설정"
+            android:textAppearance="@style/Theme.App.Medium"/>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switchChattingNotification"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/Widget.App.Switch"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="20dp"
+            android:checked="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="푸시 알림 수신 설정"
+            android:textAppearance="@style/Theme.App.Medium"/>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switchPushNotification"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/Widget.App.Switch"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="20dp"
+            android:checked="true"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/soft_gray" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="계정 설정"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:textAppearance="@style/Theme.App.Medium"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/buttonChangeMyInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="> 계정 정보 수정하기"
+            android:textAppearance="@style/Theme.App.Medium"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/soft_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/buttonLogOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="#B4B4B4"
+            android:text="로그아웃"
+            android:textAppearance="@style/Theme.App.Medium"/>
+        <Space
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/buttonSignOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="회원탈퇴"
+            android:textColor="#B4B4B4"
+            android:textAppearance="@style/Theme.App.Medium"/>
+    </LinearLayout>
+</LinearLayout>
