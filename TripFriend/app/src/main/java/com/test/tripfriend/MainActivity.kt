@@ -25,6 +25,8 @@ import com.test.tripfriend.ui.trip.TripMainFragment
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
+    var selectedTabPosition:Int = 0
+
     lateinit var activityMainBinding: ActivityMainBinding
 
     // 키보드 관리자

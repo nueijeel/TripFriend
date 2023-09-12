@@ -45,7 +45,7 @@ class MyAccompanyInfoFragment : Fragment() {
                 }
             }
 
-            //내 친구 속도 수치를 textView로 보여주기 위한 작업(프로그래스 thumb를 따라다님)
+            //내 친구 속도 수치를 textView로 보여주기 위한 작업(프로그래스 thumb를 따라다니도록)
             seekbarFriendSpeed2.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                     val padding=seekbarFriendSpeed2.paddingLeft+seekbarFriendSpeed2.paddingRight
