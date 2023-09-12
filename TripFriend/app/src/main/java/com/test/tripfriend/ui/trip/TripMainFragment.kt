@@ -158,17 +158,21 @@ class TripMainFragment : Fragment() {
                 chipTripMainRowCategory2 = rowTripMainBinding.chipTripMainRowCategory2
                 chipTripMainRowCategory3 = rowTripMainBinding.chipTripMainRowCategory3
                 textViewTripMainRowHashTag = rowTripMainBinding.textViewTripMainRowHashTag
-
             }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripMainViewHolder {
             val rowTripMainBinding = RowTripMainBinding.inflate(layoutInflater)
 
-            rowTripMainBinding.root.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
+            rowTripMainBinding.root.run{
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+               setOnClickListener {
+                    mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT,true,true,null)
+                }
+            }
 
             return TripMainViewHolder(rowTripMainBinding)
         }

@@ -77,23 +77,30 @@
 
                 <Button
                     android:id="@+id/buttonNotificationRowYes"
+                    style="@style/Widget.Material3.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="5dp"
+                    android:fontFamily="@font/font"
                     android:text="수락"
-                    android:textColor="#000000" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
 
                 <Button
                     android:id="@+id/buttonNotificationRowNo"
+                    style="@style/Widget.Material3.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:fontFamily="@font/font"
                     android:text="거절"
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
