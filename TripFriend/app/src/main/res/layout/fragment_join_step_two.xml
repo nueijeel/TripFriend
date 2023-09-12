@@ -82,7 +82,7 @@
             app:boxCornerRadiusTopEnd="5dp"
             app:boxCornerRadiusTopStart="5dp"
             app:boxStrokeColor="@color/highLightColor"
-            app:endIconMode="clear_text"
+            app:endIconMode="password_toggle"
             app:hintTextColor="@color/highLightColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:cursorVisible="true"
                 android:gravity="center_vertical"
-                android:inputType="text|textEmailAddress"
+                android:inputType="text|textPassword"
                 android:paddingBottom="20dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -113,7 +113,7 @@
             app:boxCornerRadiusTopEnd="5dp"
             app:boxCornerRadiusTopStart="5dp"
             app:boxStrokeColor="@color/highLightColor"
-            app:endIconMode="clear_text"
+            app:endIconMode="password_toggle"
             app:hintTextColor="@color/highLightColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -125,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:cursorVisible="true"
                 android:gravity="center_vertical"
-                android:inputType="text|textEmailAddress"
+                android:inputType="text|textPassword"
                 android:paddingBottom="20dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
