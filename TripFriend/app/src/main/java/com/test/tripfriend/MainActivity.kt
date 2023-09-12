@@ -15,6 +15,7 @@ import com.test.tripfriend.ui.trip.NotificationFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
 
 class MainActivity : AppCompatActivity() {
+    var selectedTabPosition:Int = 0
 
     lateinit var activityMainBinding: ActivityMainBinding
     var selectMenu = 0
