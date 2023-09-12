@@ -144,7 +144,7 @@
                 app:boxCornerRadiusTopEnd="5dp"
                 app:boxCornerRadiusTopStart="5dp"
                 app:boxStrokeColor="@color/highLightColor"
-                app:endIconMode="clear_text"
+                app:endIconMode="password_toggle"
                 app:hintTextColor="@color/highLightColor">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -172,7 +172,7 @@
                 app:boxCornerRadiusTopEnd="5dp"
                 app:boxCornerRadiusTopStart="5dp"
                 app:boxStrokeColor="@color/highLightColor"
-                app:endIconMode="clear_text"
+                app:endIconMode="password_toggle"
                 app:hintTextColor="@color/highLightColor">
 
                 <com.google.android.material.textfield.TextInputEditText
