@@ -37,7 +37,10 @@ class HomeMainFragment : Fragment() {
         fragmentHomeMainBinding = FragmentHomeMainBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.VISIBLE
+
         fragmentHomeMainBinding.run {
+
             // 스피너
             spinnerHomeMainSearch.run {
                 spinnerClick()
