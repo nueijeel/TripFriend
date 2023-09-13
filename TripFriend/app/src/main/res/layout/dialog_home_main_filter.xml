@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
@@ -268,21 +267,6 @@
                         android:textSize="@dimen/text_size_2"
                         android:textStyle="bold" />
 
-<!--                    <Button-->
-<!--                        android:id="@+id/button"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:text="Button" />-->
-
-<!--                    <DatePicker-->
-<!--                        android:id="@+id/datePicker"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_centerHorizontal="true"-->
-<!--                        android:layout_marginTop="40dp"-->
-<!--                        android:calendarViewShown="false"-->
-<!--                        android:datePickerMode="calendar" />-->
                     <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
                         android:id="@+id/calendarTripMain"
                         android:layout_width="wrap_content"

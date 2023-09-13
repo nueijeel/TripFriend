@@ -49,7 +49,7 @@ class HomeListFragment : Fragment() {
                 textViewHomeMainListRowHashTag = rowHomeListBinding.textViewHomeMainListRowHashTag
 
                 rowHomeListBinding.root.setOnClickListener {
-                    mainActivity.replaceFragment(MainActivity.TRIP_MAIN_FRAGMENT, true, true, null)
+                    mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, null)
 
                 }
             }

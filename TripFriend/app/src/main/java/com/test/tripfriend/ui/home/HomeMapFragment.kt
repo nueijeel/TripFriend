@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.test.tripfriend.MainActivity
-import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentHomeMapBinding
 
 class HomeMapFragment : Fragment() {
