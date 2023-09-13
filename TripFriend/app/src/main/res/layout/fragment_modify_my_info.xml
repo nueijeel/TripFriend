@@ -85,15 +85,16 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="40dp">
+                android:layout_marginLeft="40dp"
+                android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/buttonNickNameCheck"
-                    style="@style/Widget.Material3.Button.TextButton.Icon"
-                    android:layout_width="110dp"
-                    android:layout_height="40dp"
-                    android:backgroundTint="@color/subColor"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="left"
+                    app:strokeColor="@color/subColor"
                     android:text="중복체크"
                     android:textAppearance="@style/Theme.App.Small"
                     android:textColor="@color/black"
@@ -103,18 +104,21 @@
                     android:id="@+id/textViewWarningNickName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:layout_marginLeft="10dp"
                     android:layout_gravity="center_vertical"
-                    android:text="⊗ 이미 존재하는 닉네임입니다"/>
+                    android:layout_marginLeft="10dp"
+                    android:text="⊗ 이미 존재하는 닉네임입니다"
+                    android:textColor="#FF0000"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/textViewCompleteCheck"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:visibility="gone"
                     android:layout_marginLeft="10dp"
-                    android:text="◎ 사용 가능한 닉네임입니다"/>
+                    android:text="◎ 사용 가능한 닉네임입니다"
+                    android:textColor="@color/highLightColor"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -187,17 +191,17 @@
             <Button
                 android:id="@+id/buttonModifyMyInfo"
                 style="@style/Widget.Material3.Button"
-                android:layout_width="330dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="25dp"
                 android:backgroundTint="@color/subColor"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:elevation="10dp"
                 android:text="저장하기"
                 android:textColor="@color/black"
                 android:textSize="15dp" />
-
-
 
 
         </LinearLayout>

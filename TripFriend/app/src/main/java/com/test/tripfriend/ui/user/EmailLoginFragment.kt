@@ -31,7 +31,6 @@ class EmailLoginFragment : Fragment() {
             materialToolbarEmailLogin.run {
 
                 setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
-                setNavigationIconTint(Color.BLACK)
                 setNavigationOnClickListener {
                     loginMainActivity.removeFragment(LoginMainActivity.EMAIL_LOGIN_FRAGMENT)
                 }
