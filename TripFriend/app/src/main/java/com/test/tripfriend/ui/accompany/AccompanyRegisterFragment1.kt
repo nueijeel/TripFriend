@@ -19,7 +19,15 @@ class AccompanyRegisterFragment1 : Fragment() {
         fragmentAccompanyRegisterFragment1 = FragmentAccompanyRegister1Binding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
+
         fragmentAccompanyRegisterFragment1.run {
+            materialToolbarRegister1.run {
+                setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
+                setNavigationOnClickListener {
+                    mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT1)
+                }
+            }
             buttonAccompanyRegister1ToNextView.setOnClickListener {
                 mainActivity.replaceFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT2, true, true, null)
             }
