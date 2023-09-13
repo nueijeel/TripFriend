@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".ui.accompany.AccompanyRegisterFragment2">
@@ -107,6 +108,17 @@
                         android:text="날짜를 선택해주세요."
                         android:textColor="#000000" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+                    android:id="@+id/calendarRegister2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    custom:disable_date_color="#ABABAB"
+                    custom:range_color="@color/mainColor"
+                    custom:selected_date_circle_color="@color/highLightColor"
+                    custom:title_color="@color/black"></com.archit.calendardaterangepicker.customviews.DateRangeCalendarView>
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayoutRegister2NOP"
