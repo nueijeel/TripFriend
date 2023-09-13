@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
@@ -39,7 +40,9 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:text="초기화"
+                    android:textColor="#000000"
                     app:icon="@drawable/restart_alt_24px"
+                    app:iconTint="#000000"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -225,35 +228,44 @@
                             android:layout_height="match_parent"
                             android:layout_marginLeft="10dp">
 
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/chipGender1"
-                                style="@style/custom_suggestion_chip_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="10dp"
-                                android:text="남자"
-                                android:textColorHighlight="@color/highLightColor"
-                                android:textSize="@dimen/text_size_3"
-                                app:chipIcon="@drawable/man_24px"
-                                app:chipIconEnabled="true"
-                                app:chipStrokeColor="@color/highLightColor"
-                                app:chipStrokeWidth="1dp"
-                                app:ensureMinTouchTargetSize="true" />
+                            <com.google.android.material.chip.ChipGroup
+                                android:id="@+id/chipGroupDialogFilterGender"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:singleSelection="true"
+                                tools:singleSelection="false">
 
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/chipGender2"
-                                style="@style/custom_suggestion_chip_style"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="10dp"
-                                android:text="여자"
-                                android:textColorHighlight="@color/highLightColor"
-                                android:textSize="@dimen/text_size_3"
-                                app:chipIcon="@drawable/woman_24px"
-                                app:chipIconEnabled="true"
-                                app:chipStrokeColor="@color/highLightColor"
-                                app:chipStrokeWidth="1dp"
-                                app:ensureMinTouchTargetSize="true" />
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/chipDialogFilterGender1"
+                                    style="@style/custom_suggestion_chip_style"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="10dp"
+                                    android:text="남자"
+                                    android:textColorHighlight="@color/highLightColor"
+                                    android:textSize="@dimen/text_size_3"
+                                    app:chipIcon="@drawable/man_24px"
+                                    app:chipIconEnabled="true"
+                                    app:chipStrokeColor="@color/highLightColor"
+                                    app:chipStrokeWidth="1dp"
+                                    app:ensureMinTouchTargetSize="true" />
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/chipDialogFilterGender2"
+                                    style="@style/custom_suggestion_chip_style"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="10dp"
+                                    android:text="여자"
+                                    android:textColorHighlight="@color/highLightColor"
+                                    android:textSize="@dimen/text_size_3"
+                                    app:chipIcon="@drawable/woman_24px"
+                                    app:chipIconEnabled="true"
+                                    app:chipStrokeColor="@color/highLightColor"
+                                    app:chipStrokeWidth="1dp"
+                                    app:ensureMinTouchTargetSize="true" />
+                            </com.google.android.material.chip.ChipGroup>
+
                         </LinearLayout>
                     </HorizontalScrollView>
 
