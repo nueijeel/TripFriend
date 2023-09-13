@@ -297,17 +297,18 @@
 
             <Button
                 android:id="@+id/buttonAccompanyRegister3ToSubmit"
+                style="@style/Widget.Material3.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:background="@drawable/border2"
                 android:paddingLeft="30dp"
                 android:paddingTop="8dp"
                 android:paddingRight="30dp"
                 android:paddingBottom="8dp"
                 android:text="완료하기"
-                android:textSize="@dimen/text_size_2" />
+                android:textSize="@dimen/text_size_2"
+                tools:fontFamily="@font/font" />
         </LinearLayout>
     </ScrollView>
 
