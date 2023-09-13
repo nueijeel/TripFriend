@@ -26,20 +26,24 @@ class JoinStepFourFragment : Fragment() {
         fragmentJoinStepFourBinding.run {
             materialToolbarJoinStepFour.run {
                 setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
-                setNavigationIconTint(Color.BLACK)
                 setNavigationOnClickListener {
-                    loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_TWO_FRAGMENT)
+                    loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT)
                 }
             }
 
             progressBarJoinStepFour.run {
                 setOnStateItemClickListener { stateProgressBar, stateItem, stateNumber, isCurrentState ->
                     when(stateNumber){
-                        1-> {}
-                        2-> {}
+                        1-> {
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT)
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_THREE_FRAGMENT)
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_TWO_FRAGMENT)
+                        }
+                        2-> {
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT)
+                            loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_THREE_FRAGMENT)
+                        }
                         3-> { loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT) }
-                        4-> {}
-                        5-> { loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_FIVE_FRAGMENT, true, true, null) }
                     }
                 }
             }

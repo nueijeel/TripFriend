@@ -9,11 +9,10 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/materialToolbarEmailLogin"
+        style="@style/Theme.TripFriend.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/Theme.TripFriend.Toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
