@@ -119,6 +119,7 @@
                         android:textSize="10sp"
                         app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/festival_20px"
+                        app:chipIconTint="@color/highLightColor"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp"
                         app:rippleColor="@null" />
@@ -148,6 +149,7 @@
                         android:textSize="10sp"
                         app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/shopping_bag_20px"
+                        app:chipIconTint="@color/highLightColor"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp"
                         app:chipSurfaceColor="@null"
@@ -178,6 +180,7 @@
                         android:textSize="10sp"
                         app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/activity_20px"
+                        app:chipIconTint="@color/highLightColor"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp"
                         app:rippleColor="@null" />
