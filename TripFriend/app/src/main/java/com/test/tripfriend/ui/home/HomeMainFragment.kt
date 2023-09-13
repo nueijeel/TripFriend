@@ -11,7 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.archit.calendardaterangepicker.customviews.CalendarListener
+import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.test.tripfriend.MainActivity
 import com.test.tripfriend.R
@@ -24,6 +26,11 @@ import java.util.Locale
 class HomeMainFragment : Fragment() {
     lateinit var fragmentHomeMainBinding: FragmentHomeMainBinding
     lateinit var mainActivity: MainActivity
+
+    // 최대 선택 가능 Chip 갯수
+    val maxSelectableChips  = 3
+    // 칩 카운트 변수
+    var chipCount = 0
 
     val spinnerList = arrayOf(
         "제목+내용", "해시태그"
@@ -54,25 +61,39 @@ class HomeMainFragment : Fragment() {
 
                         setView(dialogHomeMainFilterBinding.root)
 
+                        dialogHomeMainFilterBinding.run {
+                            chipMax(chipDialogFilterCategory1)
+                            chipMax(chipDialogFilterCategory2)
+                            chipMax(chipDialogFilterCategory3)
+                            chipMax(chipDialogFilterCategory4)
+                            chipMax(chipDialogFilterCategory5)
+                            chipMax(chipDialogFilterCategory6)
+                            chipMax(chipDialogFilterCategory7)
+                            chipMax(chipDialogFilterCategory8)
+                            chipMax(chipDialogFilterCategory9)
+
+                            // 데이트 피커
+                            dialogHomeMainFilterBinding.calendarTripMain.setCalendarListener(object :
+                                CalendarListener {
+                                override fun onFirstDateSelected(startDate: Calendar) {
+                                    val date = startDate.time
+                                    val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                                    Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
+                                }
+
+                                override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
+                                    val startDate = startDate.time
+                                    val endDate = endDate.time
+                                    val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                                    Toast.makeText(mainActivity, "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(endDate), Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                        }
+
+
+
                         setNegativeButton("취소", null)
                         setPositiveButton("적용", null)
-
-                        // 데이트 피커
-                        dialogHomeMainFilterBinding.calendarTripMain.setCalendarListener(object :
-                            CalendarListener {
-                            override fun onFirstDateSelected(startDate: Calendar) {
-                                val date = startDate.time
-                                val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                                Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
-                            }
-
-                            override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
-                                val startDate = startDate.time
-                                val endDate = endDate.time
-                                val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                                Toast.makeText(mainActivity, "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(endDate), Toast.LENGTH_SHORT).show()
-                            }
-                        })
                     }
 
                     builder.show()
@@ -101,6 +122,22 @@ class HomeMainFragment : Fragment() {
         }
 
         return fragmentHomeMainBinding.root
+    }
+
+    // 최대 3개 이상의 칩을 선택 못하게 하는 함수
+    fun chipMax(chipId: Chip) {
+        chipId.setOnClickListener {
+            if(chipId.isChecked) {
+                if(chipCount >= maxSelectableChips) {
+                    chipId.isChecked = false
+                    Snackbar.make(fragmentHomeMainBinding.root, "여행 카테고리는 최대 3개 선택 가능합니다.", Snackbar.LENGTH_SHORT).show()
+                } else{
+                    chipCount++
+                }
+            } else {
+                chipCount--
+            }
+        }
     }
 
     // 스피너 기능

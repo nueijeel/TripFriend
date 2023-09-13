@@ -28,6 +28,7 @@ class AccompanyRegisterFragment1 : Fragment() {
                     mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT1)
                 }
             }
+
             buttonAccompanyRegister1ToNextView.setOnClickListener {
                 mainActivity.replaceFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT2, true, true, null)
             }
