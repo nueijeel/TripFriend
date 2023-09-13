@@ -2,15 +2,14 @@ package com.test.tripfriend.ui.chatting
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
+import android.util.DisplayMetrics
+import android.view.Display
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.core.view.isEmpty
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -19,10 +18,13 @@ import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentPersonalChatRoomBinding
 import com.test.tripfriend.databinding.RowChatRoomUserBinding
 
+
 class PersonalChatRoomFragment : Fragment() {
 
     lateinit var mainActivity: MainActivity
     lateinit var fragmentPersonalChatRoomBinding: FragmentPersonalChatRoomBinding
+
+    lateinit var displayMetrics: DisplayMetrics
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +36,9 @@ class PersonalChatRoomFragment : Fragment() {
 
         //하단 nav bar 안보이게
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
+
+        // 기기의 화면 너비 구하기
+        displayMetrics = resources.displayMetrics
 
         fragmentPersonalChatRoomBinding.run {
             materialPersonalChatRoomToolbar.run {
@@ -72,6 +77,10 @@ class PersonalChatRoomFragment : Fragment() {
                     }
                 }
             }
+
+            // 입력창의 최대 높이 설정 (기기 세로 사이즈의 1/3)
+            val oneThirdScreenHeight = displayMetrics.heightPixels / 3
+            textInputEditTextPersonalChatRoomSearch.maxHeight = oneThirdScreenHeight
         }
 
         return fragmentPersonalChatRoomBinding.root
@@ -106,7 +115,12 @@ class PersonalChatRoomFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: PersonalChatRoomViewHolder, position: Int) {
-            holder.textViewRowChatRoomUser.text = "채팅 $position"
+            // 리사이클러뷰 아이템의 최대 너비 설정 (기기 가로 사이즈의 절반)
+            val halfScreenWidth = displayMetrics.widthPixels / 2
+            // 최대 너비 설정
+            holder.textViewRowChatRoomUser.maxWidth = halfScreenWidth
+
+            holder.textViewRowChatRoomUser.text = "opajopsejfopijfiopajoifja oiejfopas jfopopa sjepofija seopfij aseopifj asoiefpj aspoie jfpaos eifapoes jifpoas ejfpoaiesj fpo $position"
         }
     }
 
