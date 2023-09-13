@@ -34,13 +34,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/textViewRowChatRoomOpponent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/message_opponent" />
+            android:background="@drawable/message_opponent"
+            android:maxLength="300"
+            android:text="opajopsejfopijfiopajoifja oiejfopas jfopopa sjepofija seopfij aseopifj asoiefpj aspoie jfpaos eifapoes jifpoas ejfpoaiesj fpo" />
 
         <!--        <TextView-->
         <!--            android:layout_width="wrap_content"-->

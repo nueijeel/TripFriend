@@ -8,11 +8,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="5dp"
+        android:layout_marginHorizontal="10dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/border"
+        android:background="@drawable/border3"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,8 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="개인 채팅방 닉네임"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </LinearLayout>
 
         <LinearLayout
@@ -46,7 +45,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="TextViewTextViewTextViewTextViewTextViewTextView"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/gray" />
 
@@ -54,6 +55,7 @@
                 android:id="@+id/textViewRowPersonalChattingDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:text="09.04"
                 android:textColor="@color/gray" />
         </LinearLayout>

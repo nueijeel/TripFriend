@@ -15,10 +15,10 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/materialGroupChatRoomToolbar"
-            style="@style/Theme.TripFriend.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
             app:menu="@menu/menu_chat_room">
 
             <TextView
@@ -58,7 +58,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_box"
-                    android:inputType="textMultiLine|textNoSuggestions" />
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:maxLength="300" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
