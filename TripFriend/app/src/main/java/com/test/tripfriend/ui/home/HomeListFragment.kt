@@ -5,13 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.test.tripfriend.MainActivity
-import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentHomeListBinding
 import com.test.tripfriend.databinding.RowHomeListBinding
 
@@ -51,6 +48,10 @@ class HomeListFragment : Fragment() {
                 textViewHomeMainListRowLocation = rowHomeListBinding.textViewHomeMainListRowLocation
                 textViewHomeMainListRowHashTag = rowHomeListBinding.textViewHomeMainListRowHashTag
 
+                rowHomeListBinding.root.setOnClickListener {
+                    mainActivity.replaceFragment(MainActivity.TRIP_MAIN_FRAGMENT, true, true, null)
+
+                }
             }
         }
 

@@ -62,11 +62,6 @@ class AccompanyRegisterFragment2 : Fragment() {
             
             // 달력
             textInputLayoutRegister2Date.setOnClickListener {
-//                val datePicker =
-//                    MaterialDatePicker.Builder.datePicker()
-//                        .setTitleText("Select date")
-//                        .build()
-//                datePicker.show()
             }
 
             // 다음 버튼
