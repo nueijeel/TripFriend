@@ -13,14 +13,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.FragmentManager
+import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.bumptech.glide.Glide
-import com.bumptech.glide.manager.SupportRequestManagerFragment
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.test.tripfriend.MainActivity
 import com.test.tripfriend.databinding.FragmentAccompanyRegister2Binding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class AccompanyRegisterFragment2 : Fragment() {
     lateinit var fragmentAccompanyRegisterFragment2: FragmentAccompanyRegister2Binding
@@ -37,6 +39,8 @@ class AccompanyRegisterFragment2 : Fragment() {
         fragmentAccompanyRegisterFragment2 = FragmentAccompanyRegister2Binding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
+
         //앨범 런처 초기화
         albumLauncher = albumSetting(fragmentAccompanyRegisterFragment2.imageViewRegister2)
 
@@ -48,6 +52,7 @@ class AccompanyRegisterFragment2 : Fragment() {
                 }
             }
 
+            // 앨범이미지
             imageViewRegister2.run {
                 setOnClickListener {
                     //앨범 이동
@@ -61,12 +66,23 @@ class AccompanyRegisterFragment2 : Fragment() {
             }
             
             // 달력
-            textInputLayoutRegister2Date.setOnClickListener {
-//                val datePicker =
-//                    MaterialDatePicker.Builder.datePicker()
-//                        .setTitleText("Select date")
-//                        .build()
-//                datePicker.show()
+            textInputLayoutRegister2Date.run {
+                // 데이트 피커
+                fragmentAccompanyRegisterFragment2.calendarRegister2.setCalendarListener(object :
+                    CalendarListener {
+                    override fun onFirstDateSelected(startDate: Calendar) {
+                        val date = startDate.time
+                        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                        Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
+                        val startDate = startDate.time
+                        val endDate = endDate.time
+                        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                        Toast.makeText(mainActivity, "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(endDate), Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
 
             // 다음 버튼

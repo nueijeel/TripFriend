@@ -8,7 +8,7 @@
     tools:context=".ui.accompany.AccompanyRegisterFragment1">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/materialToolbarRegister2"
+        android:id="@+id/materialToolbarRegister1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -23,12 +23,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     </com.google.android.material.appbar.MaterialToolbar>
-
-    <View
-        android:id="@+id/view2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/soft_gray" />
 
     <com.kofigyan.stateprogressbar.StateProgressBar
         android:id="@+id/progressBarAccompanyRegister1"

@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.archit.calendardaterangepicker.customviews.CalendarListener
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.test.tripfriend.MainActivity
@@ -55,22 +54,6 @@ class HomeMainFragment : Fragment() {
                         setNegativeButton("취소", null)
                         setPositiveButton("적용", null)
 
-//                        // 데이트 피커
-//                        dialogHomeMainFilterBinding.button.setOnClickListener {
-//                            val dateRangePicker =
-//                                MaterialDatePicker.Builder.dateRangePicker()
-//                                    .setTitleText("Select dates")
-//                                    .setSelection(
-//                                        Pair(
-//                                            MaterialDatePicker.thisMonthInUtcMilliseconds(),
-//                                            MaterialDatePicker.todayInUtcMilliseconds()
-//                                        )
-//                                    )
-//                                    .build()
-//
-//                            dateRangePicker.show()
-//                        }
-
                         // 데이트 피커
                         dialogHomeMainFilterBinding.calendarTripMain.setCalendarListener(object :
                             CalendarListener {
@@ -87,7 +70,6 @@ class HomeMainFragment : Fragment() {
                                 Toast.makeText(mainActivity, "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(endDate), Toast.LENGTH_SHORT).show()
                             }
                         })
-
                     }
 
                     builder.show()
