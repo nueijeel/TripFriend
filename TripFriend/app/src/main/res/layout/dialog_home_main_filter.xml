@@ -98,7 +98,7 @@
                             android:textColorHighlight="@color/highLightColor"
                             android:textSize="@dimen/text_size_3"
                             app:chipBackgroundColor="#FFFFFF"
-                            app:chipIcon="@drawable/breaktime_20px"
+                            app:chipIcon="@drawable/restaurant_20px"
                             app:chipStrokeColor="@color/highLightColor"
                             app:chipStrokeWidth="1dp" />
 
@@ -113,7 +113,7 @@
                             android:textColorHighlight="@color/highLightColor"
                             android:textSize="@dimen/text_size_3"
                             app:chipBackgroundColor="#FFFFFF"
-                            app:chipIcon="@drawable/forest_20px"
+                            app:chipIcon="@drawable/breaktime_20px"
                             app:chipStrokeColor="@color/highLightColor"
                             app:chipStrokeWidth="1dp" />
 
@@ -203,7 +203,7 @@
                             android:textColorHighlight="@color/highLightColor"
                             android:textSize="@dimen/text_size_3"
                             app:chipBackgroundColor="#FFFFFF"
-                            app:chipIcon="@drawable/activity_20px"
+                            app:chipIcon="@drawable/sports_soccer_20px"
                             app:chipStrokeColor="@color/highLightColor"
                             app:chipStrokeWidth="1dp" />
 

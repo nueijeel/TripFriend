@@ -22,6 +22,8 @@ import com.test.tripfriend.ui.myinfo.ModifyMyInfoFragment
 import com.test.tripfriend.ui.myinfo.MyAccompanyInfoFragment
 import com.test.tripfriend.ui.myinfo.MyAppSettingFragment
 import com.test.tripfriend.ui.myinfo.MyInfoMainFragment
+import com.test.tripfriend.ui.trip.ModifyPost2Fragment
+import com.test.tripfriend.ui.trip.ModifyPost3Fragment
 import com.test.tripfriend.ui.trip.ModifyPostFragment
 import com.test.tripfriend.ui.trip.NotificationFragment
 import com.test.tripfriend.ui.trip.ReadPostFragment
@@ -58,6 +60,8 @@ class MainActivity : AppCompatActivity() {
         val GROUP_CHAT_ROOM_FRAGMENT = "GroupChatRoomFragment"
         val READ_POST_FRAGMENT = "ReadPostFragment"
         val MODFY_POST_FRAGMENT = "ModifyPostFragment"
+        val MODFY_POST2_FRAGMENT = "ModifyPost2Fragment"
+        val MODFY_POST3_FRAGMENT = "ModifyPost3Fragment"
         val REVIEW_FRAGMENT = "ReviewFragment"
     }
 
@@ -137,6 +141,8 @@ class MainActivity : AppCompatActivity() {
             GROUP_CHAT_ROOM_FRAGMENT -> GroupChatRoomFragment()
             READ_POST_FRAGMENT -> ReadPostFragment()
             MODFY_POST_FRAGMENT ->ModifyPostFragment()
+            MODFY_POST2_FRAGMENT -> ModifyPost2Fragment()
+            MODFY_POST3_FRAGMENT -> ModifyPost3Fragment()
             REVIEW_FRAGMENT -> ReviewFragment()
 
             else -> Fragment()
