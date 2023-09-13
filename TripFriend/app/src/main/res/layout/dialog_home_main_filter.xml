@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="15dp">
 
@@ -278,21 +279,30 @@
                         android:textSize="@dimen/text_size_2"
                         android:textStyle="bold" />
 
-                    <Button
-                        android:id="@+id/button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Button" />
+<!--                    <Button-->
+<!--                        android:id="@+id/button"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:text="Button" />-->
 
-                    <DatePicker
-                        android:id="@+id/datePicker"
+<!--                    <DatePicker-->
+<!--                        android:id="@+id/datePicker"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        android:layout_marginTop="40dp"-->
+<!--                        android:calendarViewShown="false"-->
+<!--                        android:datePickerMode="calendar" />-->
+                    <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+                        android:id="@+id/calendarTripMain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="40dp"
-                        android:calendarViewShown="false"
-                        android:datePickerMode="calendar" />
+                        custom:disable_date_color="#ABABAB"
+                        custom:range_color="@color/mainColor"
+                        custom:selected_date_circle_color="@color/highLightColor"
+                        custom:title_color="@color/black">
+                    </com.archit.calendardaterangepicker.customviews.DateRangeCalendarView>
 
                 </LinearLayout>
 
