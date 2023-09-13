@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.google.android.material.snackbar.Snackbar
 import com.test.tripfriend.MainActivity
 import com.test.tripfriend.databinding.FragmentAccompanyRegister3Binding
+import com.test.tripfriend.ui.user.LoginMainActivity
 
 class AccompanyRegisterFragment3 : Fragment() {
     lateinit var fragmentAccompanyRegisterFragment3: FragmentAccompanyRegister3Binding
@@ -21,6 +22,13 @@ class AccompanyRegisterFragment3 : Fragment() {
         mainActivity = activity as MainActivity
 
         fragmentAccompanyRegisterFragment3.run {
+            materialToolbarRegister3.run {
+                setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
+                setNavigationOnClickListener {
+                    mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT3)
+                }
+            }
+
             buttonAccompanyRegister3ToSubmit.setOnClickListener {
                 Snackbar.make(mainActivity.activityMainBinding.root, "등록이 완료되었습니다..", Snackbar.LENGTH_SHORT).show()
 

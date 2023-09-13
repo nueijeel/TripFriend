@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.accompany.AccompanyRegisterFragment3">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/materialToolbarRegister2"
+        android:id="@+id/materialToolbarRegister3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:text="회원가입"
+            android:text="동행하기 등록"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     </com.google.android.material.appbar.MaterialToolbar>
@@ -82,43 +82,43 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipRegister3Category1"
+                        style="@style/custom_suggestion_chip_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="@drawable/chip_selector"
                         android:text="축제"
                         android:textColorHighlight="@color/highLightColor"
                         android:textSize="@dimen/text_size_3"
-                        app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/festival_20px"
+                        app:chipIconEnabled="true"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipRegister3Category2"
+                        style="@style/custom_suggestion_chip_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="#FFFFFF"
                         android:text="맛집 탐방"
                         android:textColorHighlight="@color/highLightColor"
                         android:textSize="@dimen/text_size_3"
-                        app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/breaktime_20px"
+                        app:chipIconEnabled="true"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipRegister3Category3"
+                        style="@style/custom_suggestion_chip_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="#FFFFFF"
                         android:text="휴양"
                         android:textColorHighlight="@color/highLightColor"
                         android:textSize="@dimen/text_size_3"
-                        app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/forest_20px"
+                        app:chipIconEnabled="true"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp" />
 
@@ -133,43 +133,43 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipRegister3Category4"
+                        style="@style/custom_suggestion_chip_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="#FFFFFF"
                         android:text="관광"
                         android:textColorHighlight="@color/highLightColor"
                         android:textSize="@dimen/text_size_3"
-                        app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/tour_20px"
+                        app:chipIconEnabled="true"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipRegister3Category5"
+                        style="@style/custom_suggestion_chip_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="#FFFFFF"
                         android:text="자연"
                         android:textColorHighlight="@color/highLightColor"
                         android:textSize="@dimen/text_size_3"
-                        app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/forest_20px"
+                        app:chipIconEnabled="true"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipRegister3Category6"
+                        style="@style/custom_suggestion_chip_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="#FFFFFF"
                         android:text="쇼핑"
                         android:textColorHighlight="@color/highLightColor"
                         android:textSize="@dimen/text_size_3"
-                        app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/shopping_bag_20px"
+                        app:chipIconEnabled="true"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp" />
 
@@ -184,43 +184,43 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipRegister3Category7"
+                        style="@style/custom_suggestion_chip_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="#FFFFFF"
                         android:text="액티비티"
                         android:textColorHighlight="@color/highLightColor"
                         android:textSize="@dimen/text_size_3"
-                        app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/activity_20px"
+                        app:chipIconEnabled="true"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipRegister3Category8"
+                        style="@style/custom_suggestion_chip_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="#FFFFFF"
                         android:text="사진촬영"
                         android:textColorHighlight="@color/highLightColor"
                         android:textSize="@dimen/text_size_3"
-                        app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/photo_camera_20px"
+                        app:chipIconEnabled="true"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipRegister3Category9"
+                        style="@style/custom_suggestion_chip_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="#FFFFFF"
                         android:text="스포츠"
                         android:textColorHighlight="@color/highLightColor"
                         android:textSize="@dimen/text_size_3"
-                        app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/activity_20px"
+                        app:chipIconEnabled="true"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp" />
 
@@ -252,32 +252,30 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipGender1"
+                        style="@style/custom_suggestion_chip_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="#FFFFFF"
-                        android:clickable="false"
                         android:text="남자"
                         android:textColorHighlight="@color/highLightColor"
                         android:textSize="@dimen/text_size_3"
-                        app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/man_24px"
+                        app:chipIconEnabled="true"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp"
                         app:ensureMinTouchTargetSize="true" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipGender2"
+                        style="@style/custom_suggestion_chip_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="#FFFFFF"
-                        android:clickable="false"
                         android:text="여자"
                         android:textColorHighlight="@color/highLightColor"
                         android:textSize="@dimen/text_size_3"
-                        app:chipBackgroundColor="#FFFFFF"
                         app:chipIcon="@drawable/woman_24px"
+                        app:chipIconEnabled="true"
                         app:chipStrokeColor="@color/highLightColor"
                         app:chipStrokeWidth="1dp"
                         app:ensureMinTouchTargetSize="true" />
@@ -288,15 +286,18 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutRegister3Hashtag"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:counterEnabled="true"
+                app:counterMaxLength="300">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextRegister3Hashtag"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_style"
+                    android:layout_height="200dp"
                     android:hint="해시태그를 작성해주세요."
                     android:inputType="text|textMultiLine"
+                    android:maxHeight="200dp"
+                    android:maxLength="300"
                     android:textSize="@dimen/text_size_2" />
             </com.google.android.material.textfield.TextInputLayout>
 

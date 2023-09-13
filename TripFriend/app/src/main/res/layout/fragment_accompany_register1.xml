@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:text="회원가입"
+            android:text="동행하기 등록"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     </com.google.android.material.appbar.MaterialToolbar>
