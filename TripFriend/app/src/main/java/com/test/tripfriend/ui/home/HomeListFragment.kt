@@ -74,7 +74,7 @@ class HomeListFragment : Fragment() {
             holder.textViewHomeMainListDate.text = "2023.09.29 ~ 2023.09.30"
             holder.textViewHomeMainListRowNOP.text = "4명"
             holder.textViewHomeMainListRowLocation.text = "부산"
-            holder.textViewHomeMainListRowHashTag.text = "#식도락"
+            holder.textViewHomeMainListRowHashTag.text = "#식도락 #해운대 #해수욕장 #밀면 #암소고기 #해안열차 #부산 #맛집탐방 #바다 #놀러가자 #뿌엥"
         }
     }
 }
