@@ -37,7 +37,7 @@ class AccompanyRegisterFragment3 : Fragment() {
                 mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT2)
                 mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT1)
 
-                mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, false, true, null)
+                mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, null)
 
             }
         }
