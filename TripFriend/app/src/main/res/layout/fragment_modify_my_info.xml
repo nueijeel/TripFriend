@@ -128,6 +128,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="30dp"
+                android:text="MBTI"
+                android:textAppearance="@style/Theme.App.Medium"
+                android:textStyle="bold" />
+
+
+            <Spinner
+                android:id="@+id/spinnerMbti"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="10dp"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
                 android:text="비밀번호"
                 android:textAppearance="@style/Theme.App.Medium"
                 android:textStyle="bold" />
@@ -195,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="25dp"
-                android:backgroundTint="@color/subColor"
+                android:backgroundTint="@color/mainColor"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:elevation="10dp"

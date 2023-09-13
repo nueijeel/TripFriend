@@ -2,6 +2,7 @@ package com.test.tripfriend.ui.myinfo
 
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -31,6 +32,7 @@ class MyAppSettingFragment : Fragment() {
 
             appSettingToolbar.run {
                 setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
+                setNavigationIconTint(Color.BLACK)
                 //툴바 뒤로가기
                 setNavigationOnClickListener {
                     mainActivity.removeFragment(MainActivity.MY_APP_SETTING_FRAGMENT)

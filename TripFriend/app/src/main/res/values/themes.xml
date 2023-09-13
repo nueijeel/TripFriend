@@ -55,7 +55,7 @@
 
     <!-- 바텀 네비게이션 클릭 시 아이콘 주변에 색상 변경-->
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/subColor</item>
+        <item name="android:color">@color/mainColor</item>
     </style>
 
     <!--    &lt;!&ndash;다이얼로그 디자인&ndash;&gt;-->

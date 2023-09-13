@@ -1,6 +1,7 @@
 package com.test.tripfriend.ui.myinfo
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -38,6 +39,7 @@ class MyAccompanyInfoFragment : Fragment() {
 
             myAccompanyInfoToolbar.run {
                 setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
+                setNavigationIconTint(Color.BLACK)
                 //툴바 뒤로가기
                 setNavigationOnClickListener {
                     mainActivity.removeFragment(MainActivity.MY_ACCOMPANY_INFO_FRAGMENT)

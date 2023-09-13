@@ -1,10 +1,13 @@
 package com.test.tripfriend.ui.myinfo
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import com.test.tripfriend.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentModifyMyInfoBinding
@@ -24,11 +27,17 @@ class ModifyMyInfoFragment : Fragment() {
         fragmentModifyMyInfoBinding.run {
 
             toolbarModifyMyInfo.run {
-                setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
+                setNavigationIcon(R.drawable.arrow_back_24px)
+                setNavigationIconTint(Color.BLACK)
                 //툴바 뒤로가기
                 setNavigationOnClickListener {
                     mainActivity.removeFragment(MainActivity.MODIFY_MY_INFO_FRAGMENT)
                 }
+            }
+            spinnerMbti.run {
+                val mbti = resources.getStringArray(R.array.spinner_mbti_list)
+                val spinnerAdapter = ArrayAdapter(mainActivity,R.layout.spinner_row, mbti)
+                adapter = spinnerAdapter
             }
 
 
@@ -53,6 +62,4 @@ class ModifyMyInfoFragment : Fragment() {
 
         return fragmentModifyMyInfoBinding.root
     }
-
-
 }
