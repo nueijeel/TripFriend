@@ -2,4 +2,27 @@
     <string name="app_name">TripFriend</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="cdrp_mon">월</string>
+    <string name="cdrp_tue">화</string>
+    <string name="cdrp_wed">수</string>
+    <string name="cdrp_thu">목</string>
+    <string name="cdrp_fri">금</string>
+    <string name="cdrp_sat">토</string>
+    <string name="cdrp_sun">일</string>
+
+    <string-array name="week_sun_sat">
+        <item>@string/cdrp_sun</item>
+        <item>@string/cdrp_mon</item>
+        <item>@string/cdrp_tue</item>
+        <item>@string/cdrp_wed</item>
+        <item>@string/cdrp_thu</item>
+        <item>@string/cdrp_fri</item>
+        <item>@string/cdrp_sat</item>
+    </string-array>
+
+    <string name="cancel">취소</string>
+    <string name="done">완료</string>
+    <string name="title_time_picker">날짜 선택</string>
+    <string name="select_time">날짜 선택</string>
 </resources>
