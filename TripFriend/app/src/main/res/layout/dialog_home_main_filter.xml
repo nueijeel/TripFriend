@@ -73,7 +73,7 @@
                         android:layout_marginLeft="10dp">
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipTripMainRowCategory1"
+                            android:id="@+id/chipDialogFilterCategory1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
@@ -88,7 +88,7 @@
                             app:chipStrokeWidth="1dp" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipTripMainRowCategory2"
+                            android:id="@+id/chipDialogFilterCategory2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
@@ -103,7 +103,7 @@
                             app:chipStrokeWidth="1dp" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipTripMainRowCategory3"
+                            android:id="@+id/chipDialogFilterCategory3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
@@ -118,7 +118,7 @@
                             app:chipStrokeWidth="1dp" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipTripMainRowCategory4"
+                            android:id="@+id/chipDialogFilterCategory4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
@@ -133,7 +133,7 @@
                             app:chipStrokeWidth="1dp" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipTripMainRowCategory5"
+                            android:id="@+id/chipDialogFilterCategory5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
@@ -148,7 +148,7 @@
                             app:chipStrokeWidth="1dp" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipTripMainRowCategory6"
+                            android:id="@+id/chipDialogFilterCategory6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
@@ -163,7 +163,7 @@
                             app:chipStrokeWidth="1dp" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipTripMainRowCategory7"
+                            android:id="@+id/chipDialogFilterCategory7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
@@ -178,7 +178,7 @@
                             app:chipStrokeWidth="1dp" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipTripMainRowCategory8"
+                            android:id="@+id/chipDialogFilterCategory8"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
@@ -193,7 +193,7 @@
                             app:chipStrokeWidth="1dp" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipTripMainRowCategory9"
+                            android:id="@+id/chipDialogFilterCategory9"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
