@@ -20,9 +20,23 @@ class ModifyPostFragment : Fragment() {
         fragmentModifyPostBinding = FragmentModifyPostBinding.inflate(layoutInflater)
 
         fragmentModifyPostBinding.run {
-
+            materialToolbarModifyPost.run {
+                setNavigationIcon(R.drawable.arrow_back_24px)
+                setNavigationOnClickListener {
+                    mainActivity.removeFragment(MainActivity.MODFY_POST_FRAGMENT)
+                }
+            }
+            mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
+            buttonModifyPostToNextView.setOnClickListener {
+                mainActivity.replaceFragment(MainActivity.MODFY_POST2_FRAGMENT,true,true,null)
+            }
         }
 
         return fragmentModifyPostBinding.root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.VISIBLE
     }
 }

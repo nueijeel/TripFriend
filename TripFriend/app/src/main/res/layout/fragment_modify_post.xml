@@ -3,24 +3,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.trip.ModifyPostFragment" >
+    tools:context=".ui.accompany.AccompanyRegisterFragment1">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/materialToolbar"
+        android:id="@+id/materialToolbarModifyPost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="@style/Theme.TripFriend.Toolbar">
 
-    <ScrollView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:text="글 수정"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <com.kofigyan.stateprogressbar.StateProgressBar
+        android:id="@+id/progressBarModifyPost"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:spb_animateToCurrentProgressState="true"
+        app:spb_checkStateCompleted="true"
+        app:spb_currentStateNumber="one"
+        app:spb_maxStateNumber="three"
+        app:spb_stateBackgroundColor="@color/mainColor"
+        app:spb_stateForegroundColor="@color/highLightColor"
+        app:spb_stateLineThickness="7dp"
+        app:spb_stateNumberBackgroundColor="@color/white"
+        app:spb_stateNumberForegroundColor="@color/white"
+        app:spb_stateSize="40dp"
+        app:spb_stateTextSize="20dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+    <Button
+        android:id="@+id/buttonModifyPostToNextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@drawable/border2"
+        android:paddingLeft="30dp"
+        android:paddingTop="8dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="8dp"
+        android:text="다음"
+        android:textSize="@dimen/text_size_2" />
+
 </LinearLayout>
