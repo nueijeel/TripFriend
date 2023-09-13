@@ -307,6 +307,7 @@
                 android:paddingRight="30dp"
                 android:paddingBottom="8dp"
                 android:text="완료하기"
+                android:textColor="#000000"
                 android:textSize="@dimen/text_size_2"
                 tools:fontFamily="@font/font" />
         </LinearLayout>
