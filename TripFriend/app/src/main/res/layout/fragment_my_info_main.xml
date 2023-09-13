@@ -11,7 +11,9 @@
         android:id="@+id/myInfoToolbar"
         style="@style/Theme.TripFriend.Toolbar"
         android:layout_width="match_parent"
+        app:navigationIconTint="@color/black"
         android:layout_height="wrap_content"
+        android:theme="?attr/actionBarTheme"
         app:menu="@menu/my_info_toolbar_menu"
         android:minHeight="?attr/actionBarSize">
 

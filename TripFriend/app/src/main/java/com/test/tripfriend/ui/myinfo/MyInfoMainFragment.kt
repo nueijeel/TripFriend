@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.myinfo
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ class MyInfoMainFragment : Fragment() {
             myInfoToolbar.run {
                 setOnMenuItemClickListener {
                     //톱니 바퀴 클릭시 앱 설정 창으로 이동
+                    setNavigationIconTint(Color.BLACK)
                     mainActivity.replaceFragment(MainActivity.MY_APP_SETTING_FRAGMENT,true,false,null)
                     mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
                     true

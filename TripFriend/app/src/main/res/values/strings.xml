@@ -49,4 +49,26 @@
     <string name="done">완료</string>
     <string name="title_time_picker">날짜 선택</string>
     <string name="select_time">날짜 선택</string>
+
+
+
+    <string-array name="spinner_mbti_list">
+        <item>선택안함</item>
+        <item>ENFP</item>
+        <item>ENFJ</item>
+        <item>ENTP</item>
+        <item>ENTJ</item>
+        <item>ESFP</item>
+        <item>ESFJ</item>
+        <item>ESTP</item>
+        <item>ESTJ</item>
+        <item>INFP</item>
+        <item>INFJ</item>
+        <item>INTP</item>
+        <item>INTJ</item>
+        <item>ISFP</item>
+        <item>ISFJ</item>
+        <item>ISTP</item>
+        <item>ISTJ</item>
+    </string-array>
 </resources>
