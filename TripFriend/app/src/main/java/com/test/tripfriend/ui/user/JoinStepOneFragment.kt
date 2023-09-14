@@ -40,10 +40,62 @@ class JoinStepOneFragment : Fragment() {
             progressBarJoinStepOne.run {
                 //setStateNumberTypeface("nanumbarunpenregular")
             }
+            var checkEmail = 0
+            buttonJoinStepOneAuth.setOnClickListener {
+                //입력 하지 않았을 경우
+                if(textInputEditTextJoinStepOneEmail.text.toString() == "") {
+                    val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                        setTitle("이메일 입력 오류")
+                        setMessage("이메일을 입력해주세요.")
+                        setNegativeButton("확인", null)
+                    }
+                    builder.show()
+                }
+                //입력 했을 때
+                else{
+                    val userEmail = textInputEditTextJoinStepOneEmail.text.toString()
+                    if (isEmailValid(userEmail) == false) {
+                        val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                            setTitle("이메일 입력 오류")
+                            setMessage("유효하지 않은 이메일 주소입니다.")
+                            setNegativeButton("확인", null)
+                        }
+                        builder.show()
+                    } else {
+                        //이메일 인증
+                        checkEmail = 1
+                        buttonJoinStepOneAuth.text = "인증완료"
+                    }
+                    //이메일 인증 후
+                    //loginMainActivity.userEmail = textInputEditTextJoinStepOneEmail.text.toString()
+                    //이메일 인증 후
+                }
+            }
 
             //버튼 클릭 화면 전환
             buttonJoinStepOneNext.setOnClickListener {
-                loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_TWO_FRAGMENT, true, true, null)
+                if(checkEmail == 1){
+                    if(checkBoxJoinStepOnePersonalInfoTerms.isChecked == false || checkBoxJoinStepOneServiceTerms.isChecked == false){
+                        val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                            setTitle("약관 동의 필요")
+                            setMessage("약관에 동의해주세요.")
+                            setNegativeButton("확인", null)
+                        }
+                        builder.show()
+                    }
+                    else{
+                        loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_TWO_FRAGMENT, true, true, null)
+                    }
+                }
+                else{
+                    val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                        setTitle("이메일 입력 오류")
+                        setMessage("이메일 인증을 진행해주세요.")
+                        setNegativeButton("확인", null)
+                    }
+                    builder.show()
+                }
+
             }
 
             //이용 약관 내용 보기
@@ -69,5 +121,9 @@ class JoinStepOneFragment : Fragment() {
 
         return fragmentJoinStepOneBinding.root
 
+    }
+    fun isEmailValid(email: String): Boolean {
+        val emailRegex = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})"
+        return email.matches(emailRegex.toRegex())
     }
 }

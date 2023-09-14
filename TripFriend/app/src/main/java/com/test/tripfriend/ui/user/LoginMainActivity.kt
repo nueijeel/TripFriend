@@ -13,7 +13,15 @@ import com.test.tripfriend.R
 import com.test.tripfriend.databinding.ActivityLoginMainBinding
 import kotlin.concurrent.thread
 
+
 class LoginMainActivity : AppCompatActivity() {
+
+    var userEmail = ""
+    var userPw = ""
+    var userName = ""
+    var userNickname = ""
+    var userPhoneNumber = ""
+    var userMBTI = ""
 
     lateinit var activityLoginMainBinding: ActivityLoginMainBinding
 

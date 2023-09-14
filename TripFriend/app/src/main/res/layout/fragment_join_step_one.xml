@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="100dp"
             android:hint="이메일"
             app:boxBackgroundColor="#FFFFFF"
             app:boxBackgroundMode="outline"
@@ -91,6 +91,16 @@
                 android:paddingBottom="20dp"
                 android:textSize="@dimen/text_size_2" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/buttonJoinStepOneAuth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="인증"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="@+id/textInputLayoutJoinStepOneEmail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textInputLayoutJoinStepOneEmail" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -177,6 +187,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
