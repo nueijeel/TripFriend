@@ -16,6 +16,7 @@ import kotlin.concurrent.thread
 
 class LoginMainActivity : AppCompatActivity() {
 
+    var userAuth = ""
     var userEmail = ""
     var userPw = ""
     var userName = ""

@@ -2,6 +2,7 @@ package com.test.tripfriend.ui.user
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -43,8 +44,22 @@ class JoinStepThreeFragment : Fragment() {
                     }
                 }
             }
+            buttonJoinStepThreeNickNameCheck.setOnClickListener {
+                //닉네임 중복 검사 해야함
+                textViewJoinStepThreeNickNameComplete.visibility = View.VISIBLE
+            }
 
             buttonJoinStepThreeNext.setOnClickListener {
+                loginMainActivity.userName = textInputEditTextJoinStepThreeName.text.toString()
+                loginMainActivity.userNickname = textInputEditTextJoinStepThreeNickName.text.toString()
+                Log.d("aaaa","===============================================")
+                Log.d("aaaa","이메일 = ${loginMainActivity.userEmail}")
+                Log.d("aaaa","비밀번호 = ${loginMainActivity.userPw}")
+                Log.d("aaaa","인증방식 = ${loginMainActivity.userAuth}")
+                Log.d("aaaa","이름 = ${loginMainActivity.userName}")
+                Log.d("aaaa","닉네임 = ${loginMainActivity.userNickname}")
+                Log.d("aaaa","휴대폰 번호 = ${loginMainActivity.userPhoneNumber}")
+                Log.d("aaaa","MBTI = ${loginMainActivity.userMBTI}")
                 loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT, true, true, null)
             }
         }

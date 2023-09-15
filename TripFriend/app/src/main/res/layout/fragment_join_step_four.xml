@@ -96,12 +96,24 @@
                     android:cursorVisible="true"
                     android:fontFamily="@font/font"
                     android:gravity="center_vertical"
-                    android:inputType="number"
+                    android:inputType="phone"
                     android:paddingBottom="20dp"
                     android:textSize="@dimen/text_size_2" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/info_24px"
+            android:gravity="center"
+            android:text="&quot;-&quot;없이 입력해주세요."
+            app:layout_constraintStart_toStartOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <Button
             android:id="@+id/buttonJoinStepFourNext"
