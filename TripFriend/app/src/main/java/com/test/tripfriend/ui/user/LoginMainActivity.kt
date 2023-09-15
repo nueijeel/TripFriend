@@ -22,6 +22,7 @@ class LoginMainActivity : AppCompatActivity() {
     var userNickname = ""
     var userPhoneNumber = ""
     var userMBTI = ""
+    var checkEmail = 0
 
     lateinit var activityLoginMainBinding: ActivityLoginMainBinding
 
