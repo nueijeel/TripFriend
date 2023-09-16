@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.user
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -54,12 +55,22 @@ class EmailLoginFragment : Fragment() {
                             }
                         }
                         if(checkMail == 1 && checkPw == 1){
-                            Snackbar.make(fragmentEmailLoginBinding.root, "로그인이 완료되었습니다.", Snackbar.LENGTH_SHORT).show()
-
-                            val intent = Intent(loginMainActivity, MainActivity::class.java)
-                            startActivity(intent)
-
-                            loginMainActivity.finish()
+                            val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                                setTitle("로그인 성공")
+                                setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
+                                setNegativeButton("메인화면으로"){ dialogInterface: DialogInterface, i: Int ->
+                                    val intent = Intent(loginMainActivity, MainActivity::class.java)
+                                    startActivity(intent)
+                                    loginMainActivity.finish()
+                                }
+                            }
+                            val dialog = builder.create()
+                            dialog.setOnDismissListener {
+                                val intent = Intent(loginMainActivity, MainActivity::class.java)
+                                startActivity(intent)
+                                loginMainActivity.finish()
+                            }
+                            dialog.show()
                         }
                         else{
                             val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
