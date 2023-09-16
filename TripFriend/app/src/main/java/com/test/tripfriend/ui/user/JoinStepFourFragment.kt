@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentJoinStepFourBinding
+import com.test.tripfriend.repository.UserRepository
 
 class JoinStepFourFragment : Fragment() {
 
@@ -64,20 +65,37 @@ class JoinStepFourFragment : Fragment() {
                     builder.show()
                 }
                 else{
-                        loginMainActivity.userPhoneNumber = textInputEditTextJoinStepFourPhone.text.toString()
-                        Log.d("aaaa","===============================================")
-                        Log.d("aaaa","이메일 = ${loginMainActivity.userEmail}")
-                        Log.d("aaaa","비밀번호 = ${loginMainActivity.userPw}")
-                        Log.d("aaaa","인증방식 = ${loginMainActivity.userAuth}")
-                        Log.d("aaaa","이름 = ${loginMainActivity.userName}")
-                        Log.d("aaaa","닉네임 = ${loginMainActivity.userNickname}")
-                        Log.d("aaaa","휴대폰 번호 = ${loginMainActivity.userPhoneNumber}")
-                        Log.d("aaaa","MBTI = ${loginMainActivity.userMBTI}")
-                        loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_FIVE_FRAGMENT, true, true, null)
-
-
+                    //전화번호 중복 확인
+                    UserRepository.getAllUser() {
+                        var check = 1
+                        for (document in it.result.documents) {
+                            if (textInputEditTextJoinStepFourPhone.text.toString() == document.getString("userPhoneNum")) {
+                                check = 0
+                                break
+                            }
+                        }
+                        if(check == 1){
+                            loginMainActivity.userPhoneNumber = textInputEditTextJoinStepFourPhone.text.toString()
+                            Log.d("aaaa","===============================================")
+                            Log.d("aaaa","이메일 = ${loginMainActivity.userEmail}")
+                            Log.d("aaaa","비밀번호 = ${loginMainActivity.userPw}")
+                            Log.d("aaaa","인증방식 = ${loginMainActivity.userAuth}")
+                            Log.d("aaaa","이름 = ${loginMainActivity.userName}")
+                            Log.d("aaaa","닉네임 = ${loginMainActivity.userNickname}")
+                            Log.d("aaaa","휴대폰 번호 = ${loginMainActivity.userPhoneNumber}")
+                            Log.d("aaaa","MBTI = ${loginMainActivity.userMBTI}")
+                            loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_FIVE_FRAGMENT, true, true, null)
+                        }
+                        else{
+                            val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                                setTitle("전화번호 중복 확인")
+                                setMessage("이미 사용중인 전화번호 입니다.")
+                                setNegativeButton("확인", null)
+                            }
+                            builder.show()
+                        }
+                    }
                 }
-
             }
         }
 
