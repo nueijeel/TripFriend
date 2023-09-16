@@ -98,7 +98,7 @@ class JoinStepFiveFragment : Fragment() {
                         loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_THREE_FRAGMENT)
                         loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_TWO_FRAGMENT)
                         loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_ONE_FRAGMENT)
-                        Snackbar.make(fragmentJoinStepFiveBinding.root, "회원가입이 완료되었습니다.", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(fragmentJoinStepFiveBinding.root, "회원가입 완료! 이메일로 로그인해주세요.", Snackbar.LENGTH_SHORT).show()
                     }
                 } else {
                     val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {

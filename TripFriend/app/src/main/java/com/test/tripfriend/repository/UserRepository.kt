@@ -1,8 +1,10 @@
 package com.test.tripfriend.repository
 
+import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.test.tripfriend.dataclassmodel.User
 
 class UserRepository {
@@ -30,6 +32,13 @@ class UserRepository {
             // Firestore 컬렉션에 추가
             db.collection("User")
                 .add(user)
+                .addOnCompleteListener(callback)
+        }
+
+        fun getAllUser(callback: (Task<QuerySnapshot>) -> Unit) {
+            val db = FirebaseFirestore.getInstance()
+            db.collection("User")
+                .get()
                 .addOnCompleteListener(callback)
         }
     }

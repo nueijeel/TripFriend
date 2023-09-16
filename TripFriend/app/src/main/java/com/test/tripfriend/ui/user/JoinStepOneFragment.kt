@@ -21,6 +21,7 @@ import com.test.tripfriend.ui.main.MainActivity
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.test.tripfriend.repository.UserRepository
 
 class JoinStepOneFragment : Fragment() {
 
@@ -55,7 +56,6 @@ class JoinStepOneFragment : Fragment() {
             progressBarJoinStepOne.run {
                 //setStateNumberTypeface("nanumbarunpenregular")
             }
-
             buttonJoinStepOneAuth.run {
                 if(loginMainActivity.checkEmail == 1){
                     visibility = View.GONE
@@ -85,65 +85,83 @@ class JoinStepOneFragment : Fragment() {
                             builder.show()
                         }
                         else {
-                            email = textInputEditTextJoinStepOneEmail.text.toString()
-                            //비밀번호 유효성 검사
-                            if(textInputEditTextJoinStepOnePw.text.toString().length < 6){
-                                val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
-                                    setTitle("비밀번호 입력 오류")
-                                    setMessage("비밀번호는 6자 이상 입력해주세요.")
-                                    setNegativeButton("확인", null)
-                                }
-                                builder.show()
-                            }
-                            else{
-                                if(textInputEditTextJoinStepOnePw.text.toString() == "") {
-                                    val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
-                                        setTitle("비밀번호 입력 오류")
-                                        setMessage("비밀번호를 입력해주세요.")
-                                        setNegativeButton("확인", null)
+                            //이메일 중복검사
+                            UserRepository.getAllUser() {
+                                var check = 1
+                                for (document in it.result.documents) {
+                                    if(textInputEditTextJoinStepOneEmail.text.toString() == document.getString("userEmail")){
+                                        val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                                            setTitle("이메일 입력 오류")
+                                            setMessage("현재 사용중인 이메일입니다.")
+                                            setNegativeButton("확인", null)
+                                        }
+                                        builder.show()
+                                        check = 0
+                                        break
                                     }
-                                    builder.show()
                                 }
-                                else if(textInputEditTextJoinStepOnePwCheck.text.toString() == "") {
-                                    val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
-                                        setTitle("비밀번호 입력 오류")
-                                        setMessage("비밀번호를 확인해주세요.")
-                                        setNegativeButton("확인", null)
-                                    }
-                                    builder.show()
-                                }
-                                else{
-                                    if(textInputEditTextJoinStepOnePw.text.toString() != textInputEditTextJoinStepOnePwCheck.text.toString()){
+                                if(check == 1){
+                                    email = textInputEditTextJoinStepOneEmail.text.toString()
+                                    //비밀번호 유효성 검사
+                                    if(textInputEditTextJoinStepOnePw.text.toString().length < 6){
                                         val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
                                             setTitle("비밀번호 입력 오류")
-                                            setMessage("비밀번호가 다릅니다.")
+                                            setMessage("비밀번호는 6자 이상 입력해주세요.")
                                             setNegativeButton("확인", null)
                                         }
                                         builder.show()
                                     }
-                                    else {
-                                        pw = textInputEditTextJoinStepOnePw.text.toString()
-                                        //이메일 인증
-                                        auth.createUserWithEmailAndPassword(email,pw).addOnCompleteListener(loginMainActivity) {task ->
-                                            if(task.isSuccessful){
-                                                auth.currentUser?.sendEmailVerification()?.addOnCompleteListener {sendTask ->
-                                                    if(sendTask.isSuccessful)
-                                                    {
-                                                        buttonJoinStepOneAuth.text = "인증메일 전송됨"
-                                                        buttonJoinStepOneAuth.isEnabled = false
-                                                        buttonJoinStepOneAuthCheck.visibility = View.VISIBLE
-                                                        val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
-                                                            setTitle("인증메일 전송")
-                                                            setMessage("인증 메일이 전송되었습니다. 인증 후 인증완료 버튼을 눌러주세요.")
-                                                            setNegativeButton("확인", null)
+                                    else{
+                                        if(textInputEditTextJoinStepOnePw.text.toString() == "") {
+                                            val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                                                setTitle("비밀번호 입력 오류")
+                                                setMessage("비밀번호를 입력해주세요.")
+                                                setNegativeButton("확인", null)
+                                            }
+                                            builder.show()
+                                        }
+                                        else if(textInputEditTextJoinStepOnePwCheck.text.toString() == "") {
+                                            val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                                                setTitle("비밀번호 입력 오류")
+                                                setMessage("비밀번호를 확인해주세요.")
+                                                setNegativeButton("확인", null)
+                                            }
+                                            builder.show()
+                                        }
+                                        else{
+                                            if(textInputEditTextJoinStepOnePw.text.toString() != textInputEditTextJoinStepOnePwCheck.text.toString()){
+                                                val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                                                    setTitle("비밀번호 입력 오류")
+                                                    setMessage("비밀번호가 다릅니다.")
+                                                    setNegativeButton("확인", null)
+                                                }
+                                                builder.show()
+                                            }
+                                            else {
+                                                pw = textInputEditTextJoinStepOnePw.text.toString()
+                                                //이메일 인증
+                                                auth.createUserWithEmailAndPassword(email,pw).addOnCompleteListener(loginMainActivity) {task ->
+                                                    if(task.isSuccessful){
+                                                        auth.currentUser?.sendEmailVerification()?.addOnCompleteListener {sendTask ->
+                                                            if(sendTask.isSuccessful)
+                                                            {
+                                                                buttonJoinStepOneAuth.text = "인증메일 전송됨"
+                                                                buttonJoinStepOneAuth.isEnabled = false
+                                                                buttonJoinStepOneAuthCheck.visibility = View.VISIBLE
+                                                                val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                                                                    setTitle("인증메일 전송")
+                                                                    setMessage("인증 메일이 전송되었습니다. 인증 후 인증완료 버튼을 눌러주세요.")
+                                                                    setNegativeButton("확인", null)
+                                                                }
+                                                                builder.show()
+                                                            }
+                                                            else{
+                                                            }
                                                         }
-                                                        builder.show()
                                                     }
                                                     else{
                                                     }
                                                 }
-                                            }
-                                            else{
                                             }
                                         }
                                     }
