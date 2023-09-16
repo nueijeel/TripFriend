@@ -23,7 +23,6 @@ class PersonalChatRoomFragment : Fragment() {
 
     lateinit var mainActivity: MainActivity
     lateinit var fragmentPersonalChatRoomBinding: FragmentPersonalChatRoomBinding
-
     lateinit var displayMetrics: DisplayMetrics
 
     override fun onCreateView(
