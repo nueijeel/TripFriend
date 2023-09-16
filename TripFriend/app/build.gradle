@@ -64,5 +64,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-dynamic-links:21.0.1'
     implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation 'com.google.firebase:firebase-firestore:24.7.1' // 최신 버전으로 업데이트하세요
+    // Kakao-SDK
+    implementation "com.kakao.sdk:v2-user:2.8.5" // 카카오 로그인
 
 }
