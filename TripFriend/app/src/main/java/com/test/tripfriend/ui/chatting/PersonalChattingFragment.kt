@@ -12,6 +12,7 @@ import androidx.core.view.isEmpty
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firestore.bundle.BundleElement
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentPersonalChattingBinding
@@ -101,14 +102,12 @@ class PersonalChattingFragment : Fragment() {
                 textViewRowPersonalChattingDate =
                     rowChattingPersonalBinding.textViewRowPersonalChattingDate
 
+                //채팅방 클릭 시 채팅방으로 이동
                 rowChattingPersonalBinding.root.setOnClickListener {
-                    val chatRoomIdx = adapterPosition
-                    mainActivity.replaceFragment(
-                        MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT,
-                        true,
-                        true,
-                        null
-                    )
+                    val chatRoomId = itemList[adapterPosition].documentId
+                    val bundle=Bundle()
+                    bundle.putString("chatRoomId",chatRoomId)
+                    mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, bundle)
                 }
             }
         }

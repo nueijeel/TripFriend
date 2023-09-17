@@ -1,19 +1,15 @@
 package com.test.tripfriend.repository
 
-import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.test.tripfriend.dataclassmodel.PersonalChatRoom
-import com.test.tripfriend.dataclassmodel.PersonalChatRoom2
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import com.test.tripfriend.dataclassmodel.PersonalChatting
 import kotlinx.coroutines.tasks.await
 
 class PersonalChatRepository {
@@ -28,7 +24,7 @@ class PersonalChatRepository {
         db.collection("PersonalChatRoom").add(personalChatRoom).addOnCompleteListener(callback)
     }
 
-    //채팅방의 상대방 필요한 정보를 가져오는 메서드
+    //내가 속한 채팅방에서 상대방의 정보를 가져오는 메서드
     suspend fun getPersonalChatInfo(myEmail: String): QuerySnapshot {
         val infoRef = db.collection("User").whereEqualTo("userEmail", myEmail).get().await()
 
@@ -47,6 +43,13 @@ class PersonalChatRepository {
         return chatRoomRef
     }
 
+    //채팅방에 참여한 사람들 이메일 가져오기
+    suspend fun getchatMember(roomId:String): DocumentSnapshot? {
+        val chatMemberRef = db.collection("PersonalChatRoom").document(roomId).get().await()
+
+        return chatMemberRef
+    }
+
     //가장 죄근 채팅 가져오기
     suspend fun getLastChat(documentId: String): QuerySnapshot {
         val lastChat =
@@ -57,9 +60,13 @@ class PersonalChatRepository {
         return lastChat
     }
 
+    //채팅 db에 저장하기
+    fun saveMyContentToDB(documentId:String,personalChatting: PersonalChatting){
+        db.collection("PersonalChatRoom").document(documentId).collection("PersonalChatting").add(personalChatting)
+    }
 
-//    //채팅 가져오기
-//    fun getLastChat(documentId:String){
-//        val lastChat= db.collection("PersonalChatRoom").document(documentId).get()
-//    }
+    //채팅 가져오기
+    fun getChatting(documentId:String, callback: (QuerySnapshot?, FirebaseFirestoreException?) -> Unit){
+        val lastChat= db.collection("PersonalChatRoom").document(documentId).collection("PersonalChatting").orderBy("personalChatSendTimeStamp",Query.Direction.ASCENDING).addSnapshotListener(callback)
+    }
 }
