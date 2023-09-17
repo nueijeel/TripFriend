@@ -14,19 +14,26 @@ import com.google.android.material.snackbar.Snackbar
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentMyAppSettingBinding
+import com.test.tripfriend.repository.UserRepository
+import kotlinx.coroutines.runBlocking
 
 class MyAppSettingFragment : Fragment() {
+
     lateinit var fragmentMyAppSettingBinding:FragmentMyAppSettingBinding
     lateinit var mainActivity: MainActivity
     lateinit var callback: OnBackPressedCallback
+
+    val userRepository = UserRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
+
         fragmentMyAppSettingBinding = FragmentMyAppSettingBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+
+        val userDocumentId = arguments?.getString("userDocumentId") ?:""
 
         fragmentMyAppSettingBinding.run {
 
@@ -42,40 +49,37 @@ class MyAppSettingFragment : Fragment() {
 
             //채팅 알림 스위치 변경 리스너
             switchChattingNotification.setOnCheckedChangeListener { compoundButton, isChecked ->
-                if (isChecked){
-                    Snackbar.make(fragmentMyAppSettingBinding.root, "채팅 알림 수신이 활성화됩니다", Snackbar.LENGTH_SHORT)
-                        .setAction("X") {
 
-                        }.show()
+                runBlocking { userRepository.updateTargetUserChatNotification(userDocumentId, isChecked) }
+
+                if (isChecked){
+                    Snackbar.make(fragmentMyAppSettingBinding.root, "채팅 알림 수신이 활성화됩니다", Snackbar.LENGTH_SHORT).show()
                 }
                 else{
-                    Snackbar.make(fragmentMyAppSettingBinding.root, "채팅 알림 수신이 비활성화됩니다", Snackbar.LENGTH_SHORT)
-                        .setAction("X") {
-
-                        }.show()
+                    Snackbar.make(fragmentMyAppSettingBinding.root, "채팅 알림 수신이 비활성화됩니다", Snackbar.LENGTH_SHORT).show()
                 }
             }
 
 
             //푸시 알림 스위치 변경 리스너
             switchPushNotification.setOnCheckedChangeListener { compoundButton, isChecked ->
-                if (isChecked){
-                    Snackbar.make(fragmentMyAppSettingBinding.root, "푸시 알림 수신이 활성화됩니다", Snackbar.LENGTH_SHORT)
-                        .setAction("X") {
 
-                        }.show()
+                runBlocking { userRepository.updateTargetUserPushNotification(userDocumentId, isChecked) }
+
+                if (isChecked){
+                    Snackbar.make(fragmentMyAppSettingBinding.root, "푸시 알림 수신이 활성화됩니다", Snackbar.LENGTH_SHORT).show()
                 }
                 else{
-                    Snackbar.make(fragmentMyAppSettingBinding.root, "푸시 알림 수신이 비활성화됩니다", Snackbar.LENGTH_SHORT)
-                        .setAction("X") {
-
-                        }.show()
+                    Snackbar.make(fragmentMyAppSettingBinding.root, "푸시 알림 수신이 비활성화됩니다", Snackbar.LENGTH_SHORT).show()
                 }
             }
 
             //계정 정보 수정 버튼
-            buttonChangeMyInfo.setOnClickListener {
-                mainActivity.replaceFragment(MainActivity.MODIFY_MY_INFO_FRAGMENT,true,false,null)
+            linearLayoutMyAppSettingModifyUserInfo.setOnClickListener {
+                val newBundle = Bundle()
+                newBundle.putString("userDocumentId", userDocumentId)
+
+                mainActivity.replaceFragment(MainActivity.MODIFY_MY_INFO_FRAGMENT,true,false,newBundle)
             }
 
             //로그아웃 버튼
@@ -85,7 +89,9 @@ class MyAppSettingFragment : Fragment() {
                     setMessage("현재 로그인 된 계정에서 로그아웃 됩니다")
                     setNegativeButton("취소", null)
                     setPositiveButton("로그아웃"){ dialogInterface: DialogInterface, i: Int ->
-                    
+                        //로그인 된 정보 지우기
+
+                        //화면 전환
                     }
                 }
                 builder.show()
@@ -98,7 +104,11 @@ class MyAppSettingFragment : Fragment() {
                     setMessage("회원탈퇴를 하시면 저장된 모든 정보가 삭제되며 삭제된 정보는 복구할 수 없습니다.")
                     setNegativeButton("취소", null)
                     setPositiveButton("회원탈퇴"){ dialogInterface: DialogInterface, i: Int ->
+                        //서버에 저장된 회원 정보 삭제
+                        userRepository.deleteTargetUserData(userDocumentId)
+                        //로그인 된 정보 지우기
 
+                        //화면 전환
                     }
                     show()
                 }
