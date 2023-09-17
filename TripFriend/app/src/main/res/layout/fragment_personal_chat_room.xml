@@ -97,6 +97,7 @@
             android:padding="20dp">
 
             <TextView
+                android:id="@+id/textViewOpponentName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="name 님과의 대화"
@@ -161,7 +162,7 @@
                     android:src="@drawable/ic_launcher_background" />
 
                 <TextView
-                    android:id="@+id/textViewPersonalChattingName"
+                    android:id="@+id/textViewPersonalChattingOpponentName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
