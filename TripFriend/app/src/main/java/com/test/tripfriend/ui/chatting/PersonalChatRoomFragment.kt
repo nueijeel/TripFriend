@@ -33,6 +33,8 @@ class PersonalChatRoomFragment : Fragment() {
     lateinit var fragmentPersonalChatRoomBinding: FragmentPersonalChatRoomBinding
     lateinit var chattingViewModel: ChattingViewModel
     lateinit var displayMetrics: DisplayMetrics
+    lateinit var opponentName:String
+    lateinit var opponentProfile:String
     var personalChatRepository = PersonalChatRepository()
     val MY_ID = "sori2189@naver.com"
 
@@ -66,11 +68,13 @@ class PersonalChatRoomFragment : Fragment() {
 
         //번들로 받은 방 아이디 가져오기
         val roomId = arguments?.getString("chatRoomId")
+        opponentName = arguments?.getString("userName").toString()
+        opponentProfile = arguments?.getString("userProfile").toString()
         if (roomId != null) {
-            Log.d("testt", roomId)
+            Log.d("testt", "$roomId $opponentName $opponentProfile")
         }
 
-        if (roomId != null) {
+        if (roomId != null && opponentName != null && opponentProfile != null) {
             //db의 데이터 변경을 감시하기 위한 리스너
             chattingViewModel.chattingChangeListener(roomId)
         }
@@ -89,6 +93,15 @@ class PersonalChatRoomFragment : Fragment() {
                         drawerLayoutPersonalChatRoom.openDrawer(Gravity.RIGHT)
                     true
                 }
+                //햄버거 클릭시 나오는 내용들 설정
+                textViewOpponentName.text=opponentName+"님과의 대화방"
+                textViewPersonalChattingUserName.text="프리퍼런스에서 내이름 설정"
+                textViewPersonalChattingOpponentName.text=opponentName
+                buttonPersonalChatRoomExit.setOnClickListener {
+                    //여기서 해당 roomid를 이용해서 내 이름을 null로 설정하고 프래그먼트 삭제(아마 삭제하고 replace 채팅방 목록을 해야할거같음.)
+                }
+
+
 
                 // 리사이클러 뷰
                 recyclerViewPersonalChatRoom.run {
@@ -252,12 +265,13 @@ class PersonalChatRoomFragment : Fragment() {
                 holder.textViewOpponentName.visibility = View.VISIBLE
                 holder.textViewOpponentContent.visibility = View.VISIBLE
                 holder.textViewOpponentChatMoment.visibility = View.VISIBLE
-                //사진이 준비 안됨.
+                //사진이 준비 안됨.opponentProfile쓰면댐.
                 holder.imageViewOpponent
-                holder.textViewOpponentName.text = itemList[position].personalChatWriterEmail
+                holder.textViewOpponentName.text = opponentName
                 holder.textViewOpponentContent.text = itemList[position].personalChatContent
-                holder.textViewOpponentChatMoment.text = itemList[position].personalChatSendDateAndTime
-            //받아온 데이터가 내가 보낸 거라면
+                holder.textViewOpponentChatMoment.text =
+                    itemList[position].personalChatSendDateAndTime
+                //받아온 데이터가 내가 보낸 거라면
             } else {
                 holder.textViewRowChatRoomUser.visibility = View.VISIBLE
                 holder.textViewChatMoment.visibility = View.VISIBLE

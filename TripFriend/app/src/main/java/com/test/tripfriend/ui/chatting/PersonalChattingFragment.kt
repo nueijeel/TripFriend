@@ -105,8 +105,14 @@ class PersonalChattingFragment : Fragment() {
                 //채팅방 클릭 시 채팅방으로 이동
                 rowChattingPersonalBinding.root.setOnClickListener {
                     val chatRoomId = itemList[adapterPosition].documentId
+                    val userName=itemList[adapterPosition].userNickname
+                    val userProfile=itemList[adapterPosition].userProfilePath
                     val bundle=Bundle()
                     bundle.putString("chatRoomId",chatRoomId)
+                    //상대방 이름
+                    bundle.putString("userName",userName)
+                    //상대방 프로필
+                    bundle.putString("userProfile",userProfile)
                     mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, bundle)
                 }
             }

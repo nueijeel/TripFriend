@@ -50,6 +50,11 @@ class PersonalChatRepository {
         return chatMemberRef
     }
 
+    //이메일로 유저의 정보를 불러오는 작업
+    fun getUserInfoByEmail(){
+
+    }
+
     //가장 죄근 채팅 가져오기
     suspend fun getLastChat(documentId: String): QuerySnapshot {
         val lastChat =

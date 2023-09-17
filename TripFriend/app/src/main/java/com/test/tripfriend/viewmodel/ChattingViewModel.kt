@@ -4,12 +4,18 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.toObject
+import com.test.tripfriend.dataclassmodel.PersonalChatRoom2
 import com.test.tripfriend.dataclassmodel.PersonalChatting
 import com.test.tripfriend.dataclassmodel.PersonalChatting2
 import com.test.tripfriend.repository.PersonalChatRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class ChattingViewModel : ViewModel() {
@@ -37,11 +43,24 @@ class ChattingViewModel : ViewModel() {
                     }
                 }
             }
-            chattingList.value=dataList
+            chattingList.value = dataList
         }
     }
 
-    fun removeListner(){
+    //채팅방에 속해있는 멤버 정보를 이메일을 토대로 가져온다,
+    fun fetchMember(roomId: String) {
+        val memberEmails = mutableListOf<DocumentSnapshot>()
+        val scope = CoroutineScope(Dispatchers.Default)
+        scope.launch {
+            //멤버의 이메일 가져오기
+            val memberEmail = async { personalChatRepository.getchatMember(roomId) }
+            val memberEmailObj = memberEmail.await()?.toObject(PersonalChatRoom2::class.java)
+
+
+//            Log.d("testt","${memberEmailObj?.personalChatRequesterEmail}")
+//            Log.d("testt","${memberEmailObj?.personalChatPostWriterEmail}")
+
+        }
 
     }
 
