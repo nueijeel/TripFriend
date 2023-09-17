@@ -1,10 +1,12 @@
 package com.test.tripfriend.ui.home
 
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapFragment
@@ -40,31 +42,59 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         val placesClient = Places.createClient(context)
 
         val fm = mainActivity.supportFragmentManager
-        val mapFragment = fm.findFragmentById(R.id.mapViewHomeMap) as MapFragment?
-            ?: MapFragment.newInstance().also {
-//                fm.beginTransaction().add(R.id.mapViewHomeMap, it).commit()
-            }
-        mapFragment.getMapAsync(this)
-
-//        val mapFragment = mainActivity.supportFragmentManager.findFragmentById(R.id.mapViewHomeMap) as SupportMapFragment
+//        val mapFragment = fm.findFragmentById(R.id.mapViewHomeMap) as MapFragment?
+//            ?: MapFragment.newInstance().also {
+////                fm.beginTransaction().add(R.id.mapViewHomeMap, it).commit()
+//            }
 //        mapFragment.getMapAsync(this)
+
+        val mapFragment = fm.findFragmentById(R.id.mapViewHomeMap) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
 
         return fragmentHomeMapBinding.root
 
     }
 
     override fun onMapReady(p0: GoogleMap) {
-        googleMap = p0
+        this.googleMap = p0
 
-        val SEOUL = com.google.android.gms.maps.model.LatLng(37.556, 126.97)
 
-        val markerOptions = MarkerOptions()
-        markerOptions.position(SEOUL)
-        markerOptions.title("서울")
-        markerOptions.snippet("한국 수도")
-
-        googleMap?.addMarker(markerOptions)
-
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(SEOUL, 10f))
     }
+
+    // 마커 추가
+//    private fun openPlacesDialog() {
+//        // Ask the user to choose the place where they are now.
+//        val listener = DialogInterface.OnClickListener { dialog, which -> // The "which" argument contains the position of the selected item.
+//            val markerLatLng = likelyPlaceLatLngs[which]
+//            var markerSnippet = likelyPlaceAddresses[which]
+//            if (likelyPlaceAttributions[which] != null) {
+//                markerSnippet = """
+//                $markerSnippet
+//                ${likelyPlaceAttributions[which]}
+//                """.trimIndent()
+//            }
+//
+//            if (markerLatLng == null) {
+//                return@OnClickListener
+//            }
+//
+//            // Add a marker for the selected place, with an info window
+//            // showing information about that place.
+//            googleMap?.addMarker(MarkerOptions()
+//                .title(likelyPlaceNames[which])
+//                .position(markerLatLng)
+//                .snippet(markerSnippet))
+//
+//            // Position the map's camera at the location of the marker.
+//            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng,
+//                DEFAULT_ZOOM.toFloat()))
+//        }
+//
+//        // Display the dialog.
+//        AlertDialog.Builder(mainActivity)
+//            .setTitle(R.string.pick_place)
+//            .setItems(likelyPlaceNames, listener)
+//            .show()
+//    }
+
 }
