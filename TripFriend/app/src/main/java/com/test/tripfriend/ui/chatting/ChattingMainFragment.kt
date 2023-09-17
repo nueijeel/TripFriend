@@ -81,5 +81,4 @@ class ChattingMainFragment : Fragment() {
             return fragments[position]
         }
     }
-
 }

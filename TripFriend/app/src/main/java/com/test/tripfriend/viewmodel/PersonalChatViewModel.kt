@@ -1,8 +1,12 @@
 package com.test.tripfriend.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.test.tripfriend.dataclassmodel.PersonalChatInfo
 import com.test.tripfriend.dataclassmodel.PersonalChatRoom2
 import com.test.tripfriend.dataclassmodel.PersonalChatting2
@@ -12,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class PersonalChatViewModel : ViewModel() {
@@ -20,6 +25,9 @@ class PersonalChatViewModel : ViewModel() {
 
     //통신을 위한 레포지토리 객체
     val personalChatRepository = PersonalChatRepository()
+
+    //채팅방의 변화가 감지되는지 감시하기 위한 라이브데이터
+    val chaneString = MutableLiveData<String>()
 
     //나와 관련된 채팅방을 모두 불러와서 채팅방을 띄우는데 필요한 정보를 수집
     fun fetchChatRoomInfo(myEmail: String) {
@@ -88,4 +96,53 @@ class PersonalChatViewModel : ViewModel() {
             scope.cancel()
         }
     }
+
+    //채팅에 변경사항이 있으면 호출되는 함수
+    fun fetchChangeInfo(roomId: String) {
+        val db = FirebaseFirestore.getInstance()
+        val chatRoomDocumentId = roomId // PersonalChatRoom 문서의 ID
+        val scope = CoroutineScope(Dispatchers.Default)
+        scope.launch {
+            // PersonalChatting 하위 컬렉션에 대한 리스너 설정
+            val chatRoomRef = db.collection("PersonalChatRoom").document(chatRoomDocumentId)
+            val chatListenerRegistration = chatRoomRef
+                .collection("PersonalChatting")
+                .addSnapshotListener { querySnapshot, e ->
+                    if (e != null) {
+                        // 오류 처리
+                        return@addSnapshotListener
+                    }
+
+                    // PersonalChatting 하위 컬렉션에 대한 변경 사항 처리
+                    for (documentChange in querySnapshot!!.documentChanges) {
+                        when (documentChange.type) {
+                            DocumentChange.Type.ADDED -> {
+                                // PersonalChatting 컬렉션 내의 문서가 추가됐을 때 처리
+                                val chatDocument = documentChange.document
+                                val chatId = chatDocument.id
+                                chaneString.value="추가됨"
+
+                                // 여기에서 새로운 채팅 메시지를 처리
+                            }
+                            DocumentChange.Type.MODIFIED -> {
+                                // PersonalChatting 컬렉션 내의 문서가 수정됐을 때 처리
+                                val chatDocument = documentChange.document
+                                val chatId = chatDocument.id
+                                chaneString.value="수정됨"
+                                // 여기에서 수정된 채팅 메시지를 처리
+                            }
+                            DocumentChange.Type.REMOVED -> {
+                                // PersonalChatting 컬렉션 내의 문서가 삭제됐을 때 처리
+                                val chatDocument = documentChange.document
+                                val chatId = chatDocument.id
+                                chaneString.value="삭제됨"
+                                // 여기에서 삭제된 채팅 메시지를 처리
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
+
 }
