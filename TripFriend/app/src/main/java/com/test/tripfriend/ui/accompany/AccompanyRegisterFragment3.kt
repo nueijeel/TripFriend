@@ -1,14 +1,19 @@
 package com.test.tripfriend.ui.accompany
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.test.tripfriend.R
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.databinding.FragmentAccompanyRegister3Binding
+import com.test.tripfriend.dataclassmodel.TripPost
+import com.test.tripfriend.repository.AccompanyRegisterRepository
 
 class AccompanyRegisterFragment3 : Fragment() {
     lateinit var fragmentAccompanyRegisterFragment3: FragmentAccompanyRegister3Binding
@@ -20,12 +25,41 @@ class AccompanyRegisterFragment3 : Fragment() {
     // 칩 카운트 변수
     var chipCount = 0
 
+    val chipCategory = mutableListOf<String>()
+    val chipGender = mutableListOf<Boolean>()
+
+    var categories = mutableListOf<Chip>()
+
+    val accompanyRegisterRepository = AccompanyRegisterRepository()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         fragmentAccompanyRegisterFragment3 = FragmentAccompanyRegister3Binding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+
+        // bundle 가져오기
+
+        val country = arguments?.getString("country")
+        val title = arguments?.getString("title")
+        val postImagePath = arguments?.getString("postImagePath")
+        val dates = arguments?.getStringArray("dates") as List<*>?
+        val people = arguments?.getString("people")
+        val content = arguments?.getString("content")
+        val tripPostIdx = arguments?.getLong("tripPostIdx")
+        val startDate = arguments?.getString("startDate")
+        val endDate = arguments?.getString("endDate")
+
+        val date = mutableListOf<String>()
+
+            date.add(startDate.toString())
+            date.add(endDate.toString())
+
+        Log.d("qwer", "$country")
+        Log.d("qwer", "${date.get(0)} ${date.get(1)} $dates")
+        Log.d("qwer", "$postImagePath")
+        Log.d("qwer", "${title} ${people} $content")
 
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
 
@@ -47,14 +81,85 @@ class AccompanyRegisterFragment3 : Fragment() {
             chipMax(chipRegister3Category8)
             chipMax(chipRegister3Category9)
 
+            categories.add(chipRegister3Category1)
+            categories.add(chipRegister3Category2)
+            categories.add(chipRegister3Category3)
+            categories.add(chipRegister3Category4)
+            categories.add(chipRegister3Category5)
+            categories.add(chipRegister3Category6)
+            categories.add(chipRegister3Category7)
+            categories.add(chipRegister3Category8)
+            categories.add(chipRegister3Category9)
+
             buttonAccompanyRegister3ToSubmit.setOnClickListener {
-                Snackbar.make(mainActivity.activityMainBinding.root, "등록이 완료되었습니다..", Snackbar.LENGTH_SHORT).show()
 
-                mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT3)
-                mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT2)
-                mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT1)
+                for(category in categories) {
+                    if(category.isChecked)
+                        chipCategory.add(category.text.toString())
+                }
 
-                mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, null)
+                chipGender.add(chipGender1.isChecked)
+                chipGender.add(chipGender2.isChecked)
+
+                val hashTag = textInputEditTextRegister3Hashtag.text.toString()
+
+                if(categories.isEmpty()) {
+                    MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+                        setTitle("카테고리 입력")
+                        setMessage("카테고리를 입력해주세요.")
+                        setNegativeButton("닫기", null)
+                        show()
+                        return@setOnClickListener
+                    }
+                }
+
+                if(chipGender.isEmpty()) {
+                    MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+                        setTitle("성별 입력")
+                        setMessage("성별을 입력해주세요.")
+                        setNegativeButton("닫기", null)
+                        show()
+                        return@setOnClickListener
+                    }
+                }
+
+//                if(textInputEditTextRegister3Hashtag.text.toString() == "") {
+//                    MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+//                        setTitle("해시태그 입력")
+//                        setMessage("해시태그를 입력해주세요.")
+//                        setNegativeButton("닫기", null)
+//                        show()
+//                        return@setOnClickListener
+//                    }
+//                }
+
+                if(title != null && country != null && content != null && tripPostIdx != null) {
+                    val tripPost = TripPost(
+                        "testEmail",
+                        title,
+                        null,
+                        people!!.toInt(),
+                        postImagePath,
+                        date,
+                        country,
+                        0.0,
+                        0.0,
+                        0,
+                        chipCategory,
+                        hashTag,
+                        content,
+                        tripPostIdx.toInt(),
+                        chipGender
+                    )
+                    accompanyRegisterRepository.saveAccompanyToDB(tripPost)
+                    Snackbar.make(mainActivity.activityMainBinding.root, "등록이 완료되었습니다..", Snackbar.LENGTH_SHORT).show()
+
+                    mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT3)
+                    mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT2)
+                    mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT1)
+
+                    mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, null)
+                }
 
             }
         }
