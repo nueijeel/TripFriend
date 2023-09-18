@@ -92,13 +92,19 @@ class JoinStepFiveFragment : Fragment() {
 
                     //db에 저장
                     UserRepository.addUser(userClass){
+                        loginMainActivity.userNickname = ""
+                        loginMainActivity.userPhoneNumber = ""
+                        loginMainActivity.userEmail = ""
+                        loginMainActivity.userName = ""
+                        loginMainActivity.userAuth = ""
+                        loginMainActivity.userMBTI = ""
+                        loginMainActivity.userPw = ""
                         //가입 완료 시 회원가입 단계 화면 백스택에서 전부 제거
                         loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FIVE_FRAGMENT)
                         loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT)
                         loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_THREE_FRAGMENT)
                         loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_TWO_FRAGMENT)
                         loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_ONE_FRAGMENT)
-                        Snackbar.make(fragmentJoinStepFiveBinding.root, "회원가입 완료! 이메일로 로그인해주세요.", Snackbar.LENGTH_SHORT).show()
                     }
                 } else {
                     val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {

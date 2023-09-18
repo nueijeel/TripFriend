@@ -45,44 +45,36 @@ class EmailLoginFragment : Fragment() {
                 var checkMail = 0
                 var checkPw = 0
                 UserRepository.getAllUser {
-                    UserRepository.getAllUser() {
-                        for (document in it.result.documents) {
-                            if (textInputEditTextEmailLoginId.text.toString() == document.getString("userEmail")) {
-                                checkMail = 1
-                            }
-                            if(textInputEditTextEmailLoginPw.text.toString() == document.getString("userPw")) {
-                                checkPw = 1
-                            }
+                    for (document in it.result.documents) {
+                        if (textInputEditTextEmailLoginId.text.toString() == document.getString("userEmail")) {
+                            checkMail = 1
                         }
-                        if(checkMail == 1 && checkPw == 1){
-                            val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
-                                setTitle("로그인 성공")
-                                setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
-                                setNegativeButton("메인화면으로"){ dialogInterface: DialogInterface, i: Int ->
-                                    val intent = Intent(loginMainActivity, MainActivity::class.java)
-                                    startActivity(intent)
-                                    loginMainActivity.finish()
-                                }
-                            }
-                            val dialog = builder.create()
-                            dialog.setOnDismissListener {
+                        if(textInputEditTextEmailLoginPw.text.toString() == document.getString("userPw")) {
+                            checkPw = 1
+                        }
+                    }
+                    if(checkMail == 1 && checkPw == 1){
+                        val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                            setTitle("로그인 성공")
+                            setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
+                            setNegativeButton("메인화면으로",null)
+                            setOnDismissListener{
                                 val intent = Intent(loginMainActivity, MainActivity::class.java)
                                 startActivity(intent)
                                 loginMainActivity.finish()
                             }
-                            dialog.show()
                         }
-                        else{
-                            val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
-                                setTitle("로그인 실패")
-                                setMessage("이메일과 비밀번호를 확인해주세요.")
-                                setNegativeButton("확인", null)
-                            }
-                            builder.show()
+                        builder.show()
+                    }
+                    else{
+                        val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                            setTitle("로그인 실패")
+                            setMessage("이메일과 비밀번호를 확인해주세요.")
+                            setNegativeButton("확인", null)
                         }
+                        builder.show()
                     }
                 }
-
             }
         }
 

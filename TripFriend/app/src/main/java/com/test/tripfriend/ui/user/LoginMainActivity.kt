@@ -44,6 +44,7 @@ class LoginMainActivity : AppCompatActivity() {
         val JOIN_STEP_THREE_FRAGMENT = "JoinStepThreeFragment"
         val JOIN_STEP_FOUR_FRAGMENT = "JoinStepFourFragment"
         val JOIN_STEP_FIVE_FRAGMENT = "JoinStepFiveFragment"
+        val MORE_KAKAO_INFO_INPUT_FRAGMENT = "MoreKakaoInfoInputFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +56,6 @@ class LoginMainActivity : AppCompatActivity() {
         activityLoginMainBinding.run {
 
         }
-
 
         setContentView(activityLoginMainBinding.root)
         replaceFragment(LOGIN_MAIN_FRAGMENT, false, true, null)
@@ -74,6 +74,7 @@ class LoginMainActivity : AppCompatActivity() {
             JOIN_STEP_THREE_FRAGMENT -> JoinStepThreeFragment()
             JOIN_STEP_FOUR_FRAGMENT -> JoinStepFourFragment()
             JOIN_STEP_FIVE_FRAGMENT -> JoinStepFiveFragment()
+            MORE_KAKAO_INFO_INPUT_FRAGMENT -> MoreKakaoInfoInputFragment()
             else -> Fragment()
         }
 
