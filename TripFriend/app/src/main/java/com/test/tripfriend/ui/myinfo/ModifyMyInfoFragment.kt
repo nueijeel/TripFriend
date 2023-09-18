@@ -2,18 +2,13 @@ package com.test.tripfriend.ui.myinfo
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.Matrix
-import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
@@ -21,7 +16,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
@@ -225,57 +219,11 @@ class ModifyMyInfoFragment : Fragment() {
                     if(uri != null){
                         profileImage = uri
 
-                        setImage(uri, imageView)
+                        mainActivity.setImage(uri, imageView)
                     }
                 }
             }
         }
         return albumLauncher
-    }
-
-    //uri를 이미지뷰에 셋팅하는 함수
-    fun setImage(image: Uri, imageView: ImageView){
-        val inputStream = mainActivity.contentResolver.openInputStream(image)
-        val bitmap = BitmapFactory.decodeStream(inputStream)
-
-        //회전 각도값을 가져옴
-        val degree = getDegree(image)
-
-        //회전 이미지를 생성한다
-        val matrix = Matrix()
-        matrix.postRotate(degree.toFloat())
-        val rotateBitmap = Bitmap.createBitmap(bitmap!!, 0, 0, bitmap.width, bitmap.height, matrix, false)
-
-        //글라이드 라이브러리로 view에 이미지 출력
-        Glide.with(mainActivity).load(rotateBitmap)
-            .into(imageView)
-    }
-
-    // 이미지 파일에 기록되어 있는 회전 정보를 가져온다.
-    fun getDegree(uri:Uri) : Int{
-        var exifInterface: ExifInterface? = null
-
-        // 사진 파일로 부터 tag 정보를 관리하는 객체를 추출한다.
-        try {
-            val inputStream = mainActivity.contentResolver.openInputStream(uri)
-            if (inputStream != null) {
-                exifInterface = ExifInterface(inputStream)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        var degree = 0
-        if(exifInterface != null){
-            // 각도 값을 가지고온다.
-            val orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, -1)
-
-            when(orientation){
-                ExifInterface.ORIENTATION_ROTATE_90 -> degree = 90
-                ExifInterface.ORIENTATION_ROTATE_180 -> degree = 180
-                ExifInterface.ORIENTATION_ROTATE_270 -> degree = 270
-            }
-        }
-        return degree
     }
 }
