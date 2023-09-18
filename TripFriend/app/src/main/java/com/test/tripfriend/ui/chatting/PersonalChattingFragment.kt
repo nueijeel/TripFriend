@@ -48,9 +48,14 @@ class PersonalChattingFragment : Fragment() {
                     (fragmentPersonalChattingBinding.recyclerViewPersonalChatting.adapter as? PersonalChattingAdapter)?.updateItemList(
                         it
                     )
-
                 }
             }
+
+            chaneString.observe(mainActivity){
+                Log.d("testt","변화 감지 옵저버")
+                fetchChatRoomInfo(MY_ID)
+            }
+
             fetchChatRoomInfo(MY_ID)
         }
 
@@ -137,6 +142,7 @@ class PersonalChattingFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: PersonalChattingViewHolder, position: Int) {
+            itemList[position].documentId?.let { personalChatViewModel.fetchChangeInfo(it) }
             holder.textViewRowPersonalChattingName.text = itemList[position].userNickname
             holder.textViewRowPersonalChattingDate.text = itemList[position].lastChatDate
             holder.textViewRowPersonalChattingMessage.text = itemList[position].lastChatContent

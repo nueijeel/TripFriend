@@ -39,29 +39,11 @@ class ChattingViewModel : ViewModel() {
                         // 새로운 문서가 추가되었을 때 할 작업을 여기에 작성하세요.
                         val data = document.document.toObject(PersonalChatting2::class.java)
                         dataList.add(data)
-
                     }
                 }
             }
             chattingList.value = dataList
         }
-    }
-
-    //채팅방에 속해있는 멤버 정보를 이메일을 토대로 가져온다,
-    fun fetchMember(roomId: String) {
-        val memberEmails = mutableListOf<DocumentSnapshot>()
-        val scope = CoroutineScope(Dispatchers.Default)
-        scope.launch {
-            //멤버의 이메일 가져오기
-            val memberEmail = async { personalChatRepository.getchatMember(roomId) }
-            val memberEmailObj = memberEmail.await()?.toObject(PersonalChatRoom2::class.java)
-
-
-//            Log.d("testt","${memberEmailObj?.personalChatRequesterEmail}")
-//            Log.d("testt","${memberEmailObj?.personalChatPostWriterEmail}")
-
-        }
 
     }
-
 }

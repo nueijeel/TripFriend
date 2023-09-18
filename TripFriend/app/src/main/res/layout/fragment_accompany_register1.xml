@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.accompany.AccompanyRegisterFragment1">
 
@@ -16,11 +16,21 @@
         android:theme="@style/Theme.TripFriend.Toolbar">
 
         <TextView
+            android:id="@+id/toolbarText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:text="동행하기 등록"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <Button
+            android:id="@+id/iconButton"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            app:icon="@drawable/search_24px"
+            app:iconTint="@color/black" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -28,7 +38,7 @@
         android:id="@+id/progressBarAccompanyRegister1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         app:spb_animateToCurrentProgressState="true"
         app:spb_checkStateCompleted="true"
         app:spb_currentStateNumber="one"
@@ -41,20 +51,75 @@
         app:spb_stateSize="40dp"
         app:spb_stateTextSize="20dp" />
 
-    <Button
-        android:id="@+id/buttonAccompanyRegister1ToNextView"
-        style="@style/Widget.Material3.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:fontFamily="@font/font"
-        android:paddingLeft="30dp"
-        android:paddingTop="8dp"
-        android:paddingRight="30dp"
-        android:paddingBottom="8dp"
-        android:text="     다음     "
-        android:textColor="#000000"
-        android:textSize="@dimen/text_size_2" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:id="@+id/card_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginHorizontal="20dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            app:cardCornerRadius="30dp"-->
+<!--            android:padding="5dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
+
+<!--&lt;!&ndash;            <androidx.fragment.app.FragmentContainerView&ndash;&gt;-->
+<!--&lt;!&ndash;                android:id="@+id/autocomplete_support_fragment"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                tools:layout="@layout/places_autocomplete_fragment" />&ndash;&gt;-->
+
+<!--            <com.test.tripfriend.ui.accompany.AutocompleteEditText-->
+<!--                android:id="@+id/autocomplete_address1"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:autofillHints="힌트"-->
+<!--                android:hint=""-->
+<!--                app:boxStrokeWidth="0dp"-->
+<!--                app:boxStrokeWidthFocused="0dp"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                android:imeOptions="actionNext"-->
+<!--                android:inputType="text"/>-->
+
+<!--        </androidx.cardview.widget.CardView>-->
+
+
+        <fragment
+            android:id="@+id/mapViewAccompanyRegister1"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/buttonAccompanyRegister1ToNextView"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/font"
+            android:paddingHorizontal="130dp"
+            android:text="다음"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_size_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </LinearLayout>

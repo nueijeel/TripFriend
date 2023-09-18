@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.google.android.libraries.places.api.Places
+import com.test.tripfriend.BuildConfig
 import com.bumptech.glide.Glide
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.ActivityMainBinding
@@ -82,6 +85,17 @@ class MainActivity : AppCompatActivity() {
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        val apiKey = BuildConfig.MAPS_API_KEY
+        if (apiKey.isEmpty()) {
+            Toast.makeText(this, "No API key defined in gradle.properties", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        // Setup Places Client
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, apiKey)
+        }
 
         // 시작화면 설정
         replaceFragment(HOME_MAIN_FRAGMENT, false, true, null)
