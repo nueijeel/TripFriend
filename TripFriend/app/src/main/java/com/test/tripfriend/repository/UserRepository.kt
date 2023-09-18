@@ -1,6 +1,7 @@
 package com.test.tripfriend.repository
 
 import android.net.Uri
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -48,11 +49,37 @@ class UserRepository {
             .update("userChatNotification",chatNotificationState).await()
     }
 
+    //유저 정보 삭제하는 함수
     fun deleteTargetUserData(documentId: String){
         val firestore = Firebase.firestore
 
         firestore.collection("User")
             .document(documentId)
             .delete()
+    }
+
+    //유저 정보 업데이트 하는 함수
+    suspend fun updateTargetUserInfo(
+        documentId: String, userProfilePath : String, userNickname : String, userMBTI : String, userPw : String
+    ){
+        val firestore = Firebase.firestore
+
+        firestore.collection("User")
+            .document(documentId)
+            .update(
+                mapOf(
+                    "userProfilePath" to userProfilePath,
+                    "userNickname" to userNickname,
+                    "userMBTI" to userMBTI,
+                    "userPw" to userPw
+                )
+            ).await()
+    }
+
+    fun updateTargetUserProfile(filePath : String, uploadUri: Uri){
+        val storage = Firebase.storage
+
+        val imageRef = storage.reference.child(filePath)
+        imageRef.putFile(uploadUri)
     }
 }
