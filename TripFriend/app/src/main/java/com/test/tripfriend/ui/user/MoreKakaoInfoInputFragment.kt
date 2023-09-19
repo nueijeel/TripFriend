@@ -1,9 +1,11 @@
 package com.test.tripfriend.ui.user
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +35,8 @@ class MoreKakaoInfoInputFragment : Fragment() {
         loginMainActivity = activity as LoginMainActivity
         fragmentMoreKakaoInfoInputBinding = FragmentMoreKakaoInfoInputBinding.inflate(layoutInflater)
 
+        val checkStateAutoLogin = arguments?.getBoolean("check")
+
         //이름 폰번 MBTI입력 받고 닉네임 중복 확인
         fragmentMoreKakaoInfoInputBinding.run {
             materialToolbarMoreKakaoInfoInput.run {
@@ -43,7 +47,6 @@ class MoreKakaoInfoInputFragment : Fragment() {
                 }
             }
             textInputEditTextMoreKakaoInfoInputUserName.run {
-
             }
             textInputEditTextMoreKakaoInfoInputUserPhoneNumber.run {
 
@@ -198,18 +201,60 @@ class MoreKakaoInfoInputFragment : Fragment() {
                                                         loginMainActivity.userAuth = ""
                                                         loginMainActivity.userMBTI = ""
                                                         loginMainActivity.userPw = ""
+                                                        UserRepository.getAllUser {
+                                                            for (document in it.result.documents) {
+                                                                if(userClass.userEmail == document.getString("userEmail") &&
+                                                                    userClass.userAuthentication == document.getString("userAuthentication")){
+                                                                    val userAuthentication= document.getString("userAuthentication").toString()
+                                                                    val userEmail = document.getString("userEmail").toString()
+                                                                    val userPw = document.getString("userPw").toString()
+                                                                    val userNickname= document.getString("userNickname").toString()
+                                                                    val userName= document.getString("userName").toString()
+                                                                    val userPhoneNum= document.getString("userPhoneNum").toString()
+                                                                    val userMBTI= document.getString("userMBTI").toString()
+                                                                    val userProfilePath= document.getString("userProfilePath").toString()
+                                                                    val userFriendSpeed= document.getDouble("userFriendSpeed")!!
+                                                                    val userTripScore= document.getDouble("userTripScore")!!
+                                                                    val userTripCount= document.getLong("userTripCount")?.toInt()!!
+                                                                    val userChatNotification = document.getBoolean("userChatNotification")!!
+                                                                    val userPushNotification= document.getBoolean("userPushNotification")!!
 
-                                                        val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
-                                                            setTitle("로그인 성공")
-                                                            setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
-                                                            setNegativeButton("메인화면으로",null)
-                                                            setOnDismissListener{
-                                                                val intent = Intent(loginMainActivity, MainActivity::class.java)
-                                                                startActivity(intent)
-                                                                loginMainActivity.finish()
+                                                                    val userClass = User(
+                                                                        userAuthentication,
+                                                                        userEmail,
+                                                                        userPw ,
+                                                                        userNickname ,
+                                                                        userName,
+                                                                        userPhoneNum ,
+                                                                        userMBTI,
+                                                                        userProfilePath = userProfilePath,
+                                                                        userFriendSpeed = userFriendSpeed,
+                                                                        userTripScore = userTripScore,
+                                                                        userTripCount = userTripCount,
+                                                                        userChatNotification = userChatNotification,
+                                                                        userPushNotification = userPushNotification
+                                                                    )
+                                                                    val checkStateAutoLogin = checkStateAutoLogin!!
+
+                                                                    val sharedPreferences =
+                                                                        loginMainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                                                                    UserRepository.saveUserInfo(sharedPreferences,userClass,checkStateAutoLogin)
+
+                                                                    val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                                                                        setTitle("로그인 성공")
+                                                                        setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
+                                                                        setNegativeButton("메인화면으로",null)
+                                                                        setOnDismissListener{
+                                                                            val intent = Intent(loginMainActivity, MainActivity::class.java)
+                                                                            startActivity(intent)
+                                                                            loginMainActivity.finish()
+                                                                        }
+                                                                    }
+                                                                    builder.show()
+                                                                    break
+                                                                }
                                                             }
                                                         }
-                                                        builder.show()
                                                     }
                                                 }
                                             }
@@ -251,21 +296,63 @@ class MoreKakaoInfoInputFragment : Fragment() {
                                                     loginMainActivity.userMBTI = ""
                                                     loginMainActivity.userPw = ""
 
-                                                    val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
-                                                        setTitle("로그인 성공")
-                                                        setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
-                                                        setNegativeButton("메인화면으로",null)
-                                                        setOnDismissListener{
-                                                            val intent = Intent(loginMainActivity, MainActivity::class.java)
-                                                            startActivity(intent)
-                                                            loginMainActivity.finish()
+                                                    UserRepository.getAllUser {
+                                                        for (document in it.result.documents) {
+                                                            if(userClass.userEmail == document.getString("userEmail") &&
+                                                                userClass.userAuthentication == document.getString("userAuthentication")){
+                                                                val userAuthentication= document.getString("userAuthentication").toString()
+                                                                val userEmail = document.getString("userEmail").toString()
+                                                                val userPw = document.getString("userPw").toString()
+                                                                val userNickname= document.getString("userNickname").toString()
+                                                                val userName= document.getString("userName").toString()
+                                                                val userPhoneNum= document.getString("userPhoneNum").toString()
+                                                                val userMBTI= document.getString("userMBTI").toString()
+                                                                val userProfilePath= document.getString("userProfilePath").toString()
+                                                                val userFriendSpeed= document.getDouble("userFriendSpeed")!!
+                                                                val userTripScore= document.getDouble("userTripScore")!!
+                                                                val userTripCount= document.getLong("userTripCount")?.toInt()!!
+                                                                val userChatNotification = document.getBoolean("userChatNotification")!!
+                                                                val userPushNotification= document.getBoolean("userPushNotification")!!
+
+                                                                val userClass = User(
+                                                                    userAuthentication,
+                                                                    userEmail,
+                                                                    userPw ,
+                                                                    userNickname ,
+                                                                    userName,
+                                                                    userPhoneNum ,
+                                                                    userMBTI,
+                                                                    userProfilePath = userProfilePath,
+                                                                    userFriendSpeed = userFriendSpeed,
+                                                                    userTripScore = userTripScore,
+                                                                    userTripCount = userTripCount,
+                                                                    userChatNotification = userChatNotification,
+                                                                    userPushNotification = userPushNotification
+                                                                )
+                                                                val checkStateAutoLogin = checkStateAutoLogin!!
+
+                                                                val sharedPreferences =
+                                                                    loginMainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                                                                UserRepository.saveUserInfo(sharedPreferences,userClass,checkStateAutoLogin)
+
+                                                                val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                                                                    setTitle("로그인 성공")
+                                                                    setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
+                                                                    setNegativeButton("메인화면으로",null)
+                                                                    setOnDismissListener{
+                                                                        val intent = Intent(loginMainActivity, MainActivity::class.java)
+                                                                        startActivity(intent)
+                                                                        loginMainActivity.finish()
+                                                                    }
+                                                                }
+                                                                builder.show()
+                                                                break
+                                                            }
                                                         }
                                                     }
-                                                    builder.show()
                                                 }
                                             }
                                         }
-
                                     }
                                 }
                             }

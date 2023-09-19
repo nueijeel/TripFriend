@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.user
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.PorterDuff
@@ -35,7 +36,16 @@ class MoreNaverInfoInputFragment : Fragment() {
         loginMainActivity = activity as LoginMainActivity
         fragmentMoreNaverInfoInputBinding = FragmentMoreNaverInfoInputBinding.inflate(layoutInflater)
 
+        val checkStateAutoLogin = arguments?.getBoolean("check")
+
         fragmentMoreNaverInfoInputBinding.run {
+            materialToolbarMoreNaverInfoInputToolbarTitle.run {
+                setNavigationIcon(R.drawable.arrow_back_24px)
+                setNavigationIconTint(getResources().getColor(R.color.black))
+                setNavigationOnClickListener {
+                    loginMainActivity.removeFragment(LoginMainActivity.MORE_NAVER_INFO_INPUT_FRAGMENT)
+                }
+            }
             textInputEditTextMoreNaverInfoInputUserPhoneNumber.setText(loginMainActivity.userPhoneNumber)
 
             textInputEditTexttMoreNaverInfoInputUserNickname.setText(loginMainActivity.userNickname)
@@ -157,14 +167,6 @@ class MoreNaverInfoInputFragment : Fragment() {
                                                             textInputEditTextMoreNaverInfoInputUserPhoneNumber.text.toString(),
                                                             buttonMoreNaverInfoInputSelectMBTI.text.toString()
                                                         )
-                                                        Log.d("aaaa","===============================================")
-                                                        Log.d("aaaa","이메일 = ${userClass.userEmail}")
-                                                        Log.d("aaaa","비밀번호 = ${userClass.userPw}")
-                                                        Log.d("aaaa","인증방식 = ${userClass.userAuthentication}")
-                                                        Log.d("aaaa","이름 = ${userClass.userName}")
-                                                        Log.d("aaaa","닉네임 = ${userClass.userNickname}")
-                                                        Log.d("aaaa","휴대폰 번호 = ${userClass.userPhoneNum}")
-                                                        Log.d("aaaa","MBTI = ${userClass.userMBTI}")
 
                                                         //데이터 저장
                                                         UserRepository.addUser(userClass){
@@ -175,18 +177,60 @@ class MoreNaverInfoInputFragment : Fragment() {
                                                             loginMainActivity.userAuth = ""
                                                             loginMainActivity.userMBTI = ""
                                                             loginMainActivity.userPw = ""
+                                                            UserRepository.getAllUser {
+                                                                for (document in it.result.documents) {
+                                                                    if(userClass.userEmail == document.getString("userEmail") &&
+                                                                        userClass.userAuthentication == document.getString("userAuthentication")){
+                                                                        val userAuthentication= document.getString("userAuthentication").toString()
+                                                                        val userEmail = document.getString("userEmail").toString()
+                                                                        val userPw = document.getString("userPw").toString()
+                                                                        val userNickname= document.getString("userNickname").toString()
+                                                                        val userName= document.getString("userName").toString()
+                                                                        val userPhoneNum= document.getString("userPhoneNum").toString()
+                                                                        val userMBTI= document.getString("userMBTI").toString()
+                                                                        val userProfilePath= document.getString("userProfilePath").toString()
+                                                                        val userFriendSpeed= document.getDouble("userFriendSpeed")!!
+                                                                        val userTripScore= document.getDouble("userTripScore")!!
+                                                                        val userTripCount= document.getLong("userTripCount")?.toInt()!!
+                                                                        val userChatNotification = document.getBoolean("userChatNotification")!!
+                                                                        val userPushNotification= document.getBoolean("userPushNotification")!!
 
-                                                            val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
-                                                                setTitle("로그인 성공")
-                                                                setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
-                                                                setNegativeButton("메인화면으로",null)
-                                                                setOnDismissListener{
-                                                                    val intent = Intent(loginMainActivity, MainActivity::class.java)
-                                                                    startActivity(intent)
-                                                                    loginMainActivity.finish()
+                                                                        val userClass = User(
+                                                                            userAuthentication,
+                                                                            userEmail,
+                                                                            userPw ,
+                                                                            userNickname ,
+                                                                            userName,
+                                                                            userPhoneNum ,
+                                                                            userMBTI,
+                                                                            userProfilePath = userProfilePath,
+                                                                            userFriendSpeed = userFriendSpeed,
+                                                                            userTripScore = userTripScore,
+                                                                            userTripCount = userTripCount,
+                                                                            userChatNotification = userChatNotification,
+                                                                            userPushNotification = userPushNotification
+                                                                        )
+                                                                        val checkStateAutoLogin = checkStateAutoLogin!!
+
+                                                                        val sharedPreferences =
+                                                                            loginMainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                                                                        UserRepository.saveUserInfo(sharedPreferences,userClass,checkStateAutoLogin)
+
+                                                                        val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                                                                            setTitle("로그인 성공")
+                                                                            setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
+                                                                            setNegativeButton("메인화면으로",null)
+                                                                            setOnDismissListener{
+                                                                                val intent = Intent(loginMainActivity, MainActivity::class.java)
+                                                                                startActivity(intent)
+                                                                                loginMainActivity.finish()
+                                                                            }
+                                                                        }
+                                                                        builder.show()
+                                                                        break
+                                                                    }
                                                                 }
                                                             }
-                                                            builder.show()
                                                         }
                                                     }
                                                 }
@@ -204,11 +248,6 @@ class MoreNaverInfoInputFragment : Fragment() {
                                                 .setCompoundDrawablesRelativeWithIntrinsicBounds(drawableDone, null, null, null)
                                             textViewCheckMBTINaver.text = "선택하신 MBTI는 ${buttonMoreNaverInfoInputSelectMBTI.text}입니다."
                                             checkNullMBTI = 1
-                                            Log.d("aaaa","2 $checkNullPhoneNumber")
-                                            Log.d("aaaa","2 $checkNullNickname")
-                                            Log.d("aaaa","2 $checkNullMBTI")
-                                            Log.d("aaaa","2 $checkPhoneNum")
-                                            Log.d("aaaa","2 $checkNickname")
                                             if(checkNullPhoneNumber == 1 && checkNullNickname == 1 &&
                                                 checkNullMBTI == 1 && checkPhoneNum == 1 && checkNickname == 1){
                                                 val userClass = User(
@@ -220,15 +259,6 @@ class MoreNaverInfoInputFragment : Fragment() {
                                                     textInputEditTextMoreNaverInfoInputUserPhoneNumber.text.toString(),
                                                     buttonMoreNaverInfoInputSelectMBTI.text.toString()
                                                 )
-                                                Log.d("aaaa","===============================================")
-                                                Log.d("aaaa","이메일 = ${userClass.userEmail}")
-                                                Log.d("aaaa","비밀번호 = ${userClass.userPw}")
-                                                Log.d("aaaa","인증방식 = ${userClass.userAuthentication}")
-                                                Log.d("aaaa","이름 = ${userClass.userName}")
-                                                Log.d("aaaa","닉네임 = ${userClass.userNickname}")
-                                                Log.d("aaaa","휴대폰 번호 = ${userClass.userPhoneNum}")
-                                                Log.d("aaaa","MBTI = ${userClass.userMBTI}")
-
                                                 //데이터 저장
                                                 UserRepository.addUser(userClass){
                                                     loginMainActivity.userNickname = ""
@@ -238,18 +268,63 @@ class MoreNaverInfoInputFragment : Fragment() {
                                                     loginMainActivity.userAuth = ""
                                                     loginMainActivity.userMBTI = ""
                                                     loginMainActivity.userPw = ""
+                                                    UserRepository.getAllUser {
+                                                        for (document in it.result.documents) {
+                                                            if(userClass.userEmail == document.getString("userEmail")) {
+                                                                if(userClass.userAuthentication == document.getString("userAuthentication")){
+                                                                    val userAuthentication= document.getString("userAuthentication").toString()
+                                                                    val userEmail = document.getString("userEmail").toString()
+                                                                    val userPw = document.getString("userPw").toString()
+                                                                    val userNickname= document.getString("userNickname").toString()
+                                                                    val userName= document.getString("userName").toString()
+                                                                    val userPhoneNum= document.getString("userPhoneNum").toString()
+                                                                    val userMBTI= document.getString("userMBTI").toString()
+                                                                    val userProfilePath= document.getString("userProfilePath").toString()
+                                                                    val userFriendSpeed= document.getDouble("userFriendSpeed")!!
+                                                                    val userTripScore= document.getDouble("userTripScore")!!
+                                                                    val userTripCount= document.getLong("userTripCount")?.toInt()!!
+                                                                    val userChatNotification = document.getBoolean("userChatNotification")!!
+                                                                    val userPushNotification= document.getBoolean("userPushNotification")!!
 
-                                                    val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
-                                                        setTitle("로그인 성공")
-                                                        setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
-                                                        setNegativeButton("메인화면으로",null)
-                                                        setOnDismissListener{
-                                                            val intent = Intent(loginMainActivity, MainActivity::class.java)
-                                                            startActivity(intent)
-                                                            loginMainActivity.finish()
+                                                                    val userClass = User(
+                                                                        userAuthentication,
+                                                                        userEmail,
+                                                                        userPw ,
+                                                                        userNickname ,
+                                                                        userName,
+                                                                        userPhoneNum ,
+                                                                        userMBTI,
+                                                                        userProfilePath = userProfilePath,
+                                                                        userFriendSpeed = userFriendSpeed,
+                                                                        userTripScore = userTripScore,
+                                                                        userTripCount = userTripCount,
+                                                                        userChatNotification = userChatNotification,
+                                                                        userPushNotification = userPushNotification
+                                                                    )
+                                                                    val checkStateAutoLogin = checkStateAutoLogin!!
+
+                                                                    val sharedPreferences =
+                                                                        loginMainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                                                                    UserRepository.saveUserInfo(sharedPreferences,userClass,checkStateAutoLogin)
+                                                                    Log.d("aaaa","status = ${UserRepository.checkUserInfo(sharedPreferences)}")
+
+                                                                    val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                                                                        setTitle("로그인 성공")
+                                                                        setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
+                                                                        setNegativeButton("메인화면으로",null)
+                                                                        setOnDismissListener{
+                                                                            val intent = Intent(loginMainActivity, MainActivity::class.java)
+                                                                            startActivity(intent)
+                                                                            loginMainActivity.finish()
+                                                                        }
+                                                                    }
+                                                                    builder.show()
+                                                                    break
+                                                                }
+                                                                else continue
+                                                            }
                                                         }
                                                     }
-                                                    builder.show()
                                                 }
                                             }
                                         }

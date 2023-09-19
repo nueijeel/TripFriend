@@ -223,13 +223,6 @@ class JoinStepOneFragment : Fragment() {
                         loginMainActivity.userEmail = email
                         loginMainActivity.userPw = pw
                         loginMainActivity.userAuth = "이메일"
-                        Log.d("aaaa","이메일 = ${loginMainActivity.userEmail}")
-                        Log.d("aaaa","비밀번호 = ${loginMainActivity.userPw}")
-                        Log.d("aaaa","인증방식 = ${loginMainActivity.userAuth}")
-                        Log.d("aaaa","이름 = ${loginMainActivity.userName}")
-                        Log.d("aaaa","닉네임 = ${loginMainActivity.userNickname}")
-                        Log.d("aaaa","휴대폰 번호 = ${loginMainActivity.userPhoneNumber}")
-                        Log.d("aaaa","MBTI = ${loginMainActivity.userMBTI}")
                         loginMainActivity.replaceFragment(LoginMainActivity.JOIN_STEP_THREE_FRAGMENT, true, true, null)
                     }
                 }

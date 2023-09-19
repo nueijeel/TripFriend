@@ -1,6 +1,7 @@
 package com.test.tripfriend.ui.user
 
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
@@ -26,6 +28,7 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentLoginMainBinding
+import com.test.tripfriend.dataclassmodel.User
 import com.test.tripfriend.repository.UserRepository
 
 class LoginMainFragment : Fragment() {
@@ -40,10 +43,23 @@ class LoginMainFragment : Fragment() {
         loginMainActivity = activity as LoginMainActivity
         fragmentLoginMainBinding = FragmentLoginMainBinding.inflate(inflater)
 
+        //자동 로그인
+//        val sharedPreferences =
+//            loginMainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+//        if(UserRepository.checkUserInfo(sharedPreferences) == true)
+//        {
+//            val intent = Intent(loginMainActivity, MainActivity::class.java)
+//            startActivity(intent)
+//            loginMainActivity.finish()
+//        }
+
         fragmentLoginMainBinding.run {
             buttonLoginMainEmailLogin.setOnClickListener {
-                loginMainActivity.replaceFragment(LoginMainActivity.EMAIL_LOGIN_FRAGMENT, true, true, null)
+                val bundle = Bundle()
+                bundle.putBoolean("check",checkBoxLoginMainAutoLogin.isChecked)
+                loginMainActivity.replaceFragment(LoginMainActivity.EMAIL_LOGIN_FRAGMENT, true, true, bundle)
             }
+
             //카카오 로그인
             buttonLoginMainKakaoLogin.run {
                 setOnClickListener {
@@ -58,12 +74,13 @@ class LoginMainFragment : Fragment() {
                 }
             }
             checkBoxLoginMainAutoLogin.run {
+                setTextColor(getResources().getColor(R.color.black))
                 setOnClickListener{
                     if(isChecked == true){
-                        checkBoxLoginMainAutoLogin.text = "자동 로그인 활성화"
+                        Snackbar.make(fragmentLoginMainBinding.root, "자동 로그인 설정", Snackbar.LENGTH_SHORT).show()
                     }
                     else{
-                        checkBoxLoginMainAutoLogin.text = "자동 로그인 비활성화"
+                        Snackbar.make(fragmentLoginMainBinding.root, "자동 로그인 해제", Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -114,6 +131,42 @@ class LoginMainFragment : Fragment() {
                             else if(loginMainActivity.userEmail == document.getString("userEmail")
                                 && loginMainActivity.userAuth == document.getString("userAuthentication")){
                                 checkLogin = 0
+
+                                val userAuthentication= document.getString("userAuthentication").toString()
+                                val userEmail = document.getString("userEmail").toString()
+                                val userPw = document.getString("userPw").toString()
+                                val userNickname= document.getString("userNickname").toString()
+                                val userName= document.getString("userName").toString()
+                                val userPhoneNum= document.getString("userPhoneNum").toString()
+                                val userMBTI= document.getString("userMBTI").toString()
+                                val userProfilePath= document.getString("userProfilePath").toString()
+                                val userFriendSpeed= document.getDouble("userFriendSpeed")!!
+                                val userTripScore= document.getDouble("userTripScore")!!
+                                val userTripCount= document.getLong("userTripCount")?.toInt()!!
+                                val userChatNotification = document.getBoolean("userChatNotification")!!
+                                val userPushNotification= document.getBoolean("userPushNotification")!!
+
+                                val userClass = User(
+                                    userAuthentication,
+                                    userEmail,
+                                    userPw ,
+                                    userNickname ,
+                                    userName,
+                                    userPhoneNum ,
+                                    userMBTI,
+                                    userProfilePath = userProfilePath,
+                                    userFriendSpeed = userFriendSpeed,
+                                    userTripScore = userTripScore,
+                                    userTripCount = userTripCount,
+                                    userChatNotification = userChatNotification,
+                                    userPushNotification = userPushNotification
+                                )
+                                val checkStateAutoLogin = fragmentLoginMainBinding.checkBoxLoginMainAutoLogin.isChecked
+
+                                val sharedPreferences =
+                                    loginMainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+                                UserRepository.saveUserInfo(sharedPreferences,userClass,checkStateAutoLogin)
+
                                 val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
                                     setTitle("로그인 성공")
                                     setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
@@ -130,7 +183,9 @@ class LoginMainFragment : Fragment() {
                         //중복된 이메일도 없고 첫 로그인일 때
                         if(checkAuth == 1 && checkLogin == 1){
                             //카카오 정보 기반으로 회원가입 진행
-                            loginMainActivity.replaceFragment(LoginMainActivity.MORE_KAKAO_INFO_INPUT_FRAGMENT,true,true,null)
+                            val bundle = Bundle()
+                            bundle.putBoolean("check",fragmentLoginMainBinding.checkBoxLoginMainAutoLogin.isChecked)
+                            loginMainActivity.replaceFragment(LoginMainActivity.MORE_KAKAO_INFO_INPUT_FRAGMENT,true,true,bundle)
                         }
                     }
                 }
@@ -173,6 +228,44 @@ class LoginMainFragment : Fragment() {
                                 //중복된 이메일이 있고 인증 방식이 카카오면
                                 else if(loginMainActivity.userEmail == document.getString("userEmail")
                                     && loginMainActivity.userAuth == document.getString("userAuthentication")){
+
+                                    val userAuthentication= document.getString("userAuthentication").toString()
+                                    val userEmail = document.getString("userEmail").toString()
+                                    val userPw = document.getString("userPw").toString()
+                                    val userNickname= document.getString("userNickname").toString()
+                                    val userName= document.getString("userName").toString()
+                                    val userPhoneNum= document.getString("userPhoneNum").toString()
+                                    val userMBTI= document.getString("userMBTI").toString()
+                                    val userProfilePath= document.getString("userProfilePath").toString()
+                                    val userFriendSpeed= document.getDouble("userFriendSpeed")!!
+                                    val userTripScore= document.getDouble("userTripScore")!!
+                                    val userTripCount= document.getLong("userTripCount")?.toInt()!!
+                                    val userChatNotification = document.getBoolean("userChatNotification")!!
+                                    val userPushNotification= document.getBoolean("userPushNotification")!!
+
+                                    val userClass = User(
+                                        userAuthentication,
+                                        userEmail,
+                                        userPw ,
+                                        userNickname ,
+                                        userName,
+                                        userPhoneNum ,
+                                        userMBTI,
+                                        userProfilePath = userProfilePath,
+                                        userFriendSpeed = userFriendSpeed,
+                                        userTripScore = userTripScore,
+                                        userTripCount = userTripCount,
+                                        userChatNotification = userChatNotification,
+                                        userPushNotification = userPushNotification
+                                    )
+                                    val checkStateAutoLogin = fragmentLoginMainBinding.checkBoxLoginMainAutoLogin.isChecked
+
+
+                                    val sharedPreferences =
+                                        loginMainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+
+                                    UserRepository.saveUserInfo(sharedPreferences,userClass,checkStateAutoLogin)
+
                                     val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
                                         setTitle("로그인 성공")
                                         setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
@@ -190,7 +283,9 @@ class LoginMainFragment : Fragment() {
                             //중복된 이메일도 없고 첫 로그인일 때
                             if(checkAuth == 1 && checkLogin == 1){
                                 //카카오 정보 기반으로 회원가입 진행
-                                loginMainActivity.replaceFragment(LoginMainActivity.MORE_KAKAO_INFO_INPUT_FRAGMENT,true,true,null)
+                                val bundle = Bundle()
+                                bundle.putBoolean("check",fragmentLoginMainBinding.checkBoxLoginMainAutoLogin.isChecked)
+                                loginMainActivity.replaceFragment(LoginMainActivity.MORE_KAKAO_INFO_INPUT_FRAGMENT,true,true,bundle)
                             }
                         }
                     }
@@ -268,6 +363,43 @@ class LoginMainFragment : Fragment() {
                         //이메일이 있고 인증이 네이버라면 -> 로그인
                         else if(document.getString("userEmail") == loginMainActivity.userEmail &&
                             document.getString("userAuthentication") == "네이버"){
+
+                            val userAuthentication= document.getString("userAuthentication").toString()
+                            val userEmail = document.getString("userEmail").toString()
+                            val userPw = document.getString("userPw").toString()
+                            val userNickname= document.getString("userNickname").toString()
+                            val userName= document.getString("userName").toString()
+                            val userPhoneNum= document.getString("userPhoneNum").toString()
+                            val userMBTI= document.getString("userMBTI").toString()
+                            val userProfilePath= document.getString("userProfilePath").toString()
+                            val userFriendSpeed= document.getDouble("userFriendSpeed")!!
+                            val userTripScore= document.getDouble("userTripScore")!!
+                            val userTripCount= document.getLong("userTripCount")?.toInt()!!
+                            val userChatNotification = document.getBoolean("userChatNotification")!!
+                            val userPushNotification= document.getBoolean("userPushNotification")!!
+
+                            val userClass = User(
+                                userAuthentication,
+                                userEmail,
+                                userPw ,
+                                userNickname ,
+                                userName,
+                                userPhoneNum ,
+                                userMBTI,
+                                userProfilePath = userProfilePath,
+                                userFriendSpeed = userFriendSpeed,
+                                userTripScore = userTripScore,
+                                userTripCount = userTripCount,
+                                userChatNotification = userChatNotification,
+                                userPushNotification = userPushNotification
+                            )
+                            val checkStateAutoLogin = fragmentLoginMainBinding.checkBoxLoginMainAutoLogin.isChecked
+
+                            val sharedPreferences =
+                                loginMainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+
+                            UserRepository.saveUserInfo(sharedPreferences,userClass,checkStateAutoLogin)
+
                             val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
                                 setTitle("로그인 성공")
                                 setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
@@ -285,18 +417,11 @@ class LoginMainFragment : Fragment() {
                     }
                     // 첫 로그인일 경우 추가정보 입력 ㄱ
                     if(checkAuth ==1 && checkLogin == 1){
-                        loginMainActivity.replaceFragment(LoginMainActivity.MORE_NAVER_INFO_INPUT_FRAGMENT,true,true,null)
+                        val bundle = Bundle()
+                        bundle.putBoolean("check",fragmentLoginMainBinding.checkBoxLoginMainAutoLogin.isChecked)
+                        loginMainActivity.replaceFragment(LoginMainActivity.MORE_NAVER_INFO_INPUT_FRAGMENT,true,true,bundle)
                     }
                 }
-
-                Log.d("aaaa","===============================================")
-                Log.d("aaaa","이메일 = ${loginMainActivity.userEmail}")
-                Log.d("aaaa","비밀번호 = ${loginMainActivity.userPw}")
-                Log.d("aaaa","인증방식 = ${loginMainActivity.userAuth}")
-                Log.d("aaaa","이름 = ${loginMainActivity.userName}")
-                Log.d("aaaa","닉네임 = ${loginMainActivity.userNickname}")
-                Log.d("aaaa","휴대폰 번호 = ${loginMainActivity.userPhoneNumber}")
-                Log.d("aaaa","MBTI = ${loginMainActivity.userMBTI}")
 
 //                Toast.makeText(loginMainActivity, "네이버 아이디 로그인 성공!", Toast.LENGTH_SHORT).show()
             }
