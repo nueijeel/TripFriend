@@ -1,6 +1,7 @@
 package com.test.tripfriend.ui.accompany
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -8,6 +9,7 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,10 +20,15 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.protobuf.LazyStringArrayList
+import com.test.tripfriend.R
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.databinding.FragmentAccompanyRegister2Binding
+import com.test.tripfriend.repository.AccompanyRegisterRepository
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class AccompanyRegisterFragment2 : Fragment() {
@@ -31,6 +38,11 @@ class AccompanyRegisterFragment2 : Fragment() {
     lateinit var albumLauncher: ActivityResultLauncher<Intent>
 
     var profileImage : Uri? = null
+    var dates = mutableListOf<String>()
+    var firstDate = ""
+    var secondDate = ""
+
+    val accompanyRegisterRepository = AccompanyRegisterRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +57,10 @@ class AccompanyRegisterFragment2 : Fragment() {
         albumLauncher = albumSetting(fragmentAccompanyRegisterFragment2.imageViewRegister2)
 
         fragmentAccompanyRegisterFragment2.run {
+
+            // bundle 가져오기
+            val country = arguments?.getString("country")
+
             materialToolbarRegister2.run {
                 setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
                 setNavigationOnClickListener {
@@ -73,6 +89,11 @@ class AccompanyRegisterFragment2 : Fragment() {
                     override fun onFirstDateSelected(startDate: Calendar) {
                         val date = startDate.time
                         val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+//                        dates[0] = format.format(date)
+                        dates.clear()
+                        dates.add(format.format(date))
+                        firstDate = format.format(date)
                         Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
                     }
 
@@ -80,6 +101,14 @@ class AccompanyRegisterFragment2 : Fragment() {
                         val startDate = startDate.time
                         val endDate = endDate.time
                         val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+//                        dates[0] = format.format(startDate)
+//                        dates[1] = format.format(endDate)
+                        dates.clear()
+                        dates.add(format.format(startDate))
+                        dates.add(format.format(endDate))
+                        firstDate = format.format(startDate)
+                        secondDate = format.format(endDate)
                         Toast.makeText(mainActivity, "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(endDate), Toast.LENGTH_SHORT).show()
                     }
                 })
@@ -87,7 +116,85 @@ class AccompanyRegisterFragment2 : Fragment() {
 
             // 다음 버튼
             buttonAccompanyRegister2ToNextView.setOnClickListener {
-                mainActivity.replaceFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT3, true, true, null)
+
+                if(textInputEditTextRegister2Title.text?.length == 0) {
+                    MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+                        setTitle("제목 입력")
+                        setMessage("게시글의 제목을 입력해주세요.")
+                        setNegativeButton("닫기", null)
+                        show()
+                        return@setOnClickListener
+                    }
+                }
+
+                if(dates[0] == "") {
+                    MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+                        setTitle("날짜 입력")
+                        setMessage("동행날짜를 입력해주세요.")
+                        setNegativeButton("닫기", null)
+                        show()
+                        return@setOnClickListener
+                    }
+                }
+
+                if(textInputEditTextRegister2NOP.text?.length == 0) {
+                    MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+                        setTitle("인원 입력")
+                        setMessage("동행 인원을 입력해주세요.")
+                        setNegativeButton("닫기", null)
+                        show()
+                        return@setOnClickListener
+                    }
+                }
+
+                if(textInputRegister2Content.text?.length == 0) {
+                    MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+                        setTitle("내용 입력")
+                        setMessage("내용을 입력해주세요.")
+                        setNegativeButton("닫기", null)
+                        show()
+                        return@setOnClickListener
+                    }
+                }
+
+                var tripPostIdx = 0L
+                var postImagePath = ""
+                val title = textInputEditTextRegister2Title.text.toString()
+                val people = textInputEditTextRegister2NOP.text.toString()
+                val content = textInputRegister2Content.text.toString()
+
+                accompanyRegisterRepository.getPostIdx() {
+
+                    if(it.result.documents[0].getLong("tripPostIdx") == null) {
+                        tripPostIdx = 0
+                        tripPostIdx++
+                    } else {
+                        tripPostIdx = it.result.documents[0].getLong("tripPostIdx") as Long
+                        tripPostIdx++
+                    }
+
+                    // 이미지 파일 경로
+                    if (profileImage == null) {
+                        postImagePath = "null"
+                    } else {
+                        postImagePath = "TripPost/$tripPostIdx"
+                    }
+
+                    val bundle = Bundle()
+                    bundle.putString("country", country)
+                    bundle.putString("title", title)
+                    bundle.putString("postImagePath", postImagePath)
+                    bundle.putStringArrayList("dates", ArrayList(dates))
+                    bundle.putString("people", people)
+                    bundle.putString("content", content)
+                    bundle.putLong("tripPostIdx", tripPostIdx)
+                    bundle.putString("startDate", firstDate)
+                    bundle.putString("endDate", secondDate)
+
+                    mainActivity.replaceFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT3, true, true, bundle)
+                }
+
+
             }
         }
 
