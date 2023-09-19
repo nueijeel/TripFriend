@@ -148,6 +148,7 @@ class ReadPostFragment : Fragment() {
 
             //리뷰 버튼
             buttonReadPostReview.setOnClickListener {
+                //번들로 해당 게시글의 아이디나 idx를 넘겨야함
                 mainActivity.replaceFragment(MainActivity.REVIEW_FRAGMENT,true,true,null)
             }
         }
