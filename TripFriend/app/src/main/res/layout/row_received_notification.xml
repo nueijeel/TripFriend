@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_marginTop="20dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="8dp">
 
@@ -17,48 +16,53 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="15dp">
+            android:padding="20dp">
 
             <TextView
-                android:id="@+id/textViewSentNotificationRowTitle"
+                android:id="@+id/textViewNotificationRowTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
+                android:layout_margin="10dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageViewNotificationRowProfileImage"
                     android:layout_width="60dp"
-                    android:layout_height="60dp" />
+                    android:layout_height="60dp"
+                    android:clickable="true" />
 
                 <TextView
                     android:id="@+id/textViewNotificationRowNickname"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:clickable="true"
                     android:gravity="center_vertical"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/textViewReceivedNotification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="님의 동행 요청입니다."
+                    android:textSize="@dimen/text_size_2" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/textViewNotificationRowContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"
+                android:layout_margin="10dp"
                 android:background="@drawable/textview_border"
                 android:padding="10dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -67,7 +71,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:gravity="right"
                 android:orientation="horizontal">
 
