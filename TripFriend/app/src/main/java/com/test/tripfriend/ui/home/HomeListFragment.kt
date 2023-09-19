@@ -1,20 +1,28 @@
 package com.test.tripfriend.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.databinding.FragmentHomeListBinding
 import com.test.tripfriend.databinding.RowHomeListBinding
+import com.test.tripfriend.dataclassmodel.TripPost
+import com.test.tripfriend.ui.trip.TripMainFragment
+import com.test.tripfriend.viewmodel.HomeViewModel
+import com.test.tripfriend.viewmodel.TripPostViewModel
 
 class HomeListFragment : Fragment() {
     lateinit var fragmentHomeListBinding: FragmentHomeListBinding
     lateinit var mainActivity: MainActivity
+
+    lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,6 +30,8 @@ class HomeListFragment : Fragment() {
     ): View? {
         fragmentHomeListBinding = FragmentHomeListBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+
+        initHomeViewModel()
 
         fragmentHomeListBinding.run {
             recyclerViewHomeList.run {
@@ -34,6 +44,16 @@ class HomeListFragment : Fragment() {
     }
 
     inner class HomeListAdapter : RecyclerView.Adapter<HomeListAdapter.HomeListViewHolder>() {
+        var homePostItemList :List<TripPost> = emptyList()
+
+        fun updateItemList(newList: List<TripPost>) {
+            this.homePostItemList = newList
+            notifyDataSetChanged()
+
+            Log.d("qwer", "${homePostItemList.joinToString(separator = ", ")}")
+            Log.d("qwer", "${homePostItemList.get(0)}")
+        }
+
         inner class HomeListViewHolder(rowHomeListBinding: RowHomeListBinding) : RecyclerView.ViewHolder(rowHomeListBinding.root) {
             val textViewHomeMainListRowTitle: TextView
             val textViewHomeMainListDate: TextView
@@ -66,15 +86,26 @@ class HomeListFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 4
+            return homePostItemList.size
         }
 
         override fun onBindViewHolder(holder: HomeListViewHolder, position: Int) {
-            holder.textViewHomeMainListRowTitle.text = "부산 여행갈분"
-            holder.textViewHomeMainListDate.text = "2023.09.29 ~ 2023.09.30"
-            holder.textViewHomeMainListRowNOP.text = "4명"
-            holder.textViewHomeMainListRowLocation.text = "부산"
-            holder.textViewHomeMainListRowHashTag.text = "#식도락 #해운대 #해수욕장 #밀면 #암소고기 #해안열차 #부산 #맛집탐방 #바다 #놀러가자 #뿌엥"
+            holder.textViewHomeMainListRowTitle.text = homePostItemList.get(position).tripPostTitle
+            holder.textViewHomeMainListDate.text = "${homePostItemList.get(position).tripPostDate?.get(0)} ~ ${homePostItemList.get(position).tripPostDate?.get(1)}"
+            holder.textViewHomeMainListRowNOP.text = homePostItemList.get(position).tripPostMemberCount.toString()
+            holder.textViewHomeMainListRowLocation.text = homePostItemList.get(position).tripPostLocationName
+            holder.textViewHomeMainListRowHashTag.text = homePostItemList.get(position).tripPostHashTag
+        }
+    }
+
+    fun initHomeViewModel() {
+        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+        homeViewModel.getTripPostData()
+
+        homeViewModel.tripPostList.observe(viewLifecycleOwner){
+            if(it != null) {
+                (fragmentHomeListBinding.recyclerViewHomeList.adapter as? HomeListAdapter)?.updateItemList(it)
+            }
         }
     }
 }
