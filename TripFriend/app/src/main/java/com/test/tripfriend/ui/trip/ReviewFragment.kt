@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.trip
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -85,7 +86,15 @@ class ReviewFragment : Fragment() {
                     //유효성 검사
                     if (state) {
                         //데이터 저장
-                        reviewViewModel.saveToReview((fragmentReviewBinding.recyclerViewReview.adapter as ReviewAdapter).reviewResultList)
+                        val builder= MaterialAlertDialogBuilder(mainActivity,R.style.DialogTheme).apply {
+                            setMessage("🎅해당 리뷰는 동행자의 동행 점수에 큰 영향이 미칠 수 있습니다. 리뷰 작성을 완료합니다")
+                            setNegativeButton("취소", null)
+                            setPositiveButton("확인"){ dialogInterface: DialogInterface, i: Int ->
+                                reviewViewModel.saveToReview((fragmentReviewBinding.recyclerViewReview.adapter as ReviewAdapter).reviewResultList)
+                            }
+                        }
+                        builder.show()
+
                     } else {
                         //모두 설정이 안됐다면 다이얼로그 띄움
                         val builder= MaterialAlertDialogBuilder(mainActivity,R.style.DialogTheme).apply {
