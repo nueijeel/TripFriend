@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.accompany
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -21,7 +22,8 @@ class AccompanyRegisterFragment3 : Fragment() {
 
 
     // 최대 선택 가능 Chip 갯수
-    val maxSelectableChips  = 3
+    val maxSelectableChips = 3
+
     // 칩 카운트 변수
     var chipCount = 0
 
@@ -36,7 +38,8 @@ class AccompanyRegisterFragment3 : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentAccompanyRegisterFragment3 = FragmentAccompanyRegister3Binding.inflate(layoutInflater)
+        fragmentAccompanyRegisterFragment3 =
+            FragmentAccompanyRegister3Binding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
         // bundle 가져오기
@@ -50,11 +53,15 @@ class AccompanyRegisterFragment3 : Fragment() {
         val tripPostIdx = arguments?.getLong("tripPostIdx")
         val startDate = arguments?.getString("startDate")
         val endDate = arguments?.getString("endDate")
+        val latitude = arguments?.getDouble("latitude")
+        val longitude = arguments?.getDouble("latitude")
+        val image = arguments?.getString("imageUri")
+        val imageUri = Uri.parse(image)
 
         val date = mutableListOf<String>()
 
-            date.add(startDate.toString())
-            date.add(endDate.toString())
+        date.add(startDate.toString())
+        date.add(endDate.toString())
 
         Log.d("qwer", "$country")
         Log.d("qwer", "${date.get(0)} ${date.get(1)} $dates")
@@ -93,8 +100,8 @@ class AccompanyRegisterFragment3 : Fragment() {
 
             buttonAccompanyRegister3ToSubmit.setOnClickListener {
 
-                for(category in categories) {
-                    if(category.isChecked)
+                for (category in categories) {
+                    if (category.isChecked)
                         chipCategory.add(category.text.toString())
                 }
 
@@ -103,7 +110,7 @@ class AccompanyRegisterFragment3 : Fragment() {
 
                 val hashTag = textInputEditTextRegister3Hashtag.text.toString()
 
-                if(categories.isEmpty()) {
+                if (categories.isEmpty()) {
                     MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
                         setTitle("카테고리 입력")
                         setMessage("카테고리를 입력해주세요.")
@@ -113,7 +120,7 @@ class AccompanyRegisterFragment3 : Fragment() {
                     }
                 }
 
-                if(chipGender.isEmpty()) {
+                if (chipGender.isEmpty()) {
                     MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
                         setTitle("성별 입력")
                         setMessage("성별을 입력해주세요.")
@@ -133,7 +140,7 @@ class AccompanyRegisterFragment3 : Fragment() {
 //                    }
 //                }
 
-                if(title != null && country != null && content != null && tripPostIdx != null) {
+                if (title != null && country != null && content != null && tripPostIdx != null && latitude != null && longitude != null) {
                     val tripPost = TripPost(
                         "testEmail",
                         title,
@@ -142,8 +149,8 @@ class AccompanyRegisterFragment3 : Fragment() {
                         postImagePath,
                         date,
                         country,
-                        0.0,
-                        0.0,
+                        latitude,
+                        longitude,
                         0,
                         chipCategory,
                         hashTag,
@@ -152,13 +159,17 @@ class AccompanyRegisterFragment3 : Fragment() {
                         chipGender
                     )
                     accompanyRegisterRepository.saveAccompanyToDB(tripPost)
-                    Snackbar.make(mainActivity.activityMainBinding.root, "등록이 완료되었습니다..", Snackbar.LENGTH_SHORT).show()
+                    if(imageUri != null) {
+                        if (postImagePath != null) {
+                            accompanyRegisterRepository.uploadImages(imageUri!!, postImagePath) {
+                                completePost()
+                            }
+                        }
+                    } else {
+                        // Image 없는 경우
+                        completePost()
+                    }
 
-                    mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT3)
-                    mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT2)
-                    mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT1)
-
-                    mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, null)
                 }
 
             }
@@ -170,16 +181,34 @@ class AccompanyRegisterFragment3 : Fragment() {
     // 최대 3개 이상의 칩을 선택 못하게 하는 함수
     fun chipMax(chipId: Chip) {
         chipId.setOnClickListener {
-            if(chipId.isChecked) {
-                if(chipCount >= maxSelectableChips) {
+            if (chipId.isChecked) {
+                if (chipCount >= maxSelectableChips) {
                     chipId.isChecked = false
-                    Snackbar.make(fragmentAccompanyRegisterFragment3.root, "여행 카테고리는 최대 3개 선택 가능합니다.", Snackbar.LENGTH_SHORT).show()
-                } else{
+                    Snackbar.make(
+                        fragmentAccompanyRegisterFragment3.root,
+                        "여행 카테고리는 최대 3개 선택 가능합니다.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else {
                     chipCount++
                 }
             } else {
                 chipCount--
             }
         }
+    }
+
+    fun completePost() {
+        Snackbar.make(
+            mainActivity.activityMainBinding.root,
+            "등록이 완료되었습니다..",
+            Snackbar.LENGTH_SHORT
+        ).show()
+
+        mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT3)
+        mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT2)
+        mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT1)
+
+        mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, null)
     }
 }

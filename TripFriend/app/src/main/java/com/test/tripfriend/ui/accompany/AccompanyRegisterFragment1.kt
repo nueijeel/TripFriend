@@ -1,6 +1,7 @@
 package com.test.tripfriend.ui.accompany
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
@@ -33,6 +34,9 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     lateinit var fragmentAccompanyRegister1Binding: FragmentAccompanyRegister1Binding
     lateinit var mainActivity: MainActivity
     var country: String? = ""
+    var locality: String? = ""
+    var latitude: Double = 0.0
+    var longitude: Double = 0.0
 
     private var mapFragment: SupportMapFragment? = null
     private lateinit var coordinates: LatLng
@@ -47,9 +51,11 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     private val startAutocomplete = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
+        Log.d("qwer", "startAutocomplete ${result}")
         fragmentAccompanyRegister1Binding.iconButton.setOnClickListener(
             startAutocompleteIntentListener
         )
+
         if (result.resultCode == AppCompatActivity.RESULT_OK) {
             val intent = result.data
             if (intent != null) {
@@ -75,6 +81,8 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
             Place.Field.NAME,
             Place.Field.LAT_LNG
         )
+
+        Log.d("qwer", "startAutocompleteIntent fields : ${fields.joinToString(separator = ", ")}")
 
         // 필드, 국가 및 유형 필터가 적용된 자동 완성 인텐트 구축
         val intent = Autocomplete.IntentBuilder(
@@ -144,7 +152,12 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
 //                }
 
                 val bundle = Bundle()
-                bundle.putString("country", country)
+                bundle.putString("country", country + " " + locality)
+                bundle.putDouble("latitude", latitude)
+                bundle.putDouble("longitude", longitude)
+
+                Log.d("qwer", "latitude : $latitude")
+                Log.d("qwer", "longitude : $longitude")
 
                 mainActivity.replaceFragment(
                     MainActivity.ACCOMPANY_REGISTER_FRAGMENT2,
@@ -160,19 +173,24 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     }
 
     private fun fillInAddress(place: Place) {
+        Log.d("qwer", "fillInAddress addressComponents : ${place.addressComponents}")
+
         val components = place.addressComponents
+
 
         if (components != null) {
             for (component in components.asList()) {
                 when (component.types[0]) {
                     "country" -> {
-                        fragmentAccompanyRegister1Binding.toolbarText.setText(component.name)
                         country = component.name
+                    }
+                    "locality" -> {
+                        locality = component.name
                     }
                 }
             }
         }
-//        fragmentAccompanyRegister1Binding.buttonAccompanyRegister1ToNextView.setText(address1.toString())
+        fragmentAccompanyRegister1Binding.toolbarText.setText(country + " " + locality)
 
         // 지도 추가
         showMap(place)
@@ -181,6 +199,8 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     // [START maps_solutions_android_autocomplete_map_add]
     private fun showMap(place: Place) {
         coordinates = place.latLng as LatLng
+        latitude = coordinates.latitude
+        longitude = coordinates.longitude
 
         // 태그 설정하여 검색
         mapFragment =
@@ -210,12 +230,16 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     // [END maps_solutions_android_autocomplete_map_add]
 
     private fun updateMap(latLng: LatLng) {
-        marker?.position = latLng
-        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+        Log.d("qwer", "updateMap latLng  : $latLng")
+//        marker?.position = latLng
+//        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
+        marker = map?.addMarker(MarkerOptions().position(coordinates))
     }
 
     // [START maps_solutions_android_autocomplete_map_ready]
     override fun onMapReady(googleMap: GoogleMap) {
+        Log.d("qwer", "onMapReady googleMap.cameraPosition : ${googleMap.cameraPosition}")
         map = googleMap
         try {
             // 정의된 JSON 객체를 사용하여 기본 지도의 스타일을 맞춤설정
@@ -233,5 +257,10 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     }
     // [END maps_solutions_android_autocomplete_map_ready]
 
-
+    override fun onStop() {
+        super.onStop()
+        Log.d("qwer", "onStop mapFragment : ${mapFragment}")
+        Log.d("qwer", "onStop map : ${map}")
+        Log.d("qwer", "onStop marker : ${marker}")
+    }
 }
