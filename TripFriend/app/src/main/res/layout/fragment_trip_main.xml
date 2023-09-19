@@ -25,7 +25,7 @@
     </com.google.android.material.appbar.MaterialToolbar>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tapLayoutTripMain"
+        android:id="@+id/tabLayoutTripMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabMode="fixed"
