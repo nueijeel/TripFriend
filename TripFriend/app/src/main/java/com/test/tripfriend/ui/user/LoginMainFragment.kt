@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
@@ -17,6 +18,11 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.navercorp.nid.profile.NidProfileCallback
+import com.navercorp.nid.profile.data.NidProfileResponse
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentLoginMainBinding
@@ -45,10 +51,20 @@ class LoginMainFragment : Fragment() {
                     kakaoLogin() //로그인
                 }
             }
+            //네이버로그인
             buttonLoginMainNaverLogin.run {
                 setOnClickListener {
-                    kakaoLogout()
-                    kakaoUnlink()
+                    naverLogin() //로그인
+                }
+            }
+            checkBoxLoginMainAutoLogin.run {
+                setOnClickListener{
+                    if(isChecked == true){
+                        checkBoxLoginMainAutoLogin.text = "자동 로그인 활성화"
+                    }
+                    else{
+                        checkBoxLoginMainAutoLogin.text = "자동 로그인 비활성화"
+                    }
                 }
             }
 
@@ -87,8 +103,8 @@ class LoginMainFragment : Fragment() {
                                 && loginMainActivity.userAuth != document.getString("userAuthentication")) {
                                 checkAuth = 0
                                 val builder = MaterialAlertDialogBuilder(loginMainActivity, R.style.DialogTheme).apply {
-                                    setTitle("이메일 입력 오류")
-                                    setMessage("현재 사용중인 이메일입니다.")
+                                    setTitle("로그인 오류")
+                                    setMessage("${loginMainActivity.userEmail}은 현재 사용중인 이메일입니다.")
                                     setNegativeButton("확인", null)
                                 }
                                 builder.show()
@@ -117,15 +133,6 @@ class LoginMainFragment : Fragment() {
                             loginMainActivity.replaceFragment(LoginMainActivity.MORE_KAKAO_INFO_INPUT_FRAGMENT,true,true,null)
                         }
                     }
-
-                    Log.d("aaaa","===============================================")
-                    Log.d("aaaa","이메일 = ${loginMainActivity.userEmail}")
-                    Log.d("aaaa","비밀번호 = ${loginMainActivity.userPw}")
-                    Log.d("aaaa","인증방식 = ${loginMainActivity.userAuth}")
-                    Log.d("aaaa","이름 = ${loginMainActivity.userName}")
-                    Log.d("aaaa","닉네임 = ${loginMainActivity.userNickname}")
-                    Log.d("aaaa","휴대폰 번호 = ${loginMainActivity.userPhoneNumber}")
-                    Log.d("aaaa","MBTI = ${loginMainActivity.userMBTI}")
                 }
             }
         }
@@ -157,7 +164,7 @@ class LoginMainFragment : Fragment() {
                                     checkAuth = 0
                                     val builder = MaterialAlertDialogBuilder(loginMainActivity, R.style.DialogTheme).apply {
                                         setTitle("이메일 입력 오류")
-                                        setMessage("현재 사용중인 이메일입니다.")
+                                        setMessage("${loginMainActivity.userEmail}은 이미 사용중인 이메일입니다.")
                                         setNegativeButton("확인", null)
                                     }
                                     builder.show()
@@ -177,6 +184,7 @@ class LoginMainFragment : Fragment() {
                                         }
                                     }
                                     builder.show()
+                                    checkLogin = 0
                                 }
                             }
                             //중복된 이메일도 없고 첫 로그인일 때
@@ -215,5 +223,145 @@ class LoginMainFragment : Fragment() {
 
             }
         }
+    }
+
+    fun naverLogin(){
+        /** Naver Login Module Initialize */
+        val naverClientId = getString(R.string.social_login_info_naver_client_id)
+        val naverClientSecret = getString(R.string.social_login_info_naver_client_secret)
+        val naverClientName = getString(R.string.social_login_info_naver_client_name)
+        NaverIdLoginSDK.initialize(loginMainActivity, naverClientId, naverClientSecret , naverClientName)
+
+        var naverToken :String? = ""
+
+        val profileCallback = object : NidProfileCallback<NidProfileResponse> {
+            override fun onSuccess(response: NidProfileResponse) {
+                val email = response.profile?.email
+                val nickname = response.profile?.nickname
+                val phoneNum = response.profile?.mobile
+                val name = response.profile?.name
+                val userInfo = "Email: $email\nNickname: $nickname\nphoneNum = $phoneNum\nname = $name"
+//                fragmentLoginMainBinding.textViewLoginMainSubTitle.text = userInfo
+
+                loginMainActivity.userName = name.toString()
+                loginMainActivity.userEmail = email.toString()
+                loginMainActivity.userPhoneNumber = phoneNum?.replace("-","").toString()
+                loginMainActivity.userNickname = nickname.toString()
+                loginMainActivity.userAuth = "네이버"
+
+                var checkAuth = 1
+                var checkLogin = 1
+                UserRepository.getAllUser {
+                    for (document in it.result.documents) {
+                        //이메일은 이미 있지만 네이버 인증이 아니면
+                        if(document.getString("userEmail") == loginMainActivity.userEmail &&
+                            document.getString("userAuthentication") != "네이버"){
+                            val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                                setTitle("로그인 오류")
+                                setMessage("${loginMainActivity.userEmail}은 이미 사용중인 이메일입니다.")
+                                setNegativeButton("취소",null)
+                            }
+                            builder.show()
+                            checkAuth = 0
+                            break
+                        }
+                        //이메일이 있고 인증이 네이버라면 -> 로그인
+                        else if(document.getString("userEmail") == loginMainActivity.userEmail &&
+                            document.getString("userAuthentication") == "네이버"){
+                            val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                                setTitle("로그인 성공")
+                                setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
+                                setNegativeButton("메인화면으로",null)
+                                setOnDismissListener{
+                                    val intent = Intent(loginMainActivity, MainActivity::class.java)
+                                    startActivity(intent)
+                                    loginMainActivity.finish()
+                                }
+                            }
+                            builder.show()
+                            checkLogin = 0
+                            break
+                        }
+                    }
+                    // 첫 로그인일 경우 추가정보 입력 ㄱ
+                    if(checkAuth ==1 && checkLogin == 1){
+                        loginMainActivity.replaceFragment(LoginMainActivity.MORE_NAVER_INFO_INPUT_FRAGMENT,true,true,null)
+                    }
+                }
+
+                Log.d("aaaa","===============================================")
+                Log.d("aaaa","이메일 = ${loginMainActivity.userEmail}")
+                Log.d("aaaa","비밀번호 = ${loginMainActivity.userPw}")
+                Log.d("aaaa","인증방식 = ${loginMainActivity.userAuth}")
+                Log.d("aaaa","이름 = ${loginMainActivity.userName}")
+                Log.d("aaaa","닉네임 = ${loginMainActivity.userNickname}")
+                Log.d("aaaa","휴대폰 번호 = ${loginMainActivity.userPhoneNumber}")
+                Log.d("aaaa","MBTI = ${loginMainActivity.userMBTI}")
+
+//                Toast.makeText(loginMainActivity, "네이버 아이디 로그인 성공!", Toast.LENGTH_SHORT).show()
+            }
+            override fun onFailure(httpStatus: Int, message: String) {
+                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+//                Toast.makeText(loginMainActivity, "errorCode: ${errorCode}\n" +
+//                        "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT).show()
+            }
+            override fun onError(errorCode: Int, message: String) {
+                onFailure(errorCode, message)
+            }
+        }
+
+        /** OAuthLoginCallback을 authenticate() 메서드 호출 시 파라미터로 전달하거나 NidOAuthLoginButton 객체에 등록하면 인증이 종료되는 것을 확인할 수 있습니다. */
+        val oauthLoginCallback = object : OAuthLoginCallback {
+            override fun onSuccess() {
+                // 네이버 로그인 인증이 성공했을 때 수행할 코드 추가
+                naverToken = NaverIdLoginSDK.getAccessToken()
+//                var naverRefreshToken = NaverIdLoginSDK.getRefreshToken()
+//                var naverExpiresAt = NaverIdLoginSDK.getExpiresAt().toString()
+//                var naverTokenType = NaverIdLoginSDK.getTokenType()
+//                var naverState = NaverIdLoginSDK.getState().toString()
+
+                //로그인 유저 정보 가져오기
+                NidOAuthLogin().callProfileApi(profileCallback)
+            }
+            override fun onFailure(httpStatus: Int, message: String) {
+                val errorCode = NaverIdLoginSDK.getLastErrorCode().code
+                val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
+//                Toast.makeText(loginMainActivity, "errorCode: ${errorCode}\n" +
+//                        "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT).show()
+            }
+            override fun onError(errorCode: Int, message: String) {
+//                onFailure(errorCode, message)
+            }
+        }
+
+        NaverIdLoginSDK.authenticate(loginMainActivity, oauthLoginCallback)
+    }
+
+    //네이버 로그아웃
+    fun startNaverLogout(){
+        NaverIdLoginSDK.logout()
+        Toast.makeText(loginMainActivity, "네이버 아이디 로그아웃 성공!", Toast.LENGTH_SHORT).show()
+    }
+
+    //토큰 삭제
+    fun startNaverDeleteToken(){
+        NidOAuthLogin().callDeleteTokenApi(loginMainActivity, object : OAuthLoginCallback {
+            override fun onSuccess() {
+                //서버에서 토큰 삭제에 성공한 상태입니다.
+                Toast.makeText(loginMainActivity, "네이버 아이디 토큰삭제 성공!", Toast.LENGTH_SHORT).show()
+            }
+            override fun onFailure(httpStatus: Int, message: String) {
+                // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                Log.d("naver", "errorCode: ${NaverIdLoginSDK.getLastErrorCode().code}")
+                Log.d("naver", "errorDesc: ${NaverIdLoginSDK.getLastErrorDescription()}")
+            }
+            override fun onError(errorCode: Int, message: String) {
+                // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태입니다.
+                // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없습니다.
+                onFailure(errorCode, message)
+            }
+        })
     }
 }

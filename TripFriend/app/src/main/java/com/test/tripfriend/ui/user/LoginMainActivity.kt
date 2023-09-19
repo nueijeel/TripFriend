@@ -45,6 +45,7 @@ class LoginMainActivity : AppCompatActivity() {
         val JOIN_STEP_FOUR_FRAGMENT = "JoinStepFourFragment"
         val JOIN_STEP_FIVE_FRAGMENT = "JoinStepFiveFragment"
         val MORE_KAKAO_INFO_INPUT_FRAGMENT = "MoreKakaoInfoInputFragment"
+        val MORE_NAVER_INFO_INPUT_FRAGMENT = "MoreNaverInfoInputFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +76,7 @@ class LoginMainActivity : AppCompatActivity() {
             JOIN_STEP_FOUR_FRAGMENT -> JoinStepFourFragment()
             JOIN_STEP_FIVE_FRAGMENT -> JoinStepFiveFragment()
             MORE_KAKAO_INFO_INPUT_FRAGMENT -> MoreKakaoInfoInputFragment()
+            MORE_NAVER_INFO_INPUT_FRAGMENT -> MoreNaverInfoInputFragment()
             else -> Fragment()
         }
 

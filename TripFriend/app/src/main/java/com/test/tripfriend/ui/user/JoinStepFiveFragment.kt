@@ -1,6 +1,7 @@
 package com.test.tripfriend.ui.user
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +19,7 @@ import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentJoinStepFiveBinding
 import com.test.tripfriend.dataclassmodel.User
 import com.test.tripfriend.repository.UserRepository
+import com.test.tripfriend.ui.main.MainActivity
 
 
 class JoinStepFiveFragment : Fragment() {
@@ -99,12 +101,21 @@ class JoinStepFiveFragment : Fragment() {
                         loginMainActivity.userAuth = ""
                         loginMainActivity.userMBTI = ""
                         loginMainActivity.userPw = ""
-                        //가입 완료 시 회원가입 단계 화면 백스택에서 전부 제거
-                        loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FIVE_FRAGMENT)
-                        loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT)
-                        loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_THREE_FRAGMENT)
-                        loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_TWO_FRAGMENT)
-                        loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_ONE_FRAGMENT)
+
+                        val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
+                            setTitle("회원가입 성공")
+                            setMessage("회원가입에 성공하였습니다. 가입한 정보로 로그인해주세요.")
+                            setNegativeButton("닫기",null)
+                            setOnDismissListener{
+                                //가입 완료 시 회원가입 단계 화면 백스택에서 전부 제거
+                                loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FIVE_FRAGMENT)
+                                loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_FOUR_FRAGMENT)
+                                loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_THREE_FRAGMENT)
+                                loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_TWO_FRAGMENT)
+                                loginMainActivity.removeFragment(LoginMainActivity.JOIN_STEP_ONE_FRAGMENT)
+                            }
+                        }
+                        builder.show()
                     }
                 } else {
                     val builder= MaterialAlertDialogBuilder(loginMainActivity,R.style.DialogTheme).apply {
@@ -114,10 +125,6 @@ class JoinStepFiveFragment : Fragment() {
                     }
                     builder.show()
                 }
-
-
-
-
             }
 
             chipJoinStepFiveNon.setOnCheckedChangeListener { compoundButton, checked ->

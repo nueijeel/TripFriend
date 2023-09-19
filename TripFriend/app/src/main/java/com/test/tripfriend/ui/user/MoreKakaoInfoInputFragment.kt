@@ -4,13 +4,11 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.tripfriend.R
@@ -181,7 +179,6 @@ class MoreKakaoInfoInputFragment : Fragment() {
                                                 textViewCheckMBTI.text = "선택하신 MBTI는 ${buttonMoreKakaoInfoInputSelectMBTI.text}입니다."
                                                 if(checkNullName == 1 && checkNullPhoneNumber == 1 && checkNullNickname == 1 &&
                                                     checkNullMBTI == 1 && checkPhoneNum == 1 && checkNickname == 1){
-                                                    buttonMoreKakaoInfoInputSave.text = "저장완료1"
                                                     val userClass = User(
                                                         loginMainActivity.userAuth,
                                                         loginMainActivity.userEmail,
@@ -234,7 +231,6 @@ class MoreKakaoInfoInputFragment : Fragment() {
 
                                         if(checkNullName == 1 && checkNullPhoneNumber == 1 && checkNullNickname == 1 && checkNullMBTI == 1) {
                                             if (checkPhoneNum == 1 && checkNickname == 1) {
-                                                buttonMoreKakaoInfoInputSave.text = "저장완료2"
                                                 val userClass = User(
                                                     loginMainActivity.userAuth,
                                                     loginMainActivity.userEmail,

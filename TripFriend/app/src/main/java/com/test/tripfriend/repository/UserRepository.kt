@@ -1,6 +1,5 @@
 package com.test.tripfriend.repository
 
-import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
