@@ -1,19 +1,38 @@
 package com.test.tripfriend.ui.user
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
+import android.util.Log
+import android.view.View
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.common.util.Utility
+import com.kakao.sdk.user.UserApiClient
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.ActivityLoginMainBinding
 import kotlin.concurrent.thread
 
+
 class LoginMainActivity : AppCompatActivity() {
+
+    var userAuth = ""
+    var userEmail = ""
+    var userPw = ""
+    var userName = ""
+    var userNickname = ""
+    var userPhoneNumber = ""
+    var userMBTI = ""
+    var checkEmail = 0
 
     lateinit var activityLoginMainBinding: ActivityLoginMainBinding
 
@@ -25,6 +44,8 @@ class LoginMainActivity : AppCompatActivity() {
         val JOIN_STEP_THREE_FRAGMENT = "JoinStepThreeFragment"
         val JOIN_STEP_FOUR_FRAGMENT = "JoinStepFourFragment"
         val JOIN_STEP_FIVE_FRAGMENT = "JoinStepFiveFragment"
+        val MORE_KAKAO_INFO_INPUT_FRAGMENT = "MoreKakaoInfoInputFragment"
+        val MORE_NAVER_INFO_INPUT_FRAGMENT = "MoreNaverInfoInputFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,8 +54,11 @@ class LoginMainActivity : AppCompatActivity() {
         installSplashScreen()
 
         activityLoginMainBinding = ActivityLoginMainBinding.inflate(layoutInflater)
-        setContentView(activityLoginMainBinding.root)
+        activityLoginMainBinding.run {
 
+        }
+
+        setContentView(activityLoginMainBinding.root)
         replaceFragment(LOGIN_MAIN_FRAGMENT, false, true, null)
     }
 
@@ -51,6 +75,8 @@ class LoginMainActivity : AppCompatActivity() {
             JOIN_STEP_THREE_FRAGMENT -> JoinStepThreeFragment()
             JOIN_STEP_FOUR_FRAGMENT -> JoinStepFourFragment()
             JOIN_STEP_FIVE_FRAGMENT -> JoinStepFiveFragment()
+            MORE_KAKAO_INFO_INPUT_FRAGMENT -> MoreKakaoInfoInputFragment()
+            MORE_NAVER_INFO_INPUT_FRAGMENT -> MoreNaverInfoInputFragment()
             else -> Fragment()
         }
 
