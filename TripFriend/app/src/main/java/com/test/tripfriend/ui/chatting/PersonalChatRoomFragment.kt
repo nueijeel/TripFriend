@@ -48,7 +48,7 @@ class PersonalChatRoomFragment : Fragment() {
         chattingViewModel = ViewModelProvider(this)[ChattingViewModel::class.java]
 
         chattingViewModel.run {
-            chattingList.observe(mainActivity) {
+            chattingList.observe(viewLifecycleOwner) {
 
                 //데이터 변경 시 리사이클러뷰 업데이트
                 if (it != null) {
