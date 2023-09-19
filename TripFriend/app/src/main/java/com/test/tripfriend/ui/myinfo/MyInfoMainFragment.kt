@@ -1,26 +1,45 @@
 package com.test.tripfriend.ui.myinfo
 
 import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import androidx.core.view.marginLeft
+import androidx.core.view.marginRight
+import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentMyInfoMainBinding
+import com.test.tripfriend.dataclassmodel.User
+import com.test.tripfriend.repository.UserRepository
+import com.test.tripfriend.viewmodel.UserViewModel
+import kotlinx.coroutines.runBlocking
 
 class MyInfoMainFragment : Fragment() {
-    lateinit var fragmentMyInfoMainBinding: FragmentMyInfoMainBinding
-    lateinit var mainActivity: MainActivity
+
+    lateinit var fragmentMyInfoMainBinding : FragmentMyInfoMainBinding
+    lateinit var mainActivity : MainActivity
+
+    lateinit var userViewModel : UserViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+
         fragmentMyInfoMainBinding = FragmentMyInfoMainBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+
+        //로그인 된 유저의 정보로 변경 필
+        val testUserEmail = "nueijeel0423@gmail.com"
+        val testUserAuthentication = "이메일"
 
         fragmentMyInfoMainBinding.run {
             myInfoToolbar.run {
@@ -28,7 +47,10 @@ class MyInfoMainFragment : Fragment() {
 
                 setOnMenuItemClickListener {
                     //톱니 바퀴 클릭시 앱 설정 창으로 이동
-                    mainActivity.replaceFragment(MainActivity.MY_APP_SETTING_FRAGMENT,true,false,null)
+                    val newBundle = Bundle()
+                    newBundle.putString("userDocumentId", userViewModel.userDocumentId.value.toString())
+
+                    mainActivity.replaceFragment(MainActivity.MY_APP_SETTING_FRAGMENT,true,false,newBundle)
                     mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
                     true
                 }
@@ -40,30 +62,73 @@ class MyInfoMainFragment : Fragment() {
                 mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
             }
 
-            //내 친구 속도 수치를 textView로 보여주기 위한 작업(프로그래스 thumb를 따라다님)
-            seekbarFriendSpeed.setOnSeekBarChangeListener(object:OnSeekBarChangeListener{
-                override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                    val padding = seekbarFriendSpeed.paddingLeft + seekbarFriendSpeed.paddingRight
-                    val sPos = seekbarFriendSpeed.left + seekbarFriendSpeed.paddingLeft
-                    val xPos = (seekbarFriendSpeed.width - padding) * seekbarFriendSpeed.progress / seekbarFriendSpeed.max + sPos - (textViewFriendSpeed.width / 2)
-                    textViewFriendSpeed.x = xPos.toFloat()
-                    textViewFriendSpeed.text = seekbarFriendSpeed.progress.toString()
-                }
-
-                override fun onStartTrackingTouch(p0: SeekBar?) {
-
-                }
-
-                override fun onStopTrackingTouch(p0: SeekBar?) {
-
-                }
-            })
+            seekbarFriendSpeed.isEnabled = false
 
         }
 
+        initViewModel(testUserEmail, testUserAuthentication)
 
         return fragmentMyInfoMainBinding.root
     }
 
+    fun initViewModel(userEmail : String, userAuthentication : String){
+        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        userViewModel.getTargetUserData(userEmail, userAuthentication)
 
+        userViewModel.user.observe(viewLifecycleOwner){ user ->
+            if(user != null){
+
+                fragmentMyInfoMainBinding.run {
+                    if(user.userProfilePath.isEmpty()){
+                        //기본 이미지 지정
+                        imageViewMyInfoMainProfile.setImageResource(R.drawable.person_24px)
+                    }
+                    else{
+                        //유저 정보에 저장된 이미지 지정
+                        userViewModel.getTargetUserProfileImage(user.userProfilePath)
+                    }
+
+                    //인증 수단
+                    when(user.userAuthentication){
+                        "이메일" -> imageViewAppAuth.visibility = View.VISIBLE
+                        "카카오" -> imageViewKakaoAuth.visibility = View.VISIBLE
+                        "네이버" -> imageViewNaverAuth.visibility = View.VISIBLE
+                    }
+
+                    //닉네임, MBTI
+                    textViewMyNickname.text = user.userNickname
+                    textViewMBTI.text = if(user.userMBTI == "모름") "MBTI 미설정" else user.userMBTI
+
+                    //속도, 점수, 횟수
+                    textViewFriendSpeed.text = "${user.userFriendSpeed}km"
+                    seekbarFriendSpeed.progress = user.userFriendSpeed.toInt()
+                    textViewAccompanyScore.text = user.userTripScore.toString()
+                    textViewAccompanyNumber.text = user.userTripCount.toString()
+
+                    //속도 텍스트 뷰 위치 설정
+//                    val thumbBound = seekbarFriendSpeed.thumb.bounds
+//                    val thumbOffset = seekbarFriendSpeed.thumbOffset
+//                    Log.d("thumbOffset", thumbOffset.toString())
+//                    Log.d("thumbBound", thumbBound.toString())
+//                    textViewFriendSpeed.translationX = seekbarFriendSpeed.left + thumbBound.right.toFloat()
+
+//                    val padding=seekbarFriendSpeed.paddingLeft+seekbarFriendSpeed.paddingRight
+//                    val sPos = seekbarFriendSpeed.left+seekbarFriendSpeed.paddingLeft
+//                    val xPos = (seekbarFriendSpeed.width-padding)*seekbarFriendSpeed.progress/seekbarFriendSpeed.max+sPos-(textViewFriendSpeed.width/2)
+//                    textViewFriendSpeed.x = xPos.toFloat()
+                }
+
+            }
+        }
+
+        userViewModel.userProfileImage.observe(viewLifecycleOwner){ uri ->
+            if(uri != null){
+                Glide.with(mainActivity).load(uri)
+                    .into(fragmentMyInfoMainBinding.imageViewMyInfoMainProfile)
+            }
+            else{
+                fragmentMyInfoMainBinding.imageViewMyInfoMainProfile.setImageResource(R.drawable.person_24px)
+            }
+        }
+    }
 }

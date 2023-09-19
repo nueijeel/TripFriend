@@ -70,10 +70,6 @@
 
         </LinearLayout>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,15 +93,14 @@
 
                 </com.google.android.material.tabs.TabLayout>
 
+
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager2HomeMain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
                 </androidx.viewpager2.widget.ViewPager2>
 
             </LinearLayout>
-        </ScrollView>
 
     </LinearLayout>
 

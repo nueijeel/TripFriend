@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -16,11 +17,13 @@ import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.DialogHomeMainFilterBinding
 import com.test.tripfriend.databinding.FragmentHomeMainBinding
+import kotlinx.coroutines.selects.select
 import com.test.tripfriend.repository.UserRepository
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -31,7 +34,8 @@ class HomeMainFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
     // 최대 선택 가능 Chip 갯수
-    val maxSelectableChips  = 3
+    val maxSelectableChips = 3
+
     // 칩 카운트 변수
     var chipCount = 0
 
@@ -79,45 +83,63 @@ class HomeMainFragment : Fragment() {
             // 필터 다이얼로그
             imageButtonHomeMainFilter.run {
                 setOnClickListener {
-                    val builder = MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
-                        val dialogHomeMainFilterBinding : DialogHomeMainFilterBinding = DialogHomeMainFilterBinding.inflate(layoutInflater)
+                    val builder =
+                        MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+                            val dialogHomeMainFilterBinding: DialogHomeMainFilterBinding =
+                                DialogHomeMainFilterBinding.inflate(layoutInflater)
 
-                        setView(dialogHomeMainFilterBinding.root)
+                            setView(dialogHomeMainFilterBinding.root)
 
-                        dialogHomeMainFilterBinding.run {
-                            chipMax(chipDialogFilterCategory1)
-                            chipMax(chipDialogFilterCategory2)
-                            chipMax(chipDialogFilterCategory3)
-                            chipMax(chipDialogFilterCategory4)
-                            chipMax(chipDialogFilterCategory5)
-                            chipMax(chipDialogFilterCategory6)
-                            chipMax(chipDialogFilterCategory7)
-                            chipMax(chipDialogFilterCategory8)
-                            chipMax(chipDialogFilterCategory9)
+                            dialogHomeMainFilterBinding.run {
+                                chipMax(chipDialogFilterCategory1)
+                                chipMax(chipDialogFilterCategory2)
+                                chipMax(chipDialogFilterCategory3)
+                                chipMax(chipDialogFilterCategory4)
+                                chipMax(chipDialogFilterCategory5)
+                                chipMax(chipDialogFilterCategory6)
+                                chipMax(chipDialogFilterCategory7)
+                                chipMax(chipDialogFilterCategory8)
+                                chipMax(chipDialogFilterCategory9)
 
-                            // 데이트 피커
-                            dialogHomeMainFilterBinding.calendarTripMain.setCalendarListener(object :
-                                CalendarListener {
-                                override fun onFirstDateSelected(startDate: Calendar) {
-                                    val date = startDate.time
-                                    val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                                    Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
-                                }
+                                // 데이트 피커
+                                dialogHomeMainFilterBinding.calendarTripMain.setCalendarListener(
+                                    object :
+                                        CalendarListener {
+                                        override fun onFirstDateSelected(startDate: Calendar) {
+                                            val date = startDate.time
+                                            val format =
+                                                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                                            Toast.makeText(
+                                                mainActivity,
+                                                "Start Date: " + format.format(date),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
 
-                                override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
-                                    val startDate = startDate.time
-                                    val endDate = endDate.time
-                                    val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                                    Toast.makeText(mainActivity, "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(endDate), Toast.LENGTH_SHORT).show()
-                                }
-                            })
+                                        override fun onDateRangeSelected(
+                                            startDate: Calendar,
+                                            endDate: Calendar
+                                        ) {
+                                            val startDate = startDate.time
+                                            val endDate = endDate.time
+                                            val format =
+                                                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                                            Toast.makeText(
+                                                mainActivity,
+                                                "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(
+                                                    endDate
+                                                ),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    })
+                            }
+
+
+
+                            setNegativeButton("취소", null)
+                            setPositiveButton("적용", null)
                         }
-
-
-
-                        setNegativeButton("취소", null)
-                        setPositiveButton("적용", null)
-                    }
 
                     builder.show()
                 }
@@ -127,19 +149,26 @@ class HomeMainFragment : Fragment() {
             viewPager2HomeMain.run {
                 val adapter = ViewPagerAdapter(mainActivity)
                 viewPager2HomeMain.adapter = adapter
+                isUserInputEnabled = false
 
                 TabLayoutMediator(tabLayoutHomeMain, viewPager2HomeMain) { tab, position ->
-                    when(position) {
+                    when (position) {
                         0 -> tab.text = "목록"
                         1 -> tab.text = "지도"
                     }
                 }.attach()
             }
 
+
             // 플로팅버튼
             floatingActionButtonHomeMain.run {
                 setOnClickListener {
-                    mainActivity.replaceFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT1, true, true, null)
+                    mainActivity.replaceFragment(
+                        MainActivity.ACCOMPANY_REGISTER_FRAGMENT1,
+                        true,
+                        true,
+                        null
+                    )
                 }
             }
         }
@@ -150,11 +179,15 @@ class HomeMainFragment : Fragment() {
     // 최대 3개 이상의 칩을 선택 못하게 하는 함수
     fun chipMax(chipId: Chip) {
         chipId.setOnClickListener {
-            if(chipId.isChecked) {
-                if(chipCount >= maxSelectableChips) {
+            if (chipId.isChecked) {
+                if (chipCount >= maxSelectableChips) {
                     chipId.isChecked = false
-                    Snackbar.make(fragmentHomeMainBinding.root, "여행 카테고리는 최대 3개 선택 가능합니다.", Snackbar.LENGTH_SHORT).show()
-                } else{
+                    Snackbar.make(
+                        fragmentHomeMainBinding.root,
+                        "여행 카테고리는 최대 3개 선택 가능합니다.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else {
                     chipCount++
                 }
             } else {
@@ -187,7 +220,12 @@ class HomeMainFragment : Fragment() {
                 // 항목을 선택하면 동작하는 리스너
                 onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     // 항목을 선택했을 호출되는 메서드
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
 
                     }
 
@@ -200,7 +238,8 @@ class HomeMainFragment : Fragment() {
     }
 
     // 뷰 페이저 어댑터
-    inner class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
+    inner class ViewPagerAdapter(fragmentActivity: FragmentActivity) :
+        FragmentStateAdapter(fragmentActivity) {
         val fragments: List<Fragment> = listOf(HomeListFragment(), HomeMapFragment())
 
         override fun getItemCount(): Int {
@@ -208,7 +247,7 @@ class HomeMainFragment : Fragment() {
         }
 
         override fun createFragment(position: Int): Fragment {
-            val resultFragment = when(position){
+            val resultFragment = when (position) {
                 0 -> HomeListFragment()
                 1 -> HomeMapFragment()
                 else -> HomeListFragment()

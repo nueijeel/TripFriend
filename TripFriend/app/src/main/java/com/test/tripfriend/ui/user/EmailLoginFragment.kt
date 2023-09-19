@@ -103,9 +103,9 @@ class EmailLoginFragment : Fragment() {
                             setMessage("로그인에 성공하였습니다. 트립친과 함께 좋은 여행이 되길 바랍니다.^^")
                             setNegativeButton("메인화면으로",null)
                             setOnDismissListener{
-//                                val intent = Intent(loginMainActivity, MainActivity::class.java)
-//                                startActivity(intent)
-//                                loginMainActivity.finish()
+                                val intent = Intent(loginMainActivity, MainActivity::class.java)
+                                startActivity(intent)
+                                loginMainActivity.finish()
                             }
                         }
                         builder.show()
