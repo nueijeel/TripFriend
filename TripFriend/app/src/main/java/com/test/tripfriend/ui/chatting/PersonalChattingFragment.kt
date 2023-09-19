@@ -38,12 +38,12 @@ class PersonalChattingFragment : Fragment() {
 
         mainActivity = activity as MainActivity
         fragmentPersonalChattingBinding = FragmentPersonalChattingBinding.inflate(layoutInflater)
-        personalChatViewModel = ViewModelProvider(mainActivity)[PersonalChatViewModel::class.java]
+        personalChatViewModel = ViewModelProvider(this)[PersonalChatViewModel::class.java]
         personalChatRepository = PersonalChatRepository()
 
         personalChatViewModel.run {
             //데이터 업데이트하기
-            chatInfoData.observe(mainActivity) {
+            chatInfoData.observe(viewLifecycleOwner) {
                 if (it != null) {
                     (fragmentPersonalChattingBinding.recyclerViewPersonalChatting.adapter as? PersonalChattingAdapter)?.updateItemList(
                         it
@@ -51,7 +51,7 @@ class PersonalChattingFragment : Fragment() {
                 }
             }
 
-            chaneString.observe(mainActivity){
+            changeString.observe(viewLifecycleOwner){
                 Log.d("testt","변화 감지 옵저버")
                 fetchChatRoomInfo(MY_ID)
             }

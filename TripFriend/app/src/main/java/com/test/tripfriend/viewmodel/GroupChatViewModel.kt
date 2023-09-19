@@ -6,96 +6,91 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
-import com.test.tripfriend.dataclassmodel.PersonalChatInfo
-import com.test.tripfriend.dataclassmodel.PersonalChatRoom2
-import com.test.tripfriend.dataclassmodel.PersonalChatting2
-import com.test.tripfriend.repository.PersonalChatRepository
+import com.test.tripfriend.dataclassmodel.GroupChatInfo
+import com.test.tripfriend.dataclassmodel.GroupChatRoom
+import com.test.tripfriend.dataclassmodel.GroupChatting
+import com.test.tripfriend.dataclassmodel.PostInfo
+import com.test.tripfriend.dataclassmodel.TripPost
+import com.test.tripfriend.repository.GroupChatRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
-class PersonalChatViewModel : ViewModel() {
-    var chatInfoData = MutableLiveData<MutableList<PersonalChatInfo>>()
-
-
+class GroupChatViewModel : ViewModel() {
     //통신을 위한 레포지토리 객체
-    val personalChatRepository = PersonalChatRepository()
+    val groupChatRepository = GroupChatRepository()
+    //단체 채팅방 정보를 담고있는 라이브데이터
+    val groupChatRoomInfo = MutableLiveData<MutableList<GroupChatInfo>>()
 
-    //채팅방의 변화가 감지되는지 감시하기 위한 라이브데이터
     val changeString = MutableLiveData<String>()
 
-    //나와 관련된 채팅방을 모두 불러와서 채팅방을 띄우는데 필요한 정보를 수집
-    fun fetchChatRoomInfo(myEmail: String) {
+    ////나와 관련된 단체 채팅방을 모두 불러와서 채팅방을 띄우는데 필요한 정보를 수집
+    fun fetchGroupChatRoomInfo(myNickname: String) {
         val rooms = mutableListOf<DocumentSnapshot>()
-        val roomInfo = mutableListOf<DocumentSnapshot>()
-        val personalChatInfo = mutableListOf<PersonalChatInfo>()
-        val roomIdList = mutableListOf<String>()
-
         val scope = CoroutineScope(Dispatchers.Default)
+        val groupChatInfo = mutableListOf<GroupChatInfo>()
         scope.launch {
-            //내 이메일과 관련된 모든 채팅방 정보를 담겨있는 스냅샷 가져오기
-            val roomSnapshot = async { personalChatRepository.getMyPersonalChatRoom(myEmail) }
+
+            //내 이메일과 관련된 그룹 채팅방 정보를 담겨있는 스냅샷 가져오기
+            val roomSnapshot = async { groupChatRepository.getMyGroupChatRoom(myNickname) }
 
             //스냅샷 저장
             rooms.addAll(roomSnapshot.await().documents)
 
             //채팅방 정보를 모두 탐색
             for (document in rooms) {
-                //채팅
-                roomIdList.add(document.id)
-                val data = document.toObject(PersonalChatRoom2::class.java)
-
-                //채팅방 목록 정보를 가져오기 위한 스냅샷 가져와서 저장(내 상대의 정보를 저장해야하기에 분기문)
-                val chatRoomSnapshot = async {
-                    personalChatRepository.getPersonalChatInfo(
-                        //상대방의 정보를 가져와서 목록 아이템에 띄워야 하므로 분기문으로 캐스팅
-                        if (data?.personalChatRequesterEmail.toString() == myEmail) {
-                            data?.personalChatPostWriterEmail ?: "null"
-                        } else {
-                            data?.personalChatRequesterEmail ?: "null"
-                        }
-                    )
-                }
-                //가져온 채팅방 목록 스냅샷 저장
-                roomInfo.addAll(chatRoomSnapshot.await().documents)
-            }
-
-            //채팅방 목록의 데이터를 탐색하고 해당 채팅방id저장
-            for (idx in 0 until roomInfo.size) {
                 val lastChatInfo = mutableListOf<DocumentSnapshot>()
-                val data = roomInfo[idx].toObject(PersonalChatInfo::class.java)
-                if (data != null) {
-                    data.documentId = roomIdList[idx]
+                val groupChatRoomObj= GroupChatInfo()
 
-                    //최근 채팅방 정보를 동기처리로 저장
-                    val lastChatSnapshot =
-                        async { personalChatRepository.getLastChat(roomIdList[idx]) }
-                    lastChatInfo.addAll(lastChatSnapshot.await().documents)
+                //채팅방의 아이디 저장(입장할때 용이하기 위함)
+                groupChatRoomObj.roomId=document.id
 
-                    for (document in lastChatInfo) {
-                        val chatData = document.toObject(PersonalChatting2::class.java)
-                        data.lastChatDate = chatData?.personalChatSendDateAndTime
-                        data.lastChatContent = chatData?.personalChatContent
-                    }
+                //읽어온 채팅방 데이터 하나
+                val roomObj = document.toObject(GroupChatRoom::class.java)
 
-                    personalChatInfo.add(data)
+                //채팅방에 해당하는 동행글 제목을 가져오기 위한 작업
+                val postInfoSnapshot =
+                    async { groupChatRepository.getRoomInfoFromPost(roomObj?.groupChatTripPostId!!) }
+                val postInfo = postInfoSnapshot.await().toObject(PostInfo::class.java)
+                val postId=postInfoSnapshot.await().id
+                //동행글 타이틀 저장
+                groupChatRoomObj.tripPostTitle=postInfo?.tripPostTitle
+                //동행글 id저장
+                groupChatRoomObj.tripPostId=postId
+                //참여한 인원수 저장
+                groupChatRoomObj.memberCount=postInfo?.tripPostMemberList?.size
+
+                //최근 채팅방 정보를 동기처리로 저장
+                val lastChatSnapshot =
+                    async { groupChatRepository.getLastChat(document.id) }
+                lastChatInfo.addAll(lastChatSnapshot.await().documents)
+
+                for (lastChat in lastChatInfo) {
+                    val chatData = lastChat.toObject(GroupChatting::class.java)
+                    groupChatRoomObj.lastChatDate = chatData?.groupChatSendDateAndTime
+                    groupChatRoomObj.lastChatContent = chatData?.groupChatContent
+                    groupChatInfo.add(groupChatRoomObj)
+                    Log.d("이거맞나","${groupChatRoomObj.roomId}")
+                    Log.d("이거맞나","${groupChatRoomObj.memberCount}")
+                    Log.d("이거맞나","${groupChatRoomObj.tripPostId}")
+                    Log.d("이거맞나","${groupChatRoomObj.lastChatContent}")
+                    Log.d("이거맞나","${groupChatRoomObj.lastChatDate}")
+                    Log.d("이거맞나","${groupChatRoomObj.tripPostTitle}")
+
                 }
             }
-
-            //메인 쓰레드에서 라이브데이터 설정
+            //메인 쓰레드에서 라이브 데이터 저장
             withContext(Dispatchers.Main) {
-                chatInfoData.value = personalChatInfo
+                groupChatRoomInfo.value = groupChatInfo
             }
-
             //코루틴 종료
             scope.cancel()
         }
     }
+
 
     //채팅에 변경사항이 있으면 호출되는 함수
     fun fetchChangeInfo(roomId: String) {
@@ -104,9 +99,9 @@ class PersonalChatViewModel : ViewModel() {
         val scope = CoroutineScope(Dispatchers.Default)
         scope.launch {
             // PersonalChatting 하위 컬렉션에 대한 리스너 설정
-            val chatRoomRef = db.collection("PersonalChatRoom").document(chatRoomDocumentId)
+            val chatRoomRef = db.collection("GroupChatRoom").document(chatRoomDocumentId)
             val chatListenerRegistration = chatRoomRef
-                .collection("PersonalChatting")
+                .collection("GroupChatting")
                 .addSnapshotListener { querySnapshot, e ->
                     if (e != null) {
                         // 오류 처리
