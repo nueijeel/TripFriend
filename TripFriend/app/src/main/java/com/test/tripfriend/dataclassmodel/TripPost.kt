@@ -14,6 +14,7 @@ data class TripPost(
     val tripPostTripCategory: List<String>? = emptyList(),      //여행 카테고리 (3개)
     val tripPostHashTag: String = "",                           //해시태그
     val tripPostContent: String = "",                           //내용
+    var tripPostDocumentId: String ="",                         //문서 아이디
     var tripPostIdx: Int = 0,                                   //문서아이디
     var tripPostGender: List<Boolean> = emptyList()             //성별
 )
