@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.accompany
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.databinding.FragmentAccompanyRegister3Binding
 import com.test.tripfriend.dataclassmodel.TripPost
 import com.test.tripfriend.repository.AccompanyRegisterRepository
+import com.test.tripfriend.repository.UserRepository
 
 class AccompanyRegisterFragment3 : Fragment() {
     lateinit var fragmentAccompanyRegisterFragment3: FragmentAccompanyRegister3Binding
@@ -28,11 +30,15 @@ class AccompanyRegisterFragment3 : Fragment() {
     var chipCount = 0
 
     val chipCategory = mutableListOf<String>()
-    val chipGender = mutableListOf<Boolean>()
+    val chipGender = arrayOfNulls<Boolean>(2)
 
     var categories = mutableListOf<Chip>()
+    var categoryChecked = false
+    var genderChecked = false
 
     val accompanyRegisterRepository = AccompanyRegisterRepository()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +47,10 @@ class AccompanyRegisterFragment3 : Fragment() {
         fragmentAccompanyRegisterFragment3 =
             FragmentAccompanyRegister3Binding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+
+        val sharedPreferences =
+            mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userClass = UserRepository.getUserInfo(sharedPreferences)
 
         // bundle 가져오기
 
@@ -54,7 +64,7 @@ class AccompanyRegisterFragment3 : Fragment() {
         val startDate = arguments?.getString("startDate")
         val endDate = arguments?.getString("endDate")
         val latitude = arguments?.getDouble("latitude")
-        val longitude = arguments?.getDouble("latitude")
+        val longitude = arguments?.getDouble("longitude")
         val image = arguments?.getString("imageUri")
         val imageUri = Uri.parse(image)
 
@@ -101,16 +111,22 @@ class AccompanyRegisterFragment3 : Fragment() {
             buttonAccompanyRegister3ToSubmit.setOnClickListener {
 
                 for (category in categories) {
-                    if (category.isChecked)
+                    if (category.isChecked) {
                         chipCategory.add(category.text.toString())
+                        categoryChecked = true
+                    }
+
                 }
 
-                chipGender.add(chipGender1.isChecked)
-                chipGender.add(chipGender2.isChecked)
+                chipGender[0] = chipGender1.isChecked
+                chipGender[1] = chipGender2.isChecked
+
+                Log.d("qwer", "chipGender : ${chipGender[0]}, ${chipGender[1]}")
+                Log.d("qwer", "chipGenderif : ${!(chipGender[0] == true || chipGender[1] == true)}")
 
                 val hashTag = textInputEditTextRegister3Hashtag.text.toString()
 
-                if (categories.isEmpty()) {
+                if (!categoryChecked) {
                     MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
                         setTitle("카테고리 입력")
                         setMessage("카테고리를 입력해주세요.")
@@ -120,7 +136,9 @@ class AccompanyRegisterFragment3 : Fragment() {
                     }
                 }
 
-                if (chipGender.isEmpty()) {
+
+
+                if (!(chipGender[0] == true || chipGender[1] == true)) {
                     MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
                         setTitle("성별 입력")
                         setMessage("성별을 입력해주세요.")
@@ -130,19 +148,19 @@ class AccompanyRegisterFragment3 : Fragment() {
                     }
                 }
 
-//                if(textInputEditTextRegister3Hashtag.text.toString() == "") {
-//                    MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
-//                        setTitle("해시태그 입력")
-//                        setMessage("해시태그를 입력해주세요.")
-//                        setNegativeButton("닫기", null)
-//                        show()
-//                        return@setOnClickListener
-//                    }
-//                }
+                if(textInputEditTextRegister3Hashtag.text.toString() == "") {
+                    MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+                        setTitle("해시태그 입력")
+                        setMessage("해시태그를 입력해주세요.")
+                        setNegativeButton("닫기", null)
+                        show()
+                        return@setOnClickListener
+                    }
+                }
 
-                if (title != null && country != null && content != null && tripPostIdx != null && latitude != null && longitude != null) {
+                if (title != null && country != null && content != null && tripPostIdx != null && latitude != null && longitude != null && chipGender != null) {
                     val tripPost = TripPost(
-                        "testEmail",
+                        "${userClass.userEmail}",
                         title,
                         null,
                         people!!.toInt(),
@@ -157,7 +175,7 @@ class AccompanyRegisterFragment3 : Fragment() {
                         content,
                         "",
                         tripPostIdx.toInt(),
-                        chipGender
+                        chipGender.toList()
                     )
                     accompanyRegisterRepository.saveAccompanyToDB(tripPost)
                     if(imageUri != null) {

@@ -159,6 +159,16 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
                 Log.d("qwer", "latitude : $latitude")
                 Log.d("qwer", "longitude : $longitude")
 
+                if (country == "") {
+                    MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+                        setTitle("위치 입력")
+                        setMessage("위치를 입력해주세요.")
+                        setNegativeButton("닫기", null)
+                        show()
+                        return@setOnClickListener
+                    }
+                }
+
                 mainActivity.replaceFragment(
                     MainActivity.ACCOMPANY_REGISTER_FRAGMENT2,
                     true,
@@ -184,6 +194,7 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
                     "country" -> {
                         country = component.name
                     }
+
                     "locality" -> {
                         locality = component.name
                     }

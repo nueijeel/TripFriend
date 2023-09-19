@@ -16,5 +16,5 @@ data class TripPost(
     val tripPostContent: String = "",                           //내용
     var tripPostDocumentId: String ="",                         //문서 아이디
     var tripPostIdx: Int = 0,                                   //문서아이디
-    var tripPostGender: List<Boolean> = emptyList()             //성별
+    var tripPostGender: List<Boolean?> = emptyList()             //성별
 )
