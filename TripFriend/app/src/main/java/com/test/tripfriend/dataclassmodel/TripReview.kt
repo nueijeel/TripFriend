@@ -16,7 +16,7 @@ class TripMemberInfo {
 
 class ReviewContentState{
     var tripReviewScore:Int=0
-    var tripReviewStyle:Array<String?> = Array(5){i->null}
+    var tripReviewStyle:MutableList<String?> = mutableListOf(null,null,null,null,null)
     var tripReviewWriterEmail:String=""
     var tripReviewPostId:String=""
     var tripReviewTargetUserEmail:String=""

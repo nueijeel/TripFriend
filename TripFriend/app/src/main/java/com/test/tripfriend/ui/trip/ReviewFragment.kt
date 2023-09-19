@@ -1,6 +1,5 @@
 package com.test.tripfriend.ui.trip
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,13 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.TextView
-import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentReviewBinding
@@ -54,6 +53,11 @@ class ReviewFragment : Fragment() {
                     it
                 )
             }
+            saveState.observe(viewLifecycleOwner){
+                Snackbar.make(fragmentReviewBinding.root, "리뷰 작성이 완료되었습니다", Snackbar.LENGTH_SHORT).show()
+                mainActivity.removeFragment(MainActivity.REVIEW_FRAGMENT)
+                //화면 종료(리무브)
+            }
             //번들로 넘어온 리스트로 대체해야함()
             getUserInfo(memberList, "이일팔구")
         }
@@ -81,7 +85,7 @@ class ReviewFragment : Fragment() {
                     //유효성 검사
                     if (state) {
                         //데이터 저장
-
+                        reviewViewModel.saveToReview((fragmentReviewBinding.recyclerViewReview.adapter as ReviewAdapter).reviewResultList)
                     } else {
                         //모두 설정이 안됐다면 다이얼로그 띄움
                         val builder= MaterialAlertDialogBuilder(mainActivity,R.style.DialogTheme).apply {

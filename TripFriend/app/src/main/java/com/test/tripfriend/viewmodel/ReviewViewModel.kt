@@ -1,10 +1,9 @@
 package com.test.tripfriend.viewmodel
 
-import android.provider.ContactsContract.CommonDataKinds.Nickname
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentSnapshot
+import com.test.tripfriend.dataclassmodel.ReviewContentState
 import com.test.tripfriend.dataclassmodel.TripMemberInfo
 import com.test.tripfriend.repository.ReviewRepository
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +17,7 @@ import kotlinx.coroutines.withContext
 class ReviewViewModel : ViewModel() {
     val reviewRepository = ReviewRepository()
     val userInfoList = MutableLiveData<MutableList<TripMemberInfo>>()
+    val saveState=MutableLiveData<Boolean>()
 
     //멤버의 정보를 불러오는 메서드(내 정보는 제외)
     fun getUserInfo(memberList: List<String>, myNickname: String) {
@@ -49,4 +49,15 @@ class ReviewViewModel : ViewModel() {
             scope.cancel()
         }
     }
+
+    fun saveToReview(reviewList: Array<ReviewContentState>) {
+        for (review in reviewList) {
+            runBlocking {
+                reviewRepository.saveReviewToDB(review)
+            }
+        }
+        saveState.value=true
+
+    }
+
 }
