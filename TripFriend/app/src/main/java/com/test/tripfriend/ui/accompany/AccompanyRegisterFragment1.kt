@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.accompany
 
+import android.content.DialogInterface
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
@@ -20,8 +21,10 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.PlaceTypes
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.tripfriend.R
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.databinding.FragmentAccompanyRegister1Binding
@@ -29,6 +32,7 @@ import com.test.tripfriend.databinding.FragmentAccompanyRegister1Binding
 class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     lateinit var fragmentAccompanyRegister1Binding: FragmentAccompanyRegister1Binding
     lateinit var mainActivity: MainActivity
+    var country: String? = ""
 
     private var mapFragment: SupportMapFragment? = null
     private lateinit var coordinates: LatLng
@@ -79,8 +83,12 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
         )
 //            .setCountries(listOf("US"))
 //            .setPlaceTypes(listOf(Place.Type., Place.Type.POINT_OF_INTEREST))
-            .setTypesFilter(listOf("landmark", "restaurant", "store"))
-//            .setTypesFilter(listOf(PlaceTypes.ADDRESS))
+//            .setTypesFilter(listOf("landmark", "restaurant", "store"))
+//            .setTypesFilter(listOf(PlaceTypes.LANDMARK))
+            .setTypesFilter(listOf(PlaceTypes.ADDRESS))
+            .setTypesFilter(listOf(PlaceTypes.CITIES))        // 도시
+//            .setTypesFilter(listOf(PlaceTypes.COUNTRY))     // 국가
+//            .setTypesFilter(listOf(PlaceTypes.CAFE))
             //TODO: https://developers.google.com/maps/documentation/places/android-sdk/autocomplete
 //            .setTypesFilter(listOf(TypeFilter.ADDRESS.toString().lowercase()))
             .build(mainActivity)
@@ -114,12 +122,37 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
             }
 
             buttonAccompanyRegister1ToNextView.setOnClickListener {
+
+//                if(country == "") {
+//                    MaterialAlertDialogBuilder(mainActivity,R.style.DialogTheme).run {
+//                        setTitle("여행지 선택")
+//                        setMessage("여행지를 선택해주세요.")
+//                        setNegativeButton("닫기") { dialogInterface: DialogInterface, i: Int ->
+//                        }
+//                        show()
+//                    }
+//                } else {
+//                    val bundle = Bundle()
+//                    bundle.putString("country", country)
+//
+//                    mainActivity.replaceFragment(
+//                        MainActivity.ACCOMPANY_REGISTER_FRAGMENT2,
+//                        true,
+//                        true,
+//                        bundle
+//                    )
+//                }
+
+                val bundle = Bundle()
+                bundle.putString("country", country)
+
                 mainActivity.replaceFragment(
                     MainActivity.ACCOMPANY_REGISTER_FRAGMENT2,
                     true,
                     true,
-                    null
+                    bundle
                 )
+
             }
         }
 
@@ -132,7 +165,10 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
         if (components != null) {
             for (component in components.asList()) {
                 when (component.types[0]) {
-                    "country" -> fragmentAccompanyRegister1Binding.toolbarText.setText(component.name)
+                    "country" -> {
+                        fragmentAccompanyRegister1Binding.toolbarText.setText(component.name)
+                        country = component.name
+                    }
                 }
             }
         }
@@ -166,7 +202,7 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
                     "MAP"
                 )
                 .commit()
-            mapFragment!!.getMapAsync(this)
+            mapFragment?.getMapAsync(this)
         } else {
             updateMap(coordinates)
         }
@@ -174,8 +210,8 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     // [END maps_solutions_android_autocomplete_map_add]
 
     private fun updateMap(latLng: LatLng) {
-        marker!!.position = latLng
-        map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+        marker?.position = latLng
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
     }
 
     // [START maps_solutions_android_autocomplete_map_ready]
@@ -192,8 +228,8 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
         } catch (e: Resources.NotFoundException) {
             Log.e("map", "Can't find style. Error: ", e)
         }
-        map!!.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
-        marker = map!!.addMarker(MarkerOptions().position(coordinates))
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
+        marker = map?.addMarker(MarkerOptions().position(coordinates))
     }
     // [END maps_solutions_android_autocomplete_map_ready]
 
