@@ -2,6 +2,7 @@ package com.test.tripfriend.ui.trip
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -61,7 +62,8 @@ class InProgressFragment : Fragment() {
             val chipTripMainRowCategory1: Chip // 카테고리1
             val chipTripMainRowCategory2: Chip // 카테고리2
             val chipTripMainRowCategory3: Chip // 카테고리3
-            val textViewTripMainRowHashTag: TextView //해시태그
+            val textViewTripMainRowHashTag: TextView // 해시태그
+            val textViewTripMainRowLikedCount: TextView // 좋아요 수
 
             init {
                 textViewTripMainRowTitle = rowTripMainBinding.textViewTripMainRowTitle
@@ -72,6 +74,7 @@ class InProgressFragment : Fragment() {
                 chipTripMainRowCategory2 = rowTripMainBinding.chipTripMainRowCategory2
                 chipTripMainRowCategory3 = rowTripMainBinding.chipTripMainRowCategory3
                 textViewTripMainRowHashTag = rowTripMainBinding.textViewTripMainRowHashTag
+                textViewTripMainRowLikedCount = rowTripMainBinding.textViewTripMainRowLikedCount
 
                 rowTripMainBinding.root.setOnClickListener {
                     val newBundle = Bundle()
@@ -102,13 +105,16 @@ class InProgressFragment : Fragment() {
 
         override fun onBindViewHolder(holder: InProgressViewHolder, position: Int) {
             holder.textViewTripMainRowTitle.text = tripPostItemList[position].tripPostTitle
+
             if(tripPostItemList[position].tripPostDate!![1] == null) {
                 holder.textViewNotificationDate.text = tripPostItemList[position].tripPostDate!![0]
             } else {
                 holder.textViewNotificationDate.text = "${tripPostItemList[position].tripPostDate!![0]} ~ ${tripPostItemList[position].tripPostDate!![1]}"
             }
+
             holder.textViewTripMainRowNOP.text = tripPostItemList[position].tripPostMemberCount.toString()
             holder.textViewTripMainRowLocation.text = tripPostItemList[position].tripPostLocationName
+
             when(tripPostItemList[position].tripPostTripCategory!!.size) {
                 1 -> {
                     holder.chipTripMainRowCategory1.text = tripPostItemList[position].tripPostTripCategory!![0]
@@ -132,11 +138,15 @@ class InProgressFragment : Fragment() {
                     holder.chipTripMainRowCategory3.chipIcon = chipIcon(tripPostItemList[position].tripPostTripCategory!![2])
                 }
                 else -> {
-                    Snackbar.make(fragmentInProgressBinding.root, "Chip 오류 발생", Snackbar.LENGTH_SHORT).show()
+                    holder.chipTripMainRowCategory1.visibility = View.INVISIBLE
+                    holder.chipTripMainRowCategory2.visibility = View.INVISIBLE
+                    holder.chipTripMainRowCategory3.visibility = View.INVISIBLE
                 }
             }
+
             holder.textViewTripMainRowHashTag.visibility = View.VISIBLE
             holder.textViewTripMainRowHashTag.text = tripPostItemList[position].tripPostHashTag
+            holder.textViewTripMainRowLikedCount.text = tripPostItemList[position].tripPostLikedCount.toString()
         }
     }
 
