@@ -31,14 +31,14 @@
         app:spb_animateToCurrentProgressState="true"
         app:spb_checkStateCompleted="true"
         app:spb_currentStateNumber="one"
-        app:spb_maxStateNumber="five"
+        app:spb_maxStateNumber="four"
         app:spb_stateBackgroundColor="@color/mainColor"
         app:spb_stateForegroundColor="@color/highLightColor"
+        app:spb_stateLineThickness="7dp"
         app:spb_stateNumberBackgroundColor="@color/white"
         app:spb_stateNumberForegroundColor="@color/white"
         app:spb_stateSize="40dp"
-        app:spb_stateTextSize="20dp"
-        app:spb_stateLineThickness="7dp"/>
+        app:spb_stateTextSize="20dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -92,18 +92,121 @@
                 android:textSize="@dimen/text_size_2" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/info_24px"
+            android:drawableTint="#000000"
+            android:gravity="center_vertical"
+            android:text="비밀번호는 6자 이상 입력해주세요."
+            android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutJoinStepOneEmail" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutJoinStepOnePwCheck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:hint="비밀번호 확인"
+            app:boxBackgroundColor="#FFFFFF"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:boxStrokeColor="@color/highLightColor"
+            app:endIconMode="password_toggle"
+            app:hintTextColor="@color/highLightColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutJoinStepOnePw">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditTextJoinStepOnePwCheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="true"
+                android:fontFamily="@font/font"
+                android:gravity="center_vertical"
+                android:inputType="text|textPassword"
+                android:paddingBottom="20dp"
+                android:textSize="@dimen/text_size_2" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutJoinStepOnePw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:hint="비밀번호"
+            app:boxBackgroundColor="#FFFFFF"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusBottomEnd="5dp"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:boxStrokeColor="@color/highLightColor"
+            app:endIconMode="password_toggle"
+            app:hintTextColor="@color/highLightColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditTextJoinStepOnePw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cursorVisible="true"
+                android:fontFamily="@font/font"
+                android:gravity="center_vertical"
+                android:inputType="text|textPassword"
+                android:paddingBottom="20dp"
+                android:textSize="@dimen/text_size_2" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/buttonJoinStepOneAuth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:text="인증메일 전송"
+            android:textColor="#000000"
+            app:icon="@drawable/send_20px"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutJoinStepOnePwCheck" />
+
+        <Button
+            android:id="@+id/buttonJoinStepOneAuthCheck"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:text="인증완료"
+            android:textColor="#000000"
+            app:icon="@drawable/mark_email_read_20px"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonJoinStepOneAuth" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutJoinStepOneEmail">
+            app:layout_constraintTop_toBottomOf="@+id/buttonJoinStepOneAuthCheck">
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkBoxJoinStepOneServiceTerms"
@@ -177,6 +280,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
