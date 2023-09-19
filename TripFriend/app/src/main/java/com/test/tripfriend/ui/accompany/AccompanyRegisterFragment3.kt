@@ -148,6 +148,7 @@ class AccompanyRegisterFragment3 : Fragment() {
                         chipCategory,
                         hashTag,
                         content,
+                        "",
                         tripPostIdx.toInt(),
                         chipGender
                     )

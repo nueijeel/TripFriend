@@ -1,22 +1,29 @@
 package com.test.tripfriend.ui.chatting
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.test.tripfriend.ui.main.MainActivity
-import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentGroupChattingBinding
 import com.test.tripfriend.databinding.RowChattingGroupBinding
+import com.test.tripfriend.dataclassmodel.GroupChatInfo
+import com.test.tripfriend.dataclassmodel.PersonalChatInfo
+import com.test.tripfriend.viewmodel.GroupChatViewModel
 
 class GroupChattingFragment : Fragment() {
 
     lateinit var mainActivity: MainActivity
     lateinit var fragmentGroupChattingBinding: FragmentGroupChattingBinding
+    lateinit var groupChatViewModel:GroupChatViewModel
+    val MY_ID = "sori2189@naver.com"
+    val MY_NICKNAME="이일팔구"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,6 +32,17 @@ class GroupChattingFragment : Fragment() {
         // Inflate the layout for this fragment
         mainActivity = activity as MainActivity
         fragmentGroupChattingBinding = FragmentGroupChattingBinding.inflate(layoutInflater)
+        groupChatViewModel = ViewModelProvider(this)[GroupChatViewModel::class.java]
+        groupChatViewModel.run {
+            groupChatRoomInfo.observe(viewLifecycleOwner){
+                (fragmentGroupChattingBinding.recyclerViewGroupChatting.adapter as? GroupChattingAdapter)?.updateItemList(it)
+            }
+            changeString.observe(viewLifecycleOwner){
+                fetchGroupChatRoomInfo(MY_NICKNAME)
+            }
+
+            fetchGroupChatRoomInfo(MY_NICKNAME)
+        }
 
         fragmentGroupChattingBinding.run {
 
@@ -49,6 +67,14 @@ class GroupChattingFragment : Fragment() {
     // GroupChatting 어댑터
     inner class GroupChattingAdapter :
         RecyclerView.Adapter<GroupChattingAdapter.GroupChattingViewHolder>() {
+        //보여줄 데이터 정보
+        private var itemList: List<GroupChatInfo> = emptyList()
+
+        //데이터를 가져와서 업데이트하기 위한 메서드
+        fun updateItemList(newList: MutableList<GroupChatInfo>) {
+            this.itemList = newList
+            notifyDataSetChanged() // 갱신
+        }
 
         inner class GroupChattingViewHolder(rowChattingGroupBinding: RowChattingGroupBinding) :
             RecyclerView.ViewHolder(rowChattingGroupBinding.root) {
@@ -64,8 +90,11 @@ class GroupChattingFragment : Fragment() {
                 textViewRowGroupChattingDate = rowChattingGroupBinding.textViewRowGroupChattingDate
 
                 rowChattingGroupBinding.root.setOnClickListener {
-                    val chatRoomIdx = adapterPosition
-                    mainActivity.replaceFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT, true, true, null)
+                    val bundle=Bundle()
+                    bundle.putString("groupRoomId",itemList[adapterPosition].roomId)
+                    bundle.putString("postId",itemList[adapterPosition].tripPostId)
+                    bundle.putString("postTitle",itemList[adapterPosition].tripPostTitle)
+                    mainActivity.replaceFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT, true, true, bundle)
                 }
             }
         }
@@ -82,11 +111,15 @@ class GroupChattingFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 10
+            return itemList.size
         }
 
         override fun onBindViewHolder(holder: GroupChattingViewHolder, position: Int) {
-            holder.textViewRowGroupChattingTitle.text = "제목 $position"
+            itemList[position].roomId?.let { groupChatViewModel.fetchChangeInfo(it) }
+            holder.textViewRowGroupChattingTitle.text = "${itemList[position].tripPostTitle}"
+            holder.textViewRowGroupChattingNumber.text = "${itemList[position].memberCount}"
+            holder.textViewRowGroupChattingMessage.text = "${itemList[position].lastChatContent}"
+            holder.textViewRowGroupChattingDate.text = "${itemList[position].lastChatDate}"
         }
     }
 

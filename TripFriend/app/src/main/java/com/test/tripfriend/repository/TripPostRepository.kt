@@ -29,11 +29,5 @@ class TripPostRepository {
         db.collection("TripPost")
             .document(tripPostDocumentId)
             .update("tripPostMemberList", FieldValue.arrayUnion(userNickname))
-            .addOnCompleteListener {
-                Log.d("addTripMember", "success")
-            }
-            .addOnFailureListener {
-                Log.d("addTripMember", "failure")
-            }
     }
 }
