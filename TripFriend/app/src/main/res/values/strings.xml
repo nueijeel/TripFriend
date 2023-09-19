@@ -70,4 +70,7 @@
         <item>ISTP</item>
         <item>ISTJ</item>
     </string-array>
+    <string name="social_login_info_naver_client_id">"VD9sgg3ls0NXzNhWiBQK"</string>
+    <string name="social_login_info_naver_client_secret">"HZOln9k_HQ"</string>
+    <string name="social_login_info_naver_client_name">네이버아이디 로그인</string>
 </resources>

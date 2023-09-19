@@ -30,8 +30,8 @@
         android:layout_marginBottom="20dp"
         app:spb_animateToCurrentProgressState="true"
         app:spb_checkStateCompleted="true"
-        app:spb_currentStateNumber="four"
-        app:spb_maxStateNumber="five"
+        app:spb_currentStateNumber="three"
+        app:spb_maxStateNumber="four"
         app:spb_stateBackgroundColor="@color/mainColor"
         app:spb_stateForegroundColor="@color/highLightColor"
         app:spb_stateLineThickness="7dp"
@@ -96,60 +96,24 @@
                     android:cursorVisible="true"
                     android:fontFamily="@font/font"
                     android:gravity="center_vertical"
-                    android:inputType="number"
+                    android:inputType="phone"
                     android:paddingBottom="20dp"
                     android:textSize="@dimen/text_size_2" />
-            </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/buttonJoinStepFourAuth"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="65dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="3dp"
-                android:fontFamily="@font/font"
-                android:text="인증요청"
-                android:textColor="#000000"
-                android:textSize="@dimen/text_size_3"
-                app:cornerRadius="5dp"
-                app:strokeColor="@color/mainColor" />
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutJoinStepFourAuthNumber"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:hint="인증 번호"
-            app:boxBackgroundColor="#FFFFFF"
-            app:boxBackgroundMode="outline"
-            app:boxCornerRadiusBottomEnd="5dp"
-            app:boxCornerRadiusBottomStart="5dp"
-            app:boxCornerRadiusTopEnd="5dp"
-            app:boxCornerRadiusTopStart="5dp"
-            app:boxStrokeColor="@color/highLightColor"
-            app:endIconMode="clear_text"
-            app:hintTextColor="@color/highLightColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditTextJoinStepFourAuthNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="true"
-                android:fontFamily="@font/font"
-                android:gravity="center_vertical"
-                android:inputType="number"
-                android:paddingBottom="20dp"
-                android:textSize="@dimen/text_size_2" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/info_24px"
+            android:gravity="center"
+            android:text="&quot;-&quot;없이 입력해주세요."
+            app:layout_constraintStart_toStartOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <Button
             android:id="@+id/buttonJoinStepFourNext"

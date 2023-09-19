@@ -1,9 +1,7 @@
 package com.test.tripfriend.repository
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
-import com.test.tripfriend.dataclassmodel.TripPost
 import kotlinx.coroutines.tasks.await
 
 class TripPostRepository {
