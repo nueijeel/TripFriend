@@ -28,7 +28,7 @@ class PersonalChattingFragment : Fragment() {
     lateinit var personalChatViewModel: PersonalChatViewModel
     lateinit var personalChatRepository: PersonalChatRepository
 
-    val MY_ID = "sori2189@naver.com"
+    lateinit var MY_EMAIL:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +38,9 @@ class PersonalChattingFragment : Fragment() {
 
         mainActivity = activity as MainActivity
         fragmentPersonalChattingBinding = FragmentPersonalChattingBinding.inflate(layoutInflater)
+
+        //로그인 된 사람의 이메일 정보 저장
+        MY_EMAIL=mainActivity.userClass.userEmail
         personalChatViewModel = ViewModelProvider(this)[PersonalChatViewModel::class.java]
         personalChatRepository = PersonalChatRepository()
 
@@ -53,10 +56,10 @@ class PersonalChattingFragment : Fragment() {
 
             changeString.observe(viewLifecycleOwner){
                 Log.d("testt","변화 감지 옵저버")
-                fetchChatRoomInfo(MY_ID)
+                fetchChatRoomInfo(MY_EMAIL)
             }
 
-            fetchChatRoomInfo(MY_ID)
+            fetchChatRoomInfo(MY_EMAIL)
         }
 
 
@@ -113,6 +116,7 @@ class PersonalChattingFragment : Fragment() {
                     val userName=itemList[adapterPosition].userNickname
                     val userProfile=itemList[adapterPosition].userProfilePath
                     val bundle=Bundle()
+                    //채팅방 id
                     bundle.putString("chatRoomId",chatRoomId)
                     //상대방 이름
                     bundle.putString("userName",userName)
@@ -146,6 +150,7 @@ class PersonalChattingFragment : Fragment() {
             holder.textViewRowPersonalChattingName.text = itemList[position].userNickname
             holder.textViewRowPersonalChattingDate.text = itemList[position].lastChatDate
             holder.textViewRowPersonalChattingMessage.text = itemList[position].lastChatContent
+            holder.imageViewRowPersonalChattingImage
             //여기 이미지 설정 해야함.
         }
     }

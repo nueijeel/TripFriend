@@ -36,7 +36,7 @@ class PersonalChatRoomFragment : Fragment() {
     lateinit var opponentName:String
     lateinit var opponentProfile:String
     var personalChatRepository = PersonalChatRepository()
-    val MY_ID = "sori2189@naver.com"
+    lateinit var MY_EMAIL:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +45,7 @@ class PersonalChatRoomFragment : Fragment() {
         // Inflate the layout for this fragment
         mainActivity = activity as MainActivity
         fragmentPersonalChatRoomBinding = FragmentPersonalChatRoomBinding.inflate(layoutInflater)
+        MY_EMAIL=mainActivity.userClass.userEmail
         chattingViewModel = ViewModelProvider(this)[ChattingViewModel::class.java]
 
         chattingViewModel.run {
@@ -95,7 +96,7 @@ class PersonalChatRoomFragment : Fragment() {
                 }
                 //햄버거 클릭시 나오는 내용들 설정
                 textViewOpponentName.text=opponentName+"님과의 대화방"
-                textViewPersonalChattingUserName.text="프리퍼런스에서 내이름 설정"
+                textViewPersonalChattingUserName.text="${mainActivity.userClass.userNickname}"
                 textViewPersonalChattingOpponentName.text=opponentName
                 buttonPersonalChatRoomExit.setOnClickListener {
                     //여기서 해당 roomid를 이용해서 내 이름을 null로 설정하고 프래그먼트 삭제(아마 삭제하고 replace 채팅방 목록을 해야할거같음.)
@@ -167,7 +168,7 @@ class PersonalChatRoomFragment : Fragment() {
 
                 //저장할 데이터 생성
                 val personalChatting = PersonalChatting(
-                    MY_ID,
+                    MY_EMAIL,
                     personalChatContent,
                     personalChatSendDateAndTime,
                     personalChatSendTimeStamp
@@ -257,7 +258,7 @@ class PersonalChatRoomFragment : Fragment() {
             holder.textViewOpponentContent.maxWidth = halfScreenWidth
 
             //받아온 데이터가 내가 보낸 게 아니라면
-            if (itemList[position].personalChatWriterEmail != MY_ID) {
+            if (itemList[position].personalChatWriterEmail != MY_EMAIL) {
                 holder.textViewRowChatRoomUser.visibility = View.GONE
                 holder.textViewChatMoment.visibility = View.GONE
 
