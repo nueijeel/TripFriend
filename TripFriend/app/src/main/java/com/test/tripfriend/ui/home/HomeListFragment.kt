@@ -221,7 +221,7 @@ class HomeListFragment : Fragment() {
             holder.textViewTripMainRowHashTag.visibility = View.VISIBLE
             holder.textViewTripMainRowHashTag.text = homePostItemList[position].tripPostHashTag
             holder.textViewTripMainRowLikedCount.text =
-                homePostItemList[position].tripPostLikedCount.toString()
+                homePostItemList[position].tripPostLiked!!.size.toString()
         }
     }
 

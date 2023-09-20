@@ -168,7 +168,7 @@ class AccompanyRegisterFragment3 : Fragment() {
                         country,
                         latitude,
                         longitude,
-                        0,
+                        emptyList(),
                         chipCategory,
                         hashTag,
                         content,
@@ -260,7 +260,7 @@ class AccompanyRegisterFragment3 : Fragment() {
         val bundle = Bundle()
         bundle.putString("tripPostWriterEmail", userEmail)
         bundle.putString("tripPostDocumentId", documentId)
-        bundle.putString("viewState", "InProgressFragment")
+        bundle.putString("viewState", "InProgress")
 
         mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT3)
         mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT2)

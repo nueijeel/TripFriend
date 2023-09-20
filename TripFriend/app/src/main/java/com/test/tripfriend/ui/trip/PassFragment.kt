@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.trip
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentPassBinding
 import com.test.tripfriend.databinding.RowTripMainBinding
 import com.test.tripfriend.dataclassmodel.TripPost
+import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.viewmodel.TripPostViewModel
 
@@ -29,9 +31,12 @@ class PassFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         fragmentPassBinding = FragmentPassBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+
+        // 로그인 중인 사용자 정보
+        val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userClass = UserRepository.getUserInfo(sharedPreferences)
 
         tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
 
@@ -45,7 +50,7 @@ class PassFragment : Fragment() {
             }
         }
 
-        tripPostViewModel.getAllTripPostData()
+        tripPostViewModel.getAllTripPostData(userClass.userEmail)
 
         fragmentPassBinding.run {
             recyclerViewPass.run {
@@ -90,7 +95,7 @@ class PassFragment : Fragment() {
                     val newBundle = Bundle()
                     newBundle.putString("tripPostWriterEmail", tripPostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
                     newBundle.putString("tripPostDocumentId", tripPostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
-                    newBundle.putString("viewState", "PassFragment") // 어느 화면에서 왔는지 확인
+                    newBundle.putString("viewState", "Pass") // 어느 화면에서 왔는지 확인
 
                     mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT,true,true, newBundle)
                 }
@@ -120,7 +125,8 @@ class PassFragment : Fragment() {
             if(tripPostItemList[position].tripPostDate!![1] == null) {
                 holder.textViewNotificationDate.text = tripPostItemList[position].tripPostDate!![0]
             } else {
-                holder.textViewNotificationDate.text = "${tripPostItemList[position].tripPostDate!![0]} ~ ${tripPostItemList[position].tripPostDate!![1]}"
+                holder.textViewNotificationDate.text =
+                    "${formatDate(tripPostItemList[position].tripPostDate!![0])} ~ ${formatDate(tripPostItemList[position].tripPostDate!![1])}"
             }
 
             holder.textViewTripMainRowNOP.text = tripPostItemList[position].tripPostMemberCount.toString()
@@ -157,7 +163,7 @@ class PassFragment : Fragment() {
 
             holder.textViewTripMainRowHashTag.visibility = View.VISIBLE
             holder.textViewTripMainRowHashTag.text = tripPostItemList[position].tripPostHashTag
-            holder.textViewTripMainRowLikedCount.text = tripPostItemList[position].tripPostLikedCount.toString()
+            holder.textViewTripMainRowLikedCount.text = tripPostItemList[position].tripPostLiked!!.size.toString()
         }
     }
 
@@ -196,9 +202,21 @@ class PassFragment : Fragment() {
         return drawable
     }
 
+    // 날짜 형식 변환
+    fun formatDate(date: String): String {
+        if (date != "") {
+            val year = date.substring(0, 4)
+            val month = date.substring(4, 6)
+            val day = date.substring(6, 8)
+
+            val formattedDate = "$year-$month-$day"
+
+            return formattedDate
+        }
+        return ""
+    }
+
     override fun onResume() {
         super.onResume()
-
-        tripPostViewModel.getAllTripPostData()
     }
 }
