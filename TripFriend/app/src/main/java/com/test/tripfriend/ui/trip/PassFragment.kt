@@ -2,7 +2,6 @@ package com.test.tripfriend.ui.trip
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentPassBinding
 import com.test.tripfriend.databinding.RowTripMainBinding
@@ -35,7 +33,19 @@ class PassFragment : Fragment() {
         fragmentPassBinding = FragmentPassBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
-        initViewModel()
+        tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
+
+        tripPostViewModel.tripPostPassList.observe(viewLifecycleOwner){
+            if(it != null) {
+                fragmentPassBinding.textViewPassNoPost.visibility = View.GONE
+                (fragmentPassBinding.recyclerViewPass.adapter as? PassAdapter)?.updateItemList(it)
+            } else {
+                fragmentPassBinding.textViewPassNoPost.visibility = View.VISIBLE
+                fragmentPassBinding.textViewPassNoPost.text = "지난 여행이 없습니다."
+            }
+        }
+
+        tripPostViewModel.getAllTripPostData()
 
         fragmentPassBinding.run {
             recyclerViewPass.run {
@@ -78,8 +88,9 @@ class PassFragment : Fragment() {
 
                 rowTripMainBinding.root.setOnClickListener {
                     val newBundle = Bundle()
-                    newBundle.putString("tripPostWriterEmail", tripPostItemList[adapterPosition].tripPostWriterEmail)
-                    newBundle.putInt("tripPostIdx", tripPostItemList[adapterPosition].tripPostIdx)
+                    newBundle.putString("tripPostWriterEmail", tripPostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
+                    newBundle.putString("tripPostDocumentId", tripPostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
+                    newBundle.putString("viewState", "PassFragment") // 어느 화면에서 왔는지 확인
 
                     mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT,true,true, newBundle)
                 }
@@ -148,23 +159,6 @@ class PassFragment : Fragment() {
             holder.textViewTripMainRowHashTag.text = tripPostItemList[position].tripPostHashTag
             holder.textViewTripMainRowLikedCount.text = tripPostItemList[position].tripPostLikedCount.toString()
         }
-
-    }
-
-    // 뷰모델
-    fun initViewModel() {
-        tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
-        tripPostViewModel.getAllTripPostData()
-
-        tripPostViewModel.tripPostPassList.observe(viewLifecycleOwner){
-            if(it != null) {
-                fragmentPassBinding.textViewPassNoPost.visibility = View.GONE
-                (fragmentPassBinding.recyclerViewPass.adapter as? PassAdapter)?.updateItemList(it)
-            } else {
-                fragmentPassBinding.textViewPassNoPost.visibility = View.VISIBLE
-                fragmentPassBinding.textViewPassNoPost.text = "지난 여행이 없습니다."
-            }
-        }
     }
 
     // chip 아이콘
@@ -200,5 +194,11 @@ class PassFragment : Fragment() {
             }
         }
         return drawable
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        tripPostViewModel.getAllTripPostData()
     }
 }
