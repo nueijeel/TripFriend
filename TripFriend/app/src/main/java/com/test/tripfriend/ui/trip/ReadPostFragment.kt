@@ -153,14 +153,14 @@ class ReadPostFragment : Fragment() {
 
                 // 이전 화면에 따라 visibility 처리
                 when(viewState) {
-                    "InProgressFragment" -> { // 참여중인 동행
+                    "InProgress" -> { // 참여중인 동행
                         buttonReadPostDM.visibility = View.GONE
                         buttonReadPostSubmit.visibility = View.GONE
                         buttonReadPostMoveChat.visibility = View.VISIBLE
                         buttonReadPostReview.visibility = View.GONE
 
                     }
-                    "PassFragment" -> { // 지난 동행
+                    "Pass" -> { // 지난 동행
                         buttonReadPostDM.visibility = View.GONE
                         buttonReadPostSubmit.visibility = View.GONE
                         buttonReadPostMoveChat.visibility = View.GONE
