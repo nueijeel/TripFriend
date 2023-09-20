@@ -44,7 +44,7 @@ class GroupChatRoomFragment : Fragment() {
     lateinit var roomId: String
     lateinit var postTitle: String
 
-    val MY_ID = "sori2189@naver.com"
+    lateinit var MY_EMAIL:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +53,7 @@ class GroupChatRoomFragment : Fragment() {
         // Inflate the layout for this fragment
         mainActivity = activity as MainActivity
         fragmentGroupChatRoomBinding = FragmentGroupChatRoomBinding.inflate(layoutInflater)
+        MY_EMAIL=mainActivity.userClass.userEmail
 
         //그룹방 아이디와 해당 방의 동행글 정보 가져오기
         roomId = arguments?.getString("groupRoomId").toString()
@@ -134,7 +135,7 @@ class GroupChatRoomFragment : Fragment() {
                 }
 
                 //햄버거에서 내 정보 보여지는 곳
-                textViewGroupChattingUserName.text="프리퍼런스에서 유저닉네임"
+                textViewGroupChattingUserName.text="${mainActivity.userClass.userNickname}"
 
                 // 나가기 버튼
                 buttonGroupChatRoomExit.run {
@@ -196,7 +197,7 @@ class GroupChatRoomFragment : Fragment() {
 
                 //저장할 데이터 생성
                 val groupChatting = GroupChatting(
-                    MY_ID,
+                    MY_EMAIL,
                     groupChatContent,
                     groupChatSendDateAndTime,
                     groupChatSendTimeStamp
@@ -286,7 +287,7 @@ class GroupChatRoomFragment : Fragment() {
             holder.textViewRowChatRoomUser.maxWidth = halfScreenWidth
             holder.textViewOpponentContent.maxWidth = halfScreenWidth
             //받아온 데이터가 내가 보낸 게 아니라면
-            if (itemList[position].groupChatWriterEmail != MY_ID) {
+            if (itemList[position].groupChatWriterEmail != MY_EMAIL) {
                 holder.textViewRowChatRoomUser.visibility = View.GONE
                 holder.textViewChatMoment.visibility = View.GONE
 
@@ -357,10 +358,15 @@ class GroupChatRoomFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ParticipantsViewHolder, position: Int) {
-//            if (만약 내 닉네임과 같으면 visible false)
-            holder.textViewGroupChatRoomName.text = itemList[position]
-            //이미지가 없어서 이런느낌으로
+            if (mainActivity.userClass.userNickname==itemList[position]){
+                holder.textViewGroupChatRoomName.visibility=View.GONE
+                holder.imageViewGroupChatRoomImage.visibility=View.GONE
+            }else{
+                holder.textViewGroupChatRoomName.text = itemList[position]
+                //이미지가 없어서 이런느낌으로
 //            holder.imageViewGroupChatRoomImage=memberimage[position]
+            }
+
         }
     }
 
