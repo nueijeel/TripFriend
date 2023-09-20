@@ -1,7 +1,6 @@
 package com.test.tripfriend.ui.accompany
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,7 +8,6 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,14 +19,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.protobuf.LazyStringArrayList
 import com.test.tripfriend.R
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.databinding.FragmentAccompanyRegister2Binding
 import com.test.tripfriend.repository.AccompanyRegisterRepository
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 class AccompanyRegisterFragment2 : Fragment() {
@@ -97,7 +93,7 @@ class AccompanyRegisterFragment2 : Fragment() {
                         dates.add(format.format(date))
                         firstDate = format.format(date)
                         secondDate = format.format(date)
-                        Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
@@ -112,7 +108,7 @@ class AccompanyRegisterFragment2 : Fragment() {
                         dates.add(format.format(endDate))
                         firstDate = format.format(startDate)
                         secondDate = format.format(endDate)
-                        Toast.makeText(mainActivity, "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(endDate), Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(mainActivity, "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(endDate), Toast.LENGTH_SHORT).show()
                     }
                 })
             }
@@ -178,7 +174,7 @@ class AccompanyRegisterFragment2 : Fragment() {
 
                     // 이미지 파일 경로
                     if (profileImage == null) {
-                        postImagePath = "null"
+                        postImagePath = ""
                     } else {
                         postImagePath = "TripPost/$tripPostIdx"
                     }

@@ -1,9 +1,14 @@
 package com.test.tripfriend.repository
 
+import android.net.Uri
+import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 
 class TripPostRepository {
@@ -23,12 +28,25 @@ class TripPostRepository {
         return docRef
     }
 
-    // 유저id로 DB 가져오기
-    suspend fun getSelectUserData(userEmail: String): QuerySnapshot {
-        val docRef = db.collection("User").whereEqualTo("userEmail", userEmail).get().await()
+    // 동행글 이미지 url 가져오는 함수
+    suspend fun getTripPostImage(tripPostImagePath : String) : Uri {
+        val storage = Firebase.storage
 
-        return docRef
+        //인자로 전달된 ImagePath의 경로 형태 확인 필
+        val fileRef = storage.reference.child(tripPostImagePath)
+        Log.d("ㅁㅇtripPostImagePath", tripPostImagePath)
+        return fileRef.downloadUrl.await()
     }
+
+    // 동행글 삭제하는 함수
+    fun deleteTripPostData(documentId: String){
+        val firestore = Firebase.firestore
+
+        firestore.collection("TripPost")
+            .document(documentId)
+            .delete()
+    }
+
 
     //해당하는 동행글 데이터만 가져오는 메서드
     suspend fun getTargetUserTripPost(tripPostDocumentId : String) : DocumentSnapshot {
