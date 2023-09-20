@@ -34,6 +34,7 @@ class PassFragment : Fragment() {
         fragmentPassBinding = FragmentPassBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        // 로그인 중인 사용자 정보
         val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
 
@@ -124,7 +125,8 @@ class PassFragment : Fragment() {
             if(tripPostItemList[position].tripPostDate!![1] == null) {
                 holder.textViewNotificationDate.text = tripPostItemList[position].tripPostDate!![0]
             } else {
-                holder.textViewNotificationDate.text = "${tripPostItemList[position].tripPostDate!![0]} ~ ${tripPostItemList[position].tripPostDate!![1]}"
+                holder.textViewNotificationDate.text =
+                    "${formatDate(tripPostItemList[position].tripPostDate!![0])} ~ ${formatDate(tripPostItemList[position].tripPostDate!![1])}"
             }
 
             holder.textViewTripMainRowNOP.text = tripPostItemList[position].tripPostMemberCount.toString()
@@ -161,7 +163,7 @@ class PassFragment : Fragment() {
 
             holder.textViewTripMainRowHashTag.visibility = View.VISIBLE
             holder.textViewTripMainRowHashTag.text = tripPostItemList[position].tripPostHashTag
-            holder.textViewTripMainRowLikedCount.text = tripPostItemList[position].tripPostLikedCount.toString()
+            holder.textViewTripMainRowLikedCount.text = tripPostItemList[position].tripPostLiked!!.size.toString()
         }
     }
 
@@ -198,6 +200,20 @@ class PassFragment : Fragment() {
             }
         }
         return drawable
+    }
+
+    // 날짜 형식 변환
+    fun formatDate(date: String): String {
+        if (date != "") {
+            val year = date.substring(0, 4)
+            val month = date.substring(4, 6)
+            val day = date.substring(6, 8)
+
+            val formattedDate = "$year-$month-$day"
+
+            return formattedDate
+        }
+        return ""
     }
 
     override fun onResume() {
