@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.trip
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentPassBinding
 import com.test.tripfriend.databinding.RowTripMainBinding
 import com.test.tripfriend.dataclassmodel.TripPost
+import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.viewmodel.TripPostViewModel
 
@@ -29,9 +31,11 @@ class PassFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         fragmentPassBinding = FragmentPassBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+
+        val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userClass = UserRepository.getUserInfo(sharedPreferences)
 
         tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
 
@@ -45,7 +49,7 @@ class PassFragment : Fragment() {
             }
         }
 
-        tripPostViewModel.getAllTripPostData()
+        tripPostViewModel.getAllTripPostData(userClass.userEmail)
 
         fragmentPassBinding.run {
             recyclerViewPass.run {
@@ -198,7 +202,5 @@ class PassFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
-        tripPostViewModel.getAllTripPostData()
     }
 }
