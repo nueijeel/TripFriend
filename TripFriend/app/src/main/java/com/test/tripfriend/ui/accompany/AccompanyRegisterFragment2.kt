@@ -60,6 +60,8 @@ class AccompanyRegisterFragment2 : Fragment() {
 
             // bundle 가져오기
             val country = arguments?.getString("country")
+            val latitude = arguments?.getDouble("latitude")
+            val longitude = arguments?.getDouble("longitude")
 
             materialToolbarRegister2.run {
                 setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
@@ -88,19 +90,20 @@ class AccompanyRegisterFragment2 : Fragment() {
                     CalendarListener {
                     override fun onFirstDateSelected(startDate: Calendar) {
                         val date = startDate.time
-                        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                        val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
 
 //                        dates[0] = format.format(date)
                         dates.clear()
                         dates.add(format.format(date))
                         firstDate = format.format(date)
+                        secondDate = format.format(date)
                         Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
                         val startDate = startDate.time
                         val endDate = endDate.time
-                        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                        val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
 
 //                        dates[0] = format.format(startDate)
 //                        dates[1] = format.format(endDate)
@@ -190,11 +193,14 @@ class AccompanyRegisterFragment2 : Fragment() {
                     bundle.putLong("tripPostIdx", tripPostIdx)
                     bundle.putString("startDate", firstDate)
                     bundle.putString("endDate", secondDate)
+                    if (latitude != null && longitude != null) {
+                        bundle.putDouble("latitude", latitude)
+                        bundle.putDouble("longitude", longitude)
+                    }
+                    bundle.putString("imageUri", profileImage.toString())
 
                     mainActivity.replaceFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT3, true, true, bundle)
                 }
-
-
             }
         }
 
