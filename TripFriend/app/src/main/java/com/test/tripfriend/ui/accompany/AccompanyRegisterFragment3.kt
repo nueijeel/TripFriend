@@ -168,7 +168,7 @@ class AccompanyRegisterFragment3 : Fragment() {
                         country,
                         latitude,
                         longitude,
-                        0,
+                        emptyList(),
                         chipCategory,
                         hashTag,
                         content,
