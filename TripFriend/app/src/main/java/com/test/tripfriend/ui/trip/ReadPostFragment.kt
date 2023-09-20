@@ -20,6 +20,8 @@ import com.test.tripfriend.R
 import com.test.tripfriend.databinding.DialogSubmitBinding
 import com.test.tripfriend.databinding.FragmentReadPostBinding
 import com.test.tripfriend.repository.TripPostRepository
+import com.test.tripfriend.dataclassmodel.PersonalChatRoom
+import com.test.tripfriend.repository.PersonalChatRepository
 import com.test.tripfriend.viewmodel.TripPostViewModel
 import com.test.tripfriend.viewmodel.UserViewModel
 import kotlin.concurrent.thread
@@ -31,6 +33,7 @@ class ReadPostFragment : Fragment() {
     lateinit var tripPostViewModel: TripPostViewModel
     lateinit var userViewModel: UserViewModel
 
+    val personalChatRepository = PersonalChatRepository()
     val tripPostRepository = TripPostRepository()
 
     override fun onCreateView(
@@ -137,7 +140,6 @@ class ReadPostFragment : Fragment() {
                 fragmentReadPostBinding.imageViewReadPostMainImage.setImageResource(R.drawable.person_24px)
             }
         }
-
         userViewModel.getTargetUserData(tripPostWriterEmail)
 
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
@@ -163,7 +165,7 @@ class ReadPostFragment : Fragment() {
                         buttonReadPostSubmit.visibility = View.GONE
                         buttonReadPostMoveChat.visibility = View.GONE
                         buttonReadPostReview.visibility = View.VISIBLE
-                        
+
                         // 메뉴를 숨기려면
                         var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
                         toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
@@ -215,7 +217,10 @@ class ReadPostFragment : Fragment() {
                     setTitle("1 : 1 문의하기")
                     setMessage(R.string.DM_info)
                     setPositiveButton("입장") { dialogInterface: DialogInterface, i: Int ->
-                        mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
+                        val persnalChatUsers = PersonalChatRoom(tripPostWriterEmail,mainActivity.userClass.userEmail)
+                        personalChatRepository.inquiryToPersonalChatRoom(persnalChatUsers){
+                            mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
+                        }
                     }
                     setNegativeButton("취소", null)
                     show()
