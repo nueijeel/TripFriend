@@ -78,8 +78,8 @@ class PassFragment : Fragment() {
 
                 rowTripMainBinding.root.setOnClickListener {
                     val newBundle = Bundle()
-                    newBundle.putString("tripPostWriterEmail", tripPostItemList[adapterPosition].tripPostWriterEmail)
-                    newBundle.putInt("tripPostIdx", tripPostItemList[adapterPosition].tripPostIdx)
+                    newBundle.putString("tripPostWriterEmail", tripPostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
+                    newBundle.putString("tripPostDocumentId", tripPostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
 
                     mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT,true,true, newBundle)
                 }
