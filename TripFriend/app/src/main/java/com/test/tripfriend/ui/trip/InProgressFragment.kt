@@ -2,7 +2,6 @@ package com.test.tripfriend.ui.trip
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentInProgressBinding
 import com.test.tripfriend.databinding.RowTripMainBinding
@@ -35,7 +33,19 @@ class InProgressFragment : Fragment() {
         fragmentInProgressBinding = FragmentInProgressBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
-        initViewModel()
+        tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
+
+        tripPostViewModel.tripPostInProgressList.observe(viewLifecycleOwner){
+            if(it != null) {
+                fragmentInProgressBinding.textViewInProgressNoPost.visibility = View.GONE
+                (fragmentInProgressBinding.recyclerViewInProgress.adapter as? InProgressAdapter)?.updateItemList(it)
+            } else {
+                fragmentInProgressBinding.textViewInProgressNoPost.visibility = View.VISIBLE
+                fragmentInProgressBinding.textViewInProgressNoPost.text = "동행 중인 여행이 없습니다."
+            }
+        }
+
+        tripPostViewModel.getAllTripPostData()
 
         fragmentInProgressBinding.run {
             recyclerViewInProgress.run {
@@ -80,6 +90,7 @@ class InProgressFragment : Fragment() {
                     val newBundle = Bundle()
                     newBundle.putString("tripPostWriterEmail", tripPostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
                     newBundle.putString("tripPostDocumentId", tripPostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
+                    newBundle.putString("viewState", "InProgressFragment") // 어느 화면에서 왔는지 확인
 
                     mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT,true,true, newBundle)
                 }
@@ -150,22 +161,6 @@ class InProgressFragment : Fragment() {
         }
     }
 
-    // 뷰모델
-    fun initViewModel() {
-        tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
-        tripPostViewModel.getAllTripPostData()
-
-        tripPostViewModel.tripPostInProgressList.observe(viewLifecycleOwner){
-            if(it != null) {
-                fragmentInProgressBinding.textViewInProgressNoPost.visibility = View.GONE
-                (fragmentInProgressBinding.recyclerViewInProgress.adapter as? InProgressAdapter)?.updateItemList(it)
-            } else {
-                fragmentInProgressBinding.textViewInProgressNoPost.visibility = View.VISIBLE
-                fragmentInProgressBinding.textViewInProgressNoPost.text = "동행 중인 여행이 없습니다."
-            }
-        }
-    }
-
     // chip 아이콘
     fun chipIcon(chipCategory: String): Drawable? {
         var drawable: Drawable? = null
@@ -199,5 +194,11 @@ class InProgressFragment : Fragment() {
             }
         }
         return drawable
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        tripPostViewModel.getAllTripPostData()
     }
 }

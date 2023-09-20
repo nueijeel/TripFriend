@@ -1,13 +1,11 @@
 package com.test.tripfriend.viewmodel
 
-import android.util.Log
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.ktx.toObject
 import com.test.tripfriend.dataclassmodel.TripPost
-import com.test.tripfriend.dataclassmodel.TripRequest
 import com.test.tripfriend.repository.TripPostRepository
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
@@ -26,6 +24,8 @@ class TripPostViewModel: ViewModel() {
     val tripPostPassList = MutableLiveData<List<TripPost>>()
 
     val tripPostList = MutableLiveData<TripPost>()
+
+    val tripPostImage = MutableLiveData<Uri>()
 
     // 오늘 날짜
     val currentTime : Long = System.currentTimeMillis()
@@ -74,14 +74,11 @@ class TripPostViewModel: ViewModel() {
 
     // 문서id로 접근하여 데이터 가져오기
     fun getSelectDocumentData(documentId: String) {
-
         val scope = CoroutineScope(Dispatchers.Default)
 
         scope.launch {
             var resultData = TripPost()
-
             val currentTripPostSnapshot = async { tripPostRepository.getSelectDocumentData(documentId) }
-
             val data = currentTripPostSnapshot.await().toObject(TripPost::class.java)
 
             if(data != null) {
@@ -96,9 +93,13 @@ class TripPostViewModel: ViewModel() {
         }
     }
 
-    // 유저 이메일로 접근해서 데이터 가져오기
-    fun getSelectUserData(userEmail: String) {
+    // 동행글 이미지 가져오기
+    fun getTargetUserProfileImage(tripPostImagePath : String){
+        val imageUri = runBlocking { tripPostRepository.getTripPostImage(tripPostImagePath) }
 
+        if(imageUri != null){
+            tripPostImage.value = imageUri
+        }
     }
 
     fun getTargetUserTripPost(tripPostDocumentId : String){
