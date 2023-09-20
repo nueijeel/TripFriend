@@ -1,10 +1,17 @@
 package com.test.tripfriend.viewmodel
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.ktx.toObject
 import com.test.tripfriend.dataclassmodel.TripPost
+import com.test.tripfriend.dataclassmodel.TripRequest
 import com.test.tripfriend.repository.TripPostRepository
+import kotlinx.coroutines.runBlocking
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -24,6 +31,10 @@ class TripPostViewModel: ViewModel() {
     val currentTime : Long = System.currentTimeMillis()
     val dataFormat = SimpleDateFormat("yyyyMMdd")
     val today = dataFormat.format(currentTime).toInt()
+
+    private val _tripPost = MutableLiveData<TripPost>()
+    val tripPost : LiveData<TripPost>
+        get() = _tripPost
 
     // 오늘 날짜 기준으로 참여/지난 동행글 구분하여 데이터 추출
     fun getAllTripPostData() {
@@ -88,5 +99,27 @@ class TripPostViewModel: ViewModel() {
     // 유저 이메일로 접근해서 데이터 가져오기
     fun getSelectUserData(userEmail: String) {
 
+    }
+
+    fun getTargetUserTripPost(tripPostDocumentId : String){
+        val tripPostDocumentSnapshot =
+            runBlocking {
+                tripPostRepository.getTargetUserTripPost(tripPostDocumentId)
+            }
+
+        if(tripPostDocumentSnapshot != null){
+            val currentTripPost = tripPostDocumentSnapshot.toObject(TripPost::class.java)
+
+            //현재 날짜 구하기
+            val currentDate = LocalDate.now()
+            val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+            val date : Long = currentDate.format(formatter).toLong()
+
+            if(currentTripPost != null){
+                if(currentTripPost.tripPostDate!![0].toLong() > date){
+                    _tripPost.value = currentTripPost!!
+                }
+            }
+        }
     }
 }

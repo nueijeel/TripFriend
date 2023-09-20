@@ -206,7 +206,7 @@ class GroupChatRoomFragment : Fragment() {
                 if (roomId != null) {
                     groupChatRepository.saveMyContentToDB(roomId, groupChatting)
                 } else {
-                    Log.d("testt", "넘어온 문서ID가 널임..")
+                    Log.d("testt", "넘어온 문서ID가 널임")
                 }
                 textInputEditTextGroupChatRoomSearch.setText("")
             }
