@@ -138,7 +138,7 @@ class ReadPostFragment : Fragment() {
             }
         }
 
-        userViewModel.getTargetUserData(tripPostWriterEmail, "이메일")
+        userViewModel.getTargetUserData(tripPostWriterEmail)
 
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
 

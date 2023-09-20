@@ -33,7 +33,7 @@ class ModifyMyInfoFragment : Fragment() {
 
     lateinit var albumLauncher: ActivityResultLauncher<Intent>
 
-    var nicknameIsChecked:Boolean = true
+    var nicknameIsChecked:Boolean = false
     var profileImage : Uri? = null
 
     val userRepository = UserRepository()
@@ -48,10 +48,6 @@ class ModifyMyInfoFragment : Fragment() {
 
         //앨범 런처 초기화
         albumLauncher = albumSetting(fragmentModifyMyInfoBinding.imageViewMyProfile)
-
-        //로그인 된 유저의 정보로 변경 필
-        val testUserEmail = "nueijeel0423@gmail.com"
-        val testUserAuthentication = "이메일"
 
         fragmentModifyMyInfoBinding.run {
 
@@ -79,9 +75,27 @@ class ModifyMyInfoFragment : Fragment() {
             }
 
             buttonNickNameCheck.setOnClickListener {
-                //닉네임 중복 검사해서 중복이면 textViewWarningNickName 의 visible=true, textViewCompleteCheck visible=false
-                //닉네임 중복 검사해서 중복이 아니면 textViewWarningNickName 의 visible=false,textViewCompleteCheck visible=true, nicknameIsCheck=true
-                //Boolean 전역변수 하나 파서 중복 검사 통과시 true값으로 변경 후 변경 완료 버튼리스너에 해당 분기 삽입
+                //닉네임 입력 검사
+                if(textIsEmptyCheck(textInputEditTextModifyNickName.text.toString(), textInputLayoutNickName, "닉네임을 입력해주세요")){
+                    return@setOnClickListener
+                }
+                //닉네임 중복 확인
+                UserRepository.getAllUser() {
+                    var check = 1
+                    for (document in it.result.documents) {
+                        if (textInputEditTextModifyNickName.text.toString() == document.getString("userNickname")) {
+                            textViewCompleteCheck.visibility = View.GONE
+                            textViewWarningNickName.visibility = View.VISIBLE
+                            check = 0
+                            break
+                        }
+                    }
+                    if(check == 1){
+                        textViewWarningNickName.visibility = View.GONE
+                        textViewCompleteCheck.visibility = View.VISIBLE
+                        nicknameIsChecked = true
+                    }
+                }
             }
 
             buttonModifyMyInfo.setOnClickListener {
@@ -95,6 +109,7 @@ class ModifyMyInfoFragment : Fragment() {
 
                 //닉네임 중복검사 통과 했는지 확인
                 if(!nicknameIsChecked) {
+                    textInputLayoutNickName.requestFocus()
                     Snackbar.make(fragmentModifyMyInfoBinding.root, "닉네임 중복 검사가 필요합니다", Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
@@ -122,7 +137,7 @@ class ModifyMyInfoFragment : Fragment() {
                     password = passwordText
                 }
                 val imagePath = if(userViewModel.user.value?.userProfilePath?.isEmpty()!!){
-                    "UserProfileImage/$testUserEmail/1"
+                    "UserProfileImage/${mainActivity.userClass.userEmail}/1"
                 }else{
                     userViewModel.user.value?.userProfilePath!!
                 }
@@ -140,14 +155,14 @@ class ModifyMyInfoFragment : Fragment() {
             }
         }
 
-        initViewModel(testUserEmail, testUserAuthentication)
+        initViewModel(mainActivity.userClass.userEmail)
 
         return fragmentModifyMyInfoBinding.root
     }
 
-    fun initViewModel(userEmail : String, userAuthentication : String) {
+    fun initViewModel(userEmail : String) {
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        userViewModel.getTargetUserData(userEmail, userAuthentication)
+        userViewModel.getTargetUserData(userEmail)
 
         userViewModel.user.observe(viewLifecycleOwner) { user ->
             if (user != null) {
