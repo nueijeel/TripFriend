@@ -48,7 +48,6 @@ class GroupChatViewModel : ViewModel() {
 
             //채팅방 정보를 모두 탐색
             for (document in rooms) {
-                Log.d("testtt","불러오긴하는중")
                 val lastChatInfo = mutableListOf<DocumentSnapshot>()
                 val groupChatRoomObj= GroupChatInfo()
 
@@ -57,13 +56,16 @@ class GroupChatViewModel : ViewModel() {
 
                 //읽어온 채팅방 데이터 하나
                 val roomObj = document.toObject(GroupChatRoom::class.java)
-                Log.d("testtt",roomObj?.groupChatTripPostId!!)
 
                 //채팅방에 해당하는 동행글 제목을 가져오기 위한 작업
                 val postInfoSnapshot =
                     async { groupChatRepository.getRoomInfoFromPost(roomObj?.groupChatTripPostId!!) }
                 val postInfo = postInfoSnapshot.await().toObject(PostInfo::class.java)
                 val postId=postInfoSnapshot.await().id
+                //채팅방 주인 정보 저장
+                groupChatRoomObj.groupChatPostWriterEmail=roomObj?.groupChatPostWriterEmail
+                //동행 리스트 저장
+                groupChatRoomObj.groupChatMemberNicknameList= roomObj?.groupChatMemberNicknameList!!
                 //동행글 타이틀 저장
                 groupChatRoomObj.tripPostTitle=postInfo?.tripPostTitle
                 //동행글 id저장
@@ -90,6 +92,7 @@ class GroupChatViewModel : ViewModel() {
                     Log.d("이거맞나","${groupChatRoomObj.tripPostTitle}")
 
                 }
+                Log.d("zzzzzz","${groupChatRoomObj.groupChatPostWriterEmail}")
                 groupChatInfo.add(groupChatRoomObj)
             }
             //메인 쓰레드에서 라이브 데이터 저장

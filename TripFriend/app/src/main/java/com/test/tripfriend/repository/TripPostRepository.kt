@@ -59,4 +59,10 @@ class TripPostRepository {
             .document(tripPostDocumentId)
             .update("tripPostMemberList", FieldValue.arrayUnion(userNickname))
     }
+
+    fun deleteTripMemberNickname(userNickname : String, tripPostDocumentId: String){
+        db.collection("TripPost")
+            .document(tripPostDocumentId)
+            .update("tripPostMemberList", FieldValue.arrayRemove(userNickname))
+    }
 }
