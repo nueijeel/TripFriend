@@ -24,6 +24,7 @@ class TripPostViewModel: ViewModel() {
     val tripPostPassList = MutableLiveData<List<TripPost>>()
 
     val tripPostList = MutableLiveData<TripPost>()
+    val tripPostLiked = MutableLiveData<Int>()
 
     val tripPostImage = MutableLiveData<Uri>()
 
@@ -32,12 +33,12 @@ class TripPostViewModel: ViewModel() {
     val dataFormat = SimpleDateFormat("yyyyMMdd")
     val today = dataFormat.format(currentTime).toInt()
 
-    private val _tripPost = MutableLiveData<TripPost>()
-    val tripPost : LiveData<TripPost>
+    private val _tripPost = MutableLiveData<TripPost?>()
+    val tripPost : LiveData<TripPost?>
         get() = _tripPost
 
     // 오늘 날짜 기준으로 참여/지난 동행글 구분하여 데이터 추출
-    fun getAllTripPostData() {
+    fun getAllTripPostData(userEmail: String) {
         val tripPostInfoList= mutableListOf<DocumentSnapshot>()
         val resultInProgressList = mutableListOf<TripPost>()
         val resultPassList = mutableListOf<TripPost>()
@@ -45,7 +46,7 @@ class TripPostViewModel: ViewModel() {
         val scope = CoroutineScope(Dispatchers.Default)
 
         scope.launch {
-            val currentTripPostSnapshot = async { tripPostRepository.getAllDocumentData() }
+            val currentTripPostSnapshot = async { tripPostRepository.getAllDocumentData(userEmail) }
             tripPostInfoList.addAll(currentTripPostSnapshot.await().documents)
 
             for(document in tripPostInfoList) {
@@ -75,11 +76,14 @@ class TripPostViewModel: ViewModel() {
     // 문서id로 접근하여 데이터 가져오기
     fun getSelectDocumentData(documentId: String) {
         val scope = CoroutineScope(Dispatchers.Default)
+        var result: Int
 
         scope.launch {
             var resultData = TripPost()
             val currentTripPostSnapshot = async { tripPostRepository.getSelectDocumentData(documentId) }
             val data = currentTripPostSnapshot.await().toObject(TripPost::class.java)
+
+            result = data!!.tripPostLiked!!.size
 
             if(data != null) {
                 resultData = data
@@ -87,6 +91,7 @@ class TripPostViewModel: ViewModel() {
 
             withContext(Dispatchers.Main) {
                 tripPostList.value = resultData
+                tripPostLiked.value = result
             }
 
             scope.cancel()
@@ -119,6 +124,9 @@ class TripPostViewModel: ViewModel() {
             if(currentTripPost != null){
                 if(currentTripPost.tripPostDate!![0].toLong() > date){
                     _tripPost.value = currentTripPost!!
+                }
+                else{
+                    _tripPost.value = null
                 }
             }
         }

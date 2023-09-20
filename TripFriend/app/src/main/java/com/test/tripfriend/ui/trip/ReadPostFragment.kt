@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,10 +23,12 @@ import com.test.tripfriend.databinding.DialogSubmitBinding
 import com.test.tripfriend.databinding.FragmentReadPostBinding
 import com.test.tripfriend.repository.TripPostRepository
 import com.test.tripfriend.dataclassmodel.PersonalChatRoom
+import com.test.tripfriend.dataclassmodel.TripPost
 import com.test.tripfriend.repository.PersonalChatRepository
 import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.viewmodel.TripPostViewModel
 import com.test.tripfriend.viewmodel.UserViewModel
+import kotlinx.coroutines.runBlocking
 import kotlin.concurrent.thread
 
 class ReadPostFragment : Fragment() {
@@ -38,6 +41,8 @@ class ReadPostFragment : Fragment() {
     val personalChatRepository = PersonalChatRepository()
     val tripPostRepository = TripPostRepository()
 
+    var likedCheck = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,8 +50,8 @@ class ReadPostFragment : Fragment() {
         mainActivity = activity as MainActivity
         fragmentReadPostBinding = FragmentReadPostBinding.inflate(layoutInflater)
 
-        val sharedPreferences =
-            mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        // 로그인 중인 사용자 정보
+        val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
 
         // 이전 화면에서 데이터 가져오기
@@ -63,12 +68,20 @@ class ReadPostFragment : Fragment() {
             fragmentReadPostBinding.run {
                 textViewReadPostTitle.text = tripPost.tripPostTitle
 
-                textViewReadPostDate.text = "${tripPost.tripPostDate?.get(0)} ~ ${tripPost.tripPostDate?.get(1)}"
+                textViewReadPostDate.text = "${formatDate(tripPost.tripPostDate?.get(0)!!)} ~ ${formatDate(tripPost.tripPostDate?.get(1)!!)}"
 
                 textViewReadPostNOP.text = tripPost.tripPostMemberCount.toString()
 
                 textViewReadPostLocatoin.text = tripPost.tripPostLocationName
 
+                for(email in tripPost.tripPostLiked!!) {
+                    if(email == userClass.userEmail) {
+                        imageViewReadPostLiked.setImageResource(R.drawable.favorite_fill_24px)
+                        likedCheck = true
+                    }
+                }
+
+                // 카테고리 칩 갯수에 따라 처리
                 when(tripPost.tripPostTripCategory?.size) {
                     1 -> {
                         chipReadPostCategory1.text = tripPost.tripPostTripCategory[0]
@@ -99,7 +112,6 @@ class ReadPostFragment : Fragment() {
                 }
 
                 textViewReadPostHashTag.text = tripPost.tripPostHashTag
-
                 textViewReadPostContent.text = tripPost.tripPostContent
 
                 newBundle.putString("tripPostDocumentId", tripPost.tripPostDocumentId)
@@ -113,6 +125,32 @@ class ReadPostFragment : Fragment() {
             }
         }
 
+        tripPostViewModel.tripPostLiked.observe(viewLifecycleOwner) {
+            fragmentReadPostBinding.run {
+                textViewReadPostLiked.text = it.toString()
+                var tripPostLikedCount = it
+
+                imageViewReadPostLiked.setOnClickListener {
+                    if(likedCheck) {
+                        tripPostLikedCount--
+                        // 이메일 삭제
+                        tripPostRepository.deleteLikedClick(tripPostDocumentId, userClass.userEmail)
+                        imageViewReadPostLiked.setImageResource(R.drawable.favorite_24px)
+                        likedCheck = false
+                    } else {
+                        tripPostLikedCount++
+                        // 이메일 추가
+                        tripPostRepository.addLikedClick(tripPostDocumentId, userClass.userEmail)
+                        imageViewReadPostLiked.setImageResource(R.drawable.favorite_fill_24px)
+                        likedCheck = true
+                    }
+                    textViewReadPostLiked.text = tripPostLikedCount.toString()
+                }
+            }
+        }
+
+
+        // 동행글 이미지 처리
         tripPostViewModel.tripPostImage.observe(viewLifecycleOwner) { uri ->
             if(uri != null) {
                 Glide.with(mainActivity).load(uri)
@@ -137,6 +175,7 @@ class ReadPostFragment : Fragment() {
             }
         }
 
+        // 사용자 프로필 이미지 처리
         userViewModel.userProfileImage.observe(viewLifecycleOwner) { uri ->
             if(uri != null) {
                 Glide.with(mainActivity).load(uri)
@@ -146,6 +185,7 @@ class ReadPostFragment : Fragment() {
                 fragmentReadPostBinding.imageViewReadPostMainImage.setImageResource(R.drawable.person_24px)
             }
         }
+
         userViewModel.getTargetUserData(tripPostWriterEmail)
 
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
@@ -159,14 +199,14 @@ class ReadPostFragment : Fragment() {
 
                 // 이전 화면에 따라 visibility 처리
                 when(viewState) {
-                    "InProgressFragment" -> { // 참여중인 동행
+                    "InProgress" -> { // 참여중인 동행
                         buttonReadPostDM.visibility = View.GONE
                         buttonReadPostSubmit.visibility = View.GONE
                         buttonReadPostMoveChat.visibility = View.VISIBLE
                         buttonReadPostReview.visibility = View.GONE
 
                     }
-                    "PassFragment" -> { // 지난 동행
+                    "Pass" -> { // 지난 동행
                         buttonReadPostDM.visibility = View.GONE
                         buttonReadPostSubmit.visibility = View.GONE
                         buttonReadPostMoveChat.visibility = View.GONE
@@ -196,6 +236,7 @@ class ReadPostFragment : Fragment() {
 //                var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
 //                toolbar.menu.findItem(R.id.menu_item_modify).isVisible = true
 
+                // 메뉴 아이콘 클릭시
                 setOnMenuItemClickListener {
                     when(it.itemId){
                         //삭제
@@ -292,11 +333,6 @@ class ReadPostFragment : Fragment() {
         return fragmentReadPostBinding.root
     }
 
-    override fun onPause() {
-        super.onPause()
-        mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.VISIBLE
-    }
-
     // chip 아이콘
     fun chipIcon(chipCategory: String): Drawable? {
         var drawable: Drawable? = null
@@ -330,6 +366,25 @@ class ReadPostFragment : Fragment() {
             }
         }
         return drawable
+    }
+
+    // 날짜 형식 변환
+    fun formatDate(date: String): String {
+        if (date != "") {
+            val year = date.substring(0, 4)
+            val month = date.substring(4, 6)
+            val day = date.substring(6, 8)
+
+            val formattedDate = "$year-$month-$day"
+
+            return formattedDate
+        }
+        return ""
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.VISIBLE
     }
 }
 

@@ -22,7 +22,7 @@ class GroupChattingFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var fragmentGroupChattingBinding: FragmentGroupChattingBinding
     lateinit var groupChatViewModel:GroupChatViewModel
-    lateinit var  MY_NICKNAME:String
+    lateinit var MY_NICKNAME:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -96,6 +96,8 @@ class GroupChattingFragment : Fragment() {
                     bundle.putString("groupRoomId",itemList[adapterPosition].roomId)
                     bundle.putString("postId",itemList[adapterPosition].tripPostId)
                     bundle.putString("postTitle",itemList[adapterPosition].tripPostTitle)
+                    bundle.putString("roomOwnerEmail",itemList[adapterPosition].groupChatPostWriterEmail)
+                    bundle.putString("postId",itemList[adapterPosition].tripPostId)
                     mainActivity.replaceFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT, true, true, bundle)
                 }
             }
