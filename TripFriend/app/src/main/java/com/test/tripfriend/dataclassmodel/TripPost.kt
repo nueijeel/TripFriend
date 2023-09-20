@@ -15,6 +15,6 @@ data class TripPost(
     val tripPostHashTag: String = "",                   //해시태그
     val tripPostContent: String = "",                   //내용
     var tripPostDocumentId: String ="",                      //문서 아이디
-    var tripPostIdx: Int = 0,                          //문서아이디
+    var tripPostIdx: Int = 0,                          //문서인덱스
     var tripPostGender: List<Boolean> = emptyList()          //성별
 )
