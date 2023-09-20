@@ -1,5 +1,6 @@
 package com.test.tripfriend.viewmodel
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,6 +33,7 @@ class ChattingViewModel : ViewModel() {
     val chattingList = MutableLiveData<MutableList<PersonalChatting2>>()
     val groupChattingList = MutableLiveData<MutableList<GroupChatting>>()
     val groupUserInfoMapList = MutableLiveData<MutableList<MutableMap<String,String>>>()
+    val myProfile = MutableLiveData<Uri?>()
 
     //문의방 데이터를 가져오고 db에 변동이 발생하면 추가하는 메서드
     fun chattingChangeListener(roomId: String) {
@@ -97,7 +99,6 @@ class ChattingViewModel : ViewModel() {
 
             if (member != null) {
                 for (name in member) {
-                    Log.d("zzzz","${name}")
                     val users = mutableListOf<DocumentSnapshot>()
                     //이름에 해당하는 유저 정보가 담긴 스냅샷 가져오기
                     val userSnapshot = async { groupChatRepository.getUserInfoByNickname(name) }
@@ -128,5 +129,22 @@ class ChattingViewModel : ViewModel() {
             //코루틴 종료
             scope.cancel()
         }
+    }
+
+    fun getMyImageUri(myImagePath:String){
+        //이미지uri가져오는 작업
+        if(myImagePath==""||myImagePath==null||myImagePath=="null"){
+            myProfile.value=null
+        }else{
+            runBlocking {
+                val uri=personalChatRepository.getUserProfileImage(myImagePath)
+                myProfile.value=uri
+            }
+        }
+    }
+
+    //채팅방을 나가면 채팅방을 삭제한다.
+    fun removePersonalChatRoom(roomId:String){
+        personalChatRepository.removePersonalChatRoomById(roomId)
     }
 }
