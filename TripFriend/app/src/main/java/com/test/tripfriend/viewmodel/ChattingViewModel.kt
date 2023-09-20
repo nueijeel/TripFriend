@@ -17,6 +17,7 @@ import com.test.tripfriend.dataclassmodel.PostInfo
 import com.test.tripfriend.dataclassmodel.UserInfo
 import com.test.tripfriend.repository.GroupChatRepository
 import com.test.tripfriend.repository.PersonalChatRepository
+import com.test.tripfriend.repository.TripPostRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -29,6 +30,7 @@ class ChattingViewModel : ViewModel() {
     //통신을 위한 레포지토리 객체
     val personalChatRepository = PersonalChatRepository()
     val groupChatRepository = GroupChatRepository()
+    val tripPostRepository= TripPostRepository()
 
     val chattingList = MutableLiveData<MutableList<PersonalChatting2>>()
     val groupChattingList = MutableLiveData<MutableList<GroupChatting>>()
@@ -111,9 +113,19 @@ class ChattingViewModel : ViewModel() {
                         val email=data?.userEmail
                         Log.d("zzzz","${email}")
                         val image=data?.userProfilePath
+                        val imageUri:Uri?
+                        //이미지uri가져오는 작업
+                        if(image==""||image==null||image=="null"){
+                            imageUri=null
+                        }else{
+                            runBlocking {
+                                val uri=personalChatRepository.getUserProfileImage(image)
+                                imageUri=uri
+                            }
+                        }
                         if (email != null && image != null) {
                             userEmailMap.put(email,name)
-                            userImageMap.put(email,image)
+                            userImageMap.put(email,imageUri.toString())
                         }
                     }
 
@@ -143,8 +155,16 @@ class ChattingViewModel : ViewModel() {
         }
     }
 
-    //채팅방을 나가면 채팅방을 삭제한다.
+    //개인 채팅방을 나가면 해당 채팅방을 삭제한다.
     fun removePersonalChatRoom(roomId:String){
         personalChatRepository.removePersonalChatRoomById(roomId)
     }
+
+    //그룹 채팅방에서 나가기를 클릭하면 멤버 삭제(채팅방, 동핼글)
+    fun outMemberFromChatRoom(nickName:String,roomId:String,tripId:String){
+        groupChatRepository.deleteGroupChatMemberNickname(nickName,roomId)
+        tripPostRepository.deleteTripMemberNickname(nickName,tripId)
+    }
+
+
 }
