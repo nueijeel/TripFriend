@@ -43,6 +43,7 @@ import com.test.tripfriend.ui.myinfo.ModifyMyInfoFragment
 import com.test.tripfriend.ui.myinfo.MyAccompanyInfoFragment
 import com.test.tripfriend.ui.myinfo.MyAppSettingFragment
 import com.test.tripfriend.ui.myinfo.MyInfoMainFragment
+import com.test.tripfriend.ui.trip.InProgressFragment
 import com.test.tripfriend.ui.trip.ModifyPost2Fragment
 import com.test.tripfriend.ui.trip.ModifyPost3Fragment
 import com.test.tripfriend.ui.trip.ModifyPostFragment
@@ -59,6 +60,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var sharedPreferences: SharedPreferences
     lateinit var userClass : UserLogin
+
+    var tripMainPosition = 0
 
     var selectMenu = 0
 
@@ -84,6 +87,7 @@ class MainActivity : AppCompatActivity() {
         val MODFY_POST2_FRAGMENT = "ModifyPost2Fragment"
         val MODFY_POST3_FRAGMENT = "ModifyPost3Fragment"
         val REVIEW_FRAGMENT = "ReviewFragment"
+        val INPROGRESS_FRAGMENT = "InProgressFragment"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -203,6 +207,7 @@ class MainActivity : AppCompatActivity() {
             MODFY_POST2_FRAGMENT -> ModifyPost2Fragment()
             MODFY_POST3_FRAGMENT -> ModifyPost3Fragment()
             REVIEW_FRAGMENT -> ReviewFragment()
+            INPROGRESS_FRAGMENT -> InProgressFragment()
 
             else -> Fragment()
         }

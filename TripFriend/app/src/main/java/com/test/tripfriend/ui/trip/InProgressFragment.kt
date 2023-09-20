@@ -3,6 +3,7 @@ package com.test.tripfriend.ui.trip
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,8 +25,8 @@ import com.test.tripfriend.viewmodel.TripPostViewModel
 class InProgressFragment : Fragment() {
     lateinit var fragmentInProgressBinding: FragmentInProgressBinding
     lateinit var mainActivity: MainActivity
-
     lateinit var tripPostViewModel: TripPostViewModel
+    lateinit var currentUserEmail : String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +38,7 @@ class InProgressFragment : Fragment() {
         // 로그인 중인 사용자 정보
         val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
+        currentUserEmail = userClass.userEmail
 
         tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
 
@@ -49,7 +51,7 @@ class InProgressFragment : Fragment() {
                 fragmentInProgressBinding.textViewInProgressNoPost.text = "동행 중인 여행이 없습니다."
             }
         }
-
+        Log.d("aaaa","inProgress onResume onCreateView 내부")
         tripPostViewModel.getAllTripPostData(userClass.userEmail)
 
         fragmentInProgressBinding.run {
@@ -96,6 +98,7 @@ class InProgressFragment : Fragment() {
                     newBundle.putString("tripPostWriterEmail", tripPostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
                     newBundle.putString("tripPostDocumentId", tripPostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
                     newBundle.putString("viewState", "InProgress") // 어느 화면에서 왔는지 확인
+                    newBundle.putInt("tabPosition",0)
 
                     mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT,true,true, newBundle)
                 }
@@ -218,5 +221,20 @@ class InProgressFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        Log.d("aaaa","inProgress onResume함수")
+        val mainActivity : MainActivity = activity as MainActivity
+        mainActivity.tripMainPosition = 0
+        tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
+        tripPostViewModel.getAllTripPostData(currentUserEmail)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("aaaa","inProgress onPause")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("aaaa","inProgress onStart")
     }
 }

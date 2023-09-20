@@ -214,7 +214,7 @@ class ReadPostFragment : Fragment() {
 
                         // 메뉴를 숨기려면
                         var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
-                        toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
+//                        toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
                     }
                 }
 
