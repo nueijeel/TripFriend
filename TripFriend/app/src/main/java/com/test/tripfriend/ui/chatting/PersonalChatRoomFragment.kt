@@ -9,16 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentPersonalChatRoomBinding
 import com.test.tripfriend.databinding.RowChatRoomUserBinding
-import com.test.tripfriend.dataclassmodel.PersonalChatInfo
 import com.test.tripfriend.dataclassmodel.PersonalChatting
 import com.test.tripfriend.dataclassmodel.PersonalChatting2
 import com.test.tripfriend.repository.PersonalChatRepository
@@ -33,10 +34,10 @@ class PersonalChatRoomFragment : Fragment() {
     lateinit var fragmentPersonalChatRoomBinding: FragmentPersonalChatRoomBinding
     lateinit var chattingViewModel: ChattingViewModel
     lateinit var displayMetrics: DisplayMetrics
-    lateinit var opponentName:String
-    lateinit var opponentProfile:String
+    lateinit var opponentName: String
+    lateinit var opponentProfile: String
     var personalChatRepository = PersonalChatRepository()
-    lateinit var MY_EMAIL:String
+    lateinit var MY_EMAIL: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +46,7 @@ class PersonalChatRoomFragment : Fragment() {
         // Inflate the layout for this fragment
         mainActivity = activity as MainActivity
         fragmentPersonalChatRoomBinding = FragmentPersonalChatRoomBinding.inflate(layoutInflater)
-        MY_EMAIL=mainActivity.userClass.userEmail
+        MY_EMAIL = mainActivity.userClass.userEmail
         chattingViewModel = ViewModelProvider(this)[ChattingViewModel::class.java]
 
         chattingViewModel.run {
@@ -58,7 +59,15 @@ class PersonalChatRoomFragment : Fragment() {
                     )
                 }
             }
-
+            myProfile.observe(viewLifecycleOwner) {
+                if (it != null) {
+                    Glide.with(mainActivity).load(it)
+                        .into(fragmentPersonalChatRoomBinding.imageViewPersonalChatRoomUser)
+                } else {
+                    fragmentPersonalChatRoomBinding.imageViewPersonalChatRoomUser.setImageResource(R.drawable.person_24px)
+                }
+            }
+            getMyImageUri(mainActivity.userClass.userProfilePath)
         }
 
         //하단 nav bar 안보이게
@@ -71,6 +80,7 @@ class PersonalChatRoomFragment : Fragment() {
         val roomId = arguments?.getString("chatRoomId")
         opponentName = arguments?.getString("userName").toString()
         opponentProfile = arguments?.getString("userProfile").toString()
+        Log.d("zzz", "${opponentProfile}")
         if (roomId != null) {
             Log.d("testt", "$roomId $opponentName $opponentProfile")
         }
@@ -95,13 +105,16 @@ class PersonalChatRoomFragment : Fragment() {
                     true
                 }
                 //햄버거 클릭시 나오는 내용들 설정
-                textViewOpponentName.text=opponentName+"님과의 대화방"
-                textViewPersonalChattingUserName.text="${mainActivity.userClass.userNickname}"
-                textViewPersonalChattingOpponentName.text=opponentName
-                buttonPersonalChatRoomExit.setOnClickListener {
-                    //여기서 해당 roomid를 이용해서 내 이름을 null로 설정하고 프래그먼트 삭제(아마 삭제하고 replace 채팅방 목록을 해야할거같음.)
+                textViewOpponentName.text = opponentName + "님과의 대화방"
+                textViewPersonalChattingUserName.text = "${mainActivity.userClass.userNickname}"
+                textViewPersonalChattingOpponentName.text = opponentName
+                imageViewPersonalChatRoomOpponent
+                if (opponentProfile != "null") {
+                    Glide.with(mainActivity).load(opponentProfile.toUri())
+                        .into(imageViewPersonalChatRoomOpponent)
+                } else {
+                    imageViewPersonalChatRoomOpponent.setImageResource(R.drawable.person_24px)
                 }
-
 
 
                 // 리사이클러 뷰
@@ -121,7 +134,12 @@ class PersonalChatRoomFragment : Fragment() {
                             setMessage("나가기를 하면 대화내용이 모두 삭제되고 채팅 목록에서도 삭제됩니다.")
                             setNegativeButton("취소", null)
                             setPositiveButton("나가기") { dialogInterface: DialogInterface, i: Int ->
+                                mainActivity.removeFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT)
 
+                                //일단 삭제를 막아놓음
+//                            if (roomId != null) {
+////                                chattingViewModel.removePersonalChatRoom(roomId)
+//                            }
                             }
                             show()
                         }
@@ -266,8 +284,12 @@ class PersonalChatRoomFragment : Fragment() {
                 holder.textViewOpponentName.visibility = View.VISIBLE
                 holder.textViewOpponentContent.visibility = View.VISIBLE
                 holder.textViewOpponentChatMoment.visibility = View.VISIBLE
-                //사진이 준비 안됨.opponentProfile쓰면댐.
-                holder.imageViewOpponent
+                if (opponentProfile != "null") {
+                    Glide.with(mainActivity).load(opponentProfile.toUri())
+                        .into(holder.imageViewOpponent)
+                } else {
+                    holder.imageViewOpponent.setImageResource(R.drawable.person_24px)
+                }
                 holder.textViewOpponentName.text = opponentName
                 holder.textViewOpponentContent.text = itemList[position].personalChatContent
                 holder.textViewOpponentChatMoment.text =
