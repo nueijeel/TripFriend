@@ -43,6 +43,7 @@ class HomeViewModel : ViewModel() {
                     val tripPostObj = document.toObject(TripPost::class.java)
 
                     if (tripPostObj != null) {
+                        tripPostObj.tripPostDocumentId = document.id
                         resultList.add(tripPostObj)
                     }
                 }
