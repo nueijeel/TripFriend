@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -159,6 +160,15 @@ class HomeMainFragment : Fragment() {
                         1 -> tab.text = "지도"
                     }
                 }.attach()
+                // 탭의 텍스트 색상 변경
+                val tabLayout = fragmentHomeMainBinding.tabLayoutHomeMain
+                val selectedColor = ContextCompat.getColor(requireContext(), R.color.highLightColor)
+                val unselectedColor = ContextCompat.getColor(requireContext(), R.color.gray)
+
+                // 선택되지 않은 탭의 텍스트 색상 설정
+                tabLayout.setTabTextColors(unselectedColor, selectedColor)
+                // 선택된 탭의 텍스트 색상 설정
+                tabLayout.setSelectedTabIndicatorColor(selectedColor)
             }
 
 

@@ -1,6 +1,7 @@
 package com.test.tripfriend.ui.trip
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,12 +17,19 @@ import com.test.tripfriend.databinding.FragmentNotificationBinding
 class NotificationFragment : Fragment() {
     lateinit var fragmentNotificationBinding:FragmentNotificationBinding
     lateinit var mainActivity: MainActivity
+    var position = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         mainActivity = activity as MainActivity
         fragmentNotificationBinding = FragmentNotificationBinding.inflate(layoutInflater)
+
+        if (arguments?.getInt("position") != null){
+            Log.d("aaaa","position = ${arguments?.getInt("position")!!}")
+            position = arguments?.getInt("position")!!
+            mainActivity.tripMainPosition = position
+        }
 
         fragmentNotificationBinding.run {
             materialToolbarNotification.run {
@@ -68,8 +76,8 @@ class NotificationFragment : Fragment() {
     }
 
     //뒤로가기 했을 때 바텀네비 다시 보여주기
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroy() {
+        super.onDestroy()
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.VISIBLE
     }
 }
