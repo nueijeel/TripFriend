@@ -1,6 +1,7 @@
 package com.test.tripfriend.ui.trip
 
 import android.content.DialogInterface
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.SystemClock
 import androidx.fragment.app.Fragment
@@ -9,13 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.DialogSubmitBinding
 import com.test.tripfriend.databinding.FragmentReadPostBinding
-import com.test.tripfriend.dataclassmodel.TripPost
 import com.test.tripfriend.viewmodel.TripPostViewModel
 import com.test.tripfriend.viewmodel.UserViewModel
 import java.util.ArrayList
@@ -41,6 +42,10 @@ class ReadPostFragment : Fragment() {
 
         val newBundle = Bundle()
 
+        var chip1 = ""
+        var chip2 = ""
+        var chip3 = ""
+
         tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
@@ -54,6 +59,35 @@ class ReadPostFragment : Fragment() {
 
                 textViewReadPostLocatoin.text = tripPost.tripPostLocationName
 
+                when(tripPost.tripPostTripCategory?.size) {
+                    1 -> {
+                        chipReadPostCategory1.text = tripPost.tripPostTripCategory[0]
+                        chipReadPostCategory1.chipIcon = chipIcon(tripPost.tripPostTripCategory[0])
+                        chipReadPostCategory2.visibility = View.INVISIBLE
+                        chipReadPostCategory3.visibility = View.INVISIBLE
+                    }
+                    2 -> {
+                        chipReadPostCategory1.text = tripPost.tripPostTripCategory[0]
+                        chipReadPostCategory1.chipIcon = chipIcon(tripPost.tripPostTripCategory[0])
+                        chipReadPostCategory2.text = tripPost.tripPostTripCategory[1]
+                        chipReadPostCategory2.chipIcon = chipIcon(tripPost.tripPostTripCategory[1])
+                        chipReadPostCategory3.visibility = View.INVISIBLE
+                    }
+                    3 -> {
+                        chipReadPostCategory1.text = tripPost.tripPostTripCategory[0]
+                        chipReadPostCategory1.chipIcon = chipIcon(tripPost.tripPostTripCategory[0])
+                        chipReadPostCategory2.text = tripPost.tripPostTripCategory[1]
+                        chipReadPostCategory2.chipIcon = chipIcon(tripPost.tripPostTripCategory[1])
+                        chipReadPostCategory3.text = tripPost.tripPostTripCategory[2]
+                        chipReadPostCategory3.chipIcon = chipIcon(tripPost.tripPostTripCategory[2])
+                    }
+                    else -> {
+                        chipReadPostCategory1.visibility = View.INVISIBLE
+                        chipReadPostCategory2.visibility = View.INVISIBLE
+                        chipReadPostCategory3.visibility = View.INVISIBLE
+                    }
+                }
+
                 textViewReadPostHashTag.text = tripPost.tripPostHashTag
 
                 textViewReadPostContent.text = tripPost.tripPostContent
@@ -61,7 +95,7 @@ class ReadPostFragment : Fragment() {
                 newBundle.putString("tripPostDocumentId", tripPost.tripPostDocumentId)
                 newBundle.putStringArrayList("tripPostMemberList", tripPost.tripPostMemberList as ArrayList<String>?)
                 newBundle.putString("tripPostTitle", tripPost.tripPostTitle)
-                newBundle.putString("tripPostWriterEmail", tripPostWriterEmail)
+                newBundle.putString("tripPostWriterEmail", tripPost.tripPostWriterEmail)
             }
         }
         tripPostViewModel.getSelectDocumentData(tripPostDocumentId)
@@ -72,10 +106,9 @@ class ReadPostFragment : Fragment() {
 
                 textViewUserMBTI.text = user.userMBTI
             }
-
-
         }
-        userViewModel.getTargetUserData(tripPostWriterEmail, "카카오")
+
+        userViewModel.getTargetUserData(tripPostWriterEmail, "이메일")
 
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
         fragmentReadPostBinding.run {
@@ -124,10 +157,6 @@ class ReadPostFragment : Fragment() {
             textViewShowProfile.run{
                 isClickable = true
                 setOnClickListener {
-                    // 유저 이메일 전달
-                    val newBundle = Bundle()
-                    //newBundle.putString("tripPostWriterEmail", tripPostWriterEmail)
-
                     mainActivity.replaceFragment(MainActivity.MY_ACCOMPANY_INFO_FRAGMENT, true, true, newBundle)
                 }
             }
@@ -196,4 +225,40 @@ class ReadPostFragment : Fragment() {
         super.onPause()
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.VISIBLE
     }
+
+    // chip 아이콘
+    fun chipIcon(chipCategory: String): Drawable? {
+        var drawable: Drawable? = null
+        when(chipCategory) {
+            "맛집 탐방" -> {
+                drawable = ContextCompat.getDrawable(mainActivity, R.drawable.restaurant_20px)
+            }
+            "휴양" -> {
+                drawable = ContextCompat.getDrawable(mainActivity, R.drawable.breaktime_20px)
+            }
+            "관광" -> {
+                drawable = ContextCompat.getDrawable(mainActivity, R.drawable.tour_20px)
+            }
+            "축제" -> {
+                drawable = ContextCompat.getDrawable(mainActivity, R.drawable.festival_20px)
+            }
+            "자연" -> {
+                drawable = ContextCompat.getDrawable(mainActivity, R.drawable.forest_20px)
+            }
+            "쇼핑" -> {
+                drawable = ContextCompat.getDrawable(mainActivity, R.drawable.shopping_bag_20px)
+            }
+            "액티비티" -> {
+                drawable = ContextCompat.getDrawable(mainActivity, R.drawable.activity_20px)
+            }
+            "사진촬영" -> {
+                drawable = ContextCompat.getDrawable(mainActivity, R.drawable.photo_camera_20px)
+            }
+            "스포츠" -> {
+                drawable = ContextCompat.getDrawable(mainActivity, R.drawable.sports_soccer_20px)
+            }
+        }
+        return drawable
+    }
 }
+
