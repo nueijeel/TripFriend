@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.home
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -19,10 +20,13 @@ import com.test.tripfriend.databinding.FragmentHomeListBinding
 import com.test.tripfriend.databinding.RowHomeListBinding
 import com.test.tripfriend.databinding.RowTripMainBinding
 import com.test.tripfriend.dataclassmodel.TripPost
+import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.ui.trip.InProgressFragment
 import com.test.tripfriend.ui.trip.TripMainFragment
 import com.test.tripfriend.viewmodel.HomeViewModel
 import com.test.tripfriend.viewmodel.TripPostViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class HomeListFragment : Fragment() {
     lateinit var fragmentHomeListBinding: FragmentHomeListBinding
@@ -106,6 +110,10 @@ class HomeListFragment : Fragment() {
 //            holder.textViewHomeMainListRowHashTag.text = homePostItemList.get(position).tripPostHashTag
 //        }
 
+        val sharedPreferences =
+            mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userClass = UserRepository.getUserInfo(sharedPreferences)
+
         inner class HomeListViewHolder(rowTripMainBinding: RowTripMainBinding) :
             RecyclerView.ViewHolder(rowTripMainBinding.root) {
             val textViewTripMainRowTitle: TextView // 제목
@@ -130,10 +138,34 @@ class HomeListFragment : Fragment() {
                 textViewTripMainRowLikedCount = rowTripMainBinding.textViewTripMainRowLikedCount
 
                 rowTripMainBinding.root.setOnClickListener {
+                    val currentDate = LocalDate.now()
+                    val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                    val formattedDate = currentDate.format(formatter)
 
                     val newBundle = Bundle()
                     newBundle.putString("tripPostWriterEmail", homePostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
                     newBundle.putString("tripPostDocumentId", homePostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
+
+                    Log.d("qwer", "formattedDate : ${formattedDate}")
+                    Log.d("qwer", "tripPostDate : ${homePostItemList[adapterPosition].tripPostDate}")
+                    Log.d("qwer", "userEmail : ${userClass.userEmail}")
+                    Log.d("qwer", "tripPostMemberList : ${homePostItemList[adapterPosition].tripPostMemberList}")
+
+                    // 참여중인 동행글인 경우
+                    if(homePostItemList[adapterPosition].tripPostMemberList?.contains(userClass.userEmail) == true) {
+
+                        if(homePostItemList[adapterPosition].tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
+                            newBundle.putString("viewState", "PassFragment")
+                        } else {
+                            newBundle.putString("viewState", "InProgressFragment")
+                        }
+                    } else {
+                        if(homePostItemList[adapterPosition].tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
+                            newBundle.putString("viewState", "PassFragment")
+                        } else {
+                            newBundle.putString("viewState", "HomeListFragment")
+                        }
+                    }
 
                     mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, newBundle)
                 }

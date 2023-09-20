@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.trip
 
+import android.content.Context
 import android.content.DialogInterface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -22,6 +23,7 @@ import com.test.tripfriend.databinding.FragmentReadPostBinding
 import com.test.tripfriend.repository.TripPostRepository
 import com.test.tripfriend.dataclassmodel.PersonalChatRoom
 import com.test.tripfriend.repository.PersonalChatRepository
+import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.viewmodel.TripPostViewModel
 import com.test.tripfriend.viewmodel.UserViewModel
 import kotlin.concurrent.thread
@@ -42,6 +44,10 @@ class ReadPostFragment : Fragment() {
     ): View? {
         mainActivity = activity as MainActivity
         fragmentReadPostBinding = FragmentReadPostBinding.inflate(layoutInflater)
+
+        val sharedPreferences =
+            mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userClass = UserRepository.getUserInfo(sharedPreferences)
 
         // 이전 화면에서 데이터 가져오기
         val tripPostWriterEmail = arguments?.getString("tripPostWriterEmail")!!
@@ -170,6 +176,20 @@ class ReadPostFragment : Fragment() {
                         var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
                         toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
                     }
+                    "HomeListFragment" -> {
+                        if(tripPostWriterEmail == userClass.userEmail) {
+                            buttonReadPostDM.visibility = View.GONE
+                            buttonReadPostSubmit.visibility = View.GONE
+                            buttonReadPostMoveChat.visibility = View.VISIBLE
+                            buttonReadPostReview.visibility = View.GONE
+                        } else {
+                            buttonReadPostDM.visibility = View.VISIBLE
+                            buttonReadPostSubmit.visibility = View.VISIBLE
+                            buttonReadPostMoveChat.visibility = View.GONE
+                            buttonReadPostReview.visibility = View.GONE
+                        }
+                    }
+
                 }
 
 //                // 메뉴를 보이게 하려면
