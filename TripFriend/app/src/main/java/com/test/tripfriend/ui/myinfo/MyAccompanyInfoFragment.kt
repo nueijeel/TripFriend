@@ -153,10 +153,29 @@ class MyAccompanyInfoFragment : Fragment() {
         userViewModel.user.observe(viewLifecycleOwner) { user ->
             if(user != null){
                 fragmentMyAccompanyInfoBinding.run {
-                    textViewMyAccompanyInfoFriendSpeed.text = "${user.userFriendSpeed} km"
-                    seekbarMyAccompanyInfoFriendSpeed.progress = user.userFriendSpeed.toInt()
+
+                    //속도, 점수, 횟수
+                    var speed = user.userFriendSpeed * 10
+                    textViewMyAccompanyInfoFriendSpeed.text = "${speed/10}km"
+                    seekbarMyAccompanyInfoFriendSpeed.progress = speed.toInt()
                     formatFriendSpeed(user.userTripScore)
                     textViewMyAccompanyInfoCount.text = user.userTripCount.toString()
+
+                    //텍스트 뷰 위치 지정
+                    var speedPerTen = speed / 10
+                    val moveXTemp = (speedPerTen - 10)
+                    val moveX = moveXTemp +(moveXTemp/8)
+
+                    val dpValue = 53+(moveX*3)
+                    val density = resources.displayMetrics.density
+                    val pixelValue = (dpValue * density).toInt()
+
+                    val layoutParams = textViewMyAccompanyInfoFriendSpeed.layoutParams as ViewGroup.MarginLayoutParams
+                    // 왼쪽 마진 설정
+                    layoutParams.leftMargin = pixelValue
+                    // 변경된 레이아웃 파라미터를 다시 설정
+                    textViewMyAccompanyInfoFriendSpeed.layoutParams = layoutParams
+
                 }
             }
         }

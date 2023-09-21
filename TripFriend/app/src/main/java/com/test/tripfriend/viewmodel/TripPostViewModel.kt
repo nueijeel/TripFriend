@@ -1,6 +1,7 @@
 package com.test.tripfriend.viewmodel
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,6 +29,7 @@ class TripPostViewModel: ViewModel() {
     val tripPostLiked = MutableLiveData<Int>()
 
     val tripPostImage = MutableLiveData<Uri>()
+
 
     // 오늘 날짜
     val currentTime : Long = System.currentTimeMillis()
