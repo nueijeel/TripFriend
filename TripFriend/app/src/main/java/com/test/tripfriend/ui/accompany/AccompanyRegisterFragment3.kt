@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.test.tripfriend.R
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.databinding.FragmentAccompanyRegister3Binding
+import com.test.tripfriend.dataclassmodel.GroupChatRoom
 import com.test.tripfriend.dataclassmodel.TripPost
 import com.test.tripfriend.repository.AccompanyRegisterRepository
 import com.test.tripfriend.repository.UserRepository
@@ -193,8 +194,30 @@ class AccompanyRegisterFragment3 : Fragment() {
                         documentId = it.result.id
 
                         accompanyRegisterRepository.uploadImages(imageUri, postImagePath) {
-                            Log.d("qwer", "이미지 저장 되고나서 이동")
-                            completePost(userClass.userEmail, documentId)
+                            val mamberList=tripPost.tripPostMemberList
+                            val writerEmail=tripPost.tripPostWriterEmail
+                            val tripPostId=documentId
+                            val groupRoomObj=
+                                mamberList?.let { list ->
+                                    GroupChatRoom(writerEmail,tripPostId,
+                                        list
+                                    )
+                                }
+                            runBlocking {
+                                if (groupRoomObj != null) {
+                                    //단톡방 생성
+                                    accompanyRegisterRepository.createGroupChatByPostTrip(groupRoomObj){chatRoom->
+                                        val resultObj=tripPost
+                                        resultObj.groupChatRoomId=chatRoom.result.id
+                                        runBlocking {
+                                            accompanyRegisterRepository.addGroupChatIdToPostTrip(documentId,resultObj){
+                                                Log.d("qwer", "이미지 저장 되고나서 이동")
+                                                completePost(userClass.userEmail, documentId)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     } }
 
