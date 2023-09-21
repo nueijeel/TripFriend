@@ -128,26 +128,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
 
             buttonAccompanyRegister1ToNextView.setOnClickListener {
 
-//                if(country == "") {
-//                    MaterialAlertDialogBuilder(mainActivity,R.style.DialogTheme).run {
-//                        setTitle("여행지 선택")
-//                        setMessage("여행지를 선택해주세요.")
-//                        setNegativeButton("닫기") { dialogInterface: DialogInterface, i: Int ->
-//                        }
-//                        show()
-//                    }
-//                } else {
-//                    val bundle = Bundle()
-//                    bundle.putString("country", country)
-//
-//                    mainActivity.replaceFragment(
-//                        MainActivity.ACCOMPANY_REGISTER_FRAGMENT2,
-//                        true,
-//                        true,
-//                        bundle
-//                    )
-//                }
-
                 val bundle = Bundle()
                 bundle.putString("country", country + " " + locality)
                 bundle.putDouble("latitude", latitude)

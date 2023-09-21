@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp">
+
+    <FrameLayout
+        android:id="@+id/standard_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="필터"
+                    android:textSize="@dimen/text_size_1"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/buttonDialogFilterReset"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="초기화"
+                    android:textColor="#000000"
+                    app:icon="@drawable/restart_alt_24px"
+                    app:iconTint="#000000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="여행 카테고리"
+                    android:textSize="@dimen/text_size_2"
+                    android:textStyle="bold" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:fadeScrollbars="false"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDialogFilterCategory1"
+                            style="@style/custom_suggestion_chip_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="축제"
+                            android:textColorHighlight="@color/highLightColor"
+                            android:textSize="@dimen/text_size_3"
+                            app:chipIcon="@drawable/festival_20px"
+                            app:chipIconEnabled="true"
+                            app:chipStrokeColor="@color/highLightColor"
+                            app:chipStrokeWidth="1dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDialogFilterCategory2"
+                            style="@style/custom_suggestion_chip_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="맛집 탐방"
+                            android:textColorHighlight="@color/highLightColor"
+                            android:textSize="@dimen/text_size_3"
+                            app:chipIcon="@drawable/restaurant_20px"
+                            app:chipIconEnabled="true"
+                            app:chipStrokeColor="@color/highLightColor"
+                            app:chipStrokeWidth="1dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDialogFilterCategory3"
+                            style="@style/custom_suggestion_chip_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="휴양"
+                            android:textColorHighlight="@color/highLightColor"
+                            android:textSize="@dimen/text_size_3"
+                            app:chipIcon="@drawable/breaktime_20px"
+                            app:chipIconEnabled="true"
+                            app:chipStrokeColor="@color/highLightColor"
+                            app:chipStrokeWidth="1dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDialogFilterCategory4"
+                            style="@style/custom_suggestion_chip_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="관광"
+                            android:textColorHighlight="@color/highLightColor"
+                            android:textSize="@dimen/text_size_3"
+                            app:chipIcon="@drawable/tour_20px"
+                            app:chipIconEnabled="true"
+                            app:chipStrokeColor="@color/highLightColor"
+                            app:chipStrokeWidth="1dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDialogFilterCategory5"
+                            style="@style/custom_suggestion_chip_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="자연"
+                            android:textColorHighlight="@color/highLightColor"
+                            android:textSize="@dimen/text_size_3"
+                            app:chipIcon="@drawable/forest_20px"
+                            app:chipIconEnabled="true"
+                            app:chipStrokeColor="@color/highLightColor"
+                            app:chipStrokeWidth="1dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDialogFilterCategory6"
+                            style="@style/custom_suggestion_chip_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="쇼핑"
+                            android:textColorHighlight="@color/highLightColor"
+                            android:textSize="@dimen/text_size_3"
+                            app:chipIcon="@drawable/shopping_bag_20px"
+                            app:chipIconEnabled="true"
+                            app:chipStrokeColor="@color/highLightColor"
+                            app:chipStrokeWidth="1dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDialogFilterCategory7"
+                            style="@style/custom_suggestion_chip_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="액티비티"
+                            android:textColorHighlight="@color/highLightColor"
+                            android:textSize="@dimen/text_size_3"
+                            app:chipIcon="@drawable/activity_20px"
+                            app:chipIconEnabled="true"
+                            app:chipStrokeColor="@color/highLightColor"
+                            app:chipStrokeWidth="1dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDialogFilterCategory8"
+                            style="@style/custom_suggestion_chip_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="사진촬영"
+                            android:textColorHighlight="@color/highLightColor"
+                            android:textSize="@dimen/text_size_3"
+                            app:chipIcon="@drawable/photo_camera_20px"
+                            app:chipIconEnabled="true"
+                            app:chipStrokeColor="@color/highLightColor"
+                            app:chipStrokeWidth="1dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDialogFilterCategory9"
+                            style="@style/custom_suggestion_chip_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="스포츠"
+                            android:textColorHighlight="@color/highLightColor"
+                            android:textSize="@dimen/text_size_3"
+                            app:chipIcon="@drawable/sports_soccer_20px"
+                            app:chipIconEnabled="true"
+                            app:chipStrokeColor="@color/highLightColor"
+                            app:chipStrokeWidth="1dp" />
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:text="성별"
+                        android:textSize="@dimen/text_size_2"
+                        android:textStyle="bold" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp">
+
+                            <com.google.android.material.chip.ChipGroup
+                                android:id="@+id/chipGroupDialogFilterGender"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:singleSelection="true"
+                                tools:singleSelection="false">
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/chipDialogFilterGender1"
+                                    style="@style/custom_suggestion_chip_style"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="10dp"
+                                    android:text="남자"
+                                    android:textColorHighlight="@color/highLightColor"
+                                    android:textSize="@dimen/text_size_3"
+                                    app:chipIcon="@drawable/man_24px"
+                                    app:chipIconEnabled="true"
+                                    app:chipStrokeColor="@color/highLightColor"
+                                    app:chipStrokeWidth="1dp"
+                                    app:ensureMinTouchTargetSize="true" />
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/chipDialogFilterGender2"
+                                    style="@style/custom_suggestion_chip_style"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="10dp"
+                                    android:text="여자"
+                                    android:textColorHighlight="@color/highLightColor"
+                                    android:textSize="@dimen/text_size_3"
+                                    app:chipIcon="@drawable/woman_24px"
+                                    app:chipIconEnabled="true"
+                                    app:chipStrokeColor="@color/highLightColor"
+                                    app:chipStrokeWidth="1dp"
+                                    app:ensureMinTouchTargetSize="true" />
+                            </com.google.android.material.chip.ChipGroup>
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:text="여행일자"
+                        android:textSize="@dimen/text_size_2"
+                        android:textStyle="bold" />
+
+                    <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+                        android:id="@+id/calendarTripMain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        custom:disable_date_color="#ABABAB"
+                        custom:range_color="@color/mainColor"
+                        custom:selected_date_circle_color="@color/highLightColor"
+                        custom:title_color="@color/black"></com.archit.calendardaterangepicker.customviews.DateRangeCalendarView>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonHomeMainFilterCancel"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/font"
+                    android:text="취소"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/buttonHomeMainFilterApply"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/font"
+                    android:text="적용하기"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
