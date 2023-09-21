@@ -30,7 +30,13 @@ import com.test.tripfriend.repository.TripRequestRepository
 import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.viewmodel.TripPostViewModel
 import com.test.tripfriend.viewmodel.UserViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import kotlin.concurrent.thread
 
@@ -77,12 +83,6 @@ class ReadPostFragment : Fragment() {
 
         tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-        tripPostViewModel.groupChatId.observe(viewLifecycleOwner){
-            newBundle.putString("groupRoomId",it)
-            Log.d("zzzzzz","${newBundle}")
-//            mainActivity.replaceFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT,true,true, newBundle)
-        }
-
         tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
             Log.d("testt","동행글 정보 가져오는 옵저버 도착")
             newBundle.putString("postId", tripPost.tripPostDocumentId)
@@ -90,6 +90,7 @@ class ReadPostFragment : Fragment() {
             newBundle.putStringArrayList("tripPostMemberList", tripPost.tripPostMemberList as ArrayList<String>?)
             newBundle.putString("postTitle", tripPost.tripPostTitle)
             newBundle.putString("roomOwnerEmail", tripPost.tripPostWriterEmail)
+            newBundle.putString("groupRoomId", tripPost.groupChatRoomId)
             fragmentReadPostBinding.run {
                 textViewReadPostTitle.text = tripPost.tripPostTitle
 
@@ -485,12 +486,9 @@ class ReadPostFragment : Fragment() {
 
             //그룹 채팅으로 이동 버튼
             buttonReadPostMoveChat.setOnClickListener {
-                Log.d("testt","그룹 채팅으로 이동")
-                Log.d("testt","${newBundle}")
-
-                //동행글 문서 아이디로 해당 단톡방을 검색해서 id값을 가져온다, 그 아이디를 번들에 넣ㄹ
-                tripPostViewModel.getTripPostGroupChatId(thisPostId)
-
+                Log.d("최종확인","${newBundle}")
+                mainActivity.replaceFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT,true,false, newBundle)
+                return@setOnClickListener
             }
 
             //리뷰 버튼
