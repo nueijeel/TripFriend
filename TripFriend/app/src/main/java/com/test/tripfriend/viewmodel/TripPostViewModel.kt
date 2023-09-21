@@ -22,6 +22,7 @@ class TripPostViewModel: ViewModel() {
     val tripPostRepository = TripPostRepository()
     val tripPostInProgressList = MutableLiveData<List<TripPost>>()
     val tripPostPassList = MutableLiveData<List<TripPost>>()
+    val tripPostLikedList = MutableLiveData<List<TripPost>>()
 
     val tripPostList = MutableLiveData<TripPost>()
     val tripPostLiked = MutableLiveData<Int>()
@@ -68,6 +69,32 @@ class TripPostViewModel: ViewModel() {
             withContext(Dispatchers.Main) {
                 tripPostInProgressList.value = resultInProgressList
                 tripPostPassList.value = resultPassList
+            }
+            scope.cancel()
+        }
+    }
+
+    // 좋아요한 게시글만 가져오기
+    fun getTripPostLikedData(userEmail: String) {
+        val tripPostInfoList= mutableListOf<DocumentSnapshot>()
+        val resultLikedList = mutableListOf<TripPost>()
+
+        val scope = CoroutineScope(Dispatchers.Default)
+
+        scope.launch {
+            val currentTripPostSnapshot = async { tripPostRepository.getTripPostLikedData(userEmail) }
+            tripPostInfoList.addAll(currentTripPostSnapshot.await().documents)
+
+            for(document in tripPostInfoList) {
+                val data = document.toObject(TripPost::class.java)
+
+                data!!.tripPostDocumentId = document.id
+
+                resultLikedList.add(data)
+            }
+
+            withContext(Dispatchers.Main) {
+                tripPostLikedList.value = resultLikedList
             }
             scope.cancel()
         }
