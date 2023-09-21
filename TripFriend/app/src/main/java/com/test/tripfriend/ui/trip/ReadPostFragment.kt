@@ -86,6 +86,9 @@ class ReadPostFragment : Fragment() {
             newBundle.putString("postTitle", tripPost.tripPostTitle)
             newBundle.putString("roomOwnerEmail", tripPost.tripPostWriterEmail)
             newBundle.putString("groupRoomId", tripPost.groupChatRoomId)
+            newBundle.putString("locationName", tripPost.tripPostLocationName)
+            newBundle.putDouble("latitude", tripPost.tripPostLatitude)
+            newBundle.putDouble("longitude", tripPost.tripPostLongitude)
             fragmentReadPostBinding.run {
                 textViewReadPostTitle.text = tripPost.tripPostTitle
 

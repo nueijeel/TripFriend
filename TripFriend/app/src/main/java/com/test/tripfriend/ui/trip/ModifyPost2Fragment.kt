@@ -28,6 +28,7 @@ import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.test.tripfriend.viewmodel.TripPostViewModel
+import java.util.Date
 
 class ModifyPost2Fragment : Fragment() {
     lateinit var fragmentModifyPost2Binding: FragmentModifyPost2Binding
@@ -124,34 +125,38 @@ class ModifyPost2Fragment : Fragment() {
             // 달력
             textInputLayoutModifyPost2Date.run {
                 // 데이트 피커
-                fragmentModifyPost2Binding.calendarModifyPost2.setCalendarListener(object :
-                    CalendarListener {
-                    override fun onFirstDateSelected(startDate: Calendar) {
-                        val date = startDate.time
-                        val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+                fragmentModifyPost2Binding.calendarModifyPost2.run {
+                    val calendar = Calendar.getInstance()
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val currentDate = Date()
+                    val todayDate = dateFormat.format(currentDate)
 
-                        dates.clear()
-                        dates.add(format.format(date))
-                        firstDate = format.format(date)
-                        secondDate = format.format(date)
-                        Toast.makeText(mainActivity, "Start Date: " + firstDate
-                                + "\nEnd date: " + secondDate, Toast.LENGTH_SHORT).show()
-                    }
+                    calendar.time = currentDate
+                    calendar.add(Calendar.YEAR, 2)
 
-                    override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
-                        val startDate = startDate.time
-                        val endDate = endDate.time
-                        val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+                    setSelectableDateRange(dateToCalendar(todayDate), calendar)
 
-                        dates.clear()
-                        dates.add(format.format(startDate))
-                        dates.add(format.format(endDate))
-                        firstDate = format.format(startDate)
-                        secondDate = format.format(endDate)
-                        Toast.makeText(mainActivity, "Start Date: " + firstDate
-                                + "\nEnd date: " + secondDate, Toast.LENGTH_SHORT).show()
-                    }
-                })
+                    setCalendarListener(object :
+                        CalendarListener {
+                        override fun onFirstDateSelected(startDate: Calendar) {
+                            val date = startDate.time
+                            val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+
+                            firstDate = format.format(date)
+                            secondDate = format.format(date)
+//                        Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
+                            val startDate = startDate.time
+                            val endDate = endDate.time
+                            val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+
+                            firstDate = format.format(startDate)
+                            secondDate = format.format(endDate)
+                        }
+                    })
+                }
             }
             
             // 다음버튼 - 유효성 검사 및 다음 화면에 정보 전달
@@ -216,6 +221,19 @@ class ModifyPost2Fragment : Fragment() {
         }
 
         return fragmentModifyPost2Binding.root
+    }
+
+    private fun dateToCalendar(dateString: String): Calendar {
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val date: Date? = sdf.parse(dateString)
+
+        val calendar = Calendar.getInstance()
+        if (date != null) {
+            calendar.time = date
+        }
+
+        Log.d("qwer", "calendar $calendar")
+        return calendar
     }
 
     override fun onPause() {
