@@ -323,18 +323,6 @@ class HomeMainFragment : Fragment() {
                 }
                 chipCount = 0
             }
-
-//            bottomSheetMainFilterBinding.run {
-//                chipDialogFilterCategory1.isChecked = false
-//                chipDialogFilterCategory2.isChecked = false
-//                chipDialogFilterCategory3.isChecked = false
-//                chipDialogFilterCategory4.isChecked = false
-//                chipDialogFilterCategory5.isChecked = false
-//                chipDialogFilterCategory6.isChecked = false
-//                chipDialogFilterCategory7.isChecked = false
-//                chipDialogFilterCategory8.isChecked = false
-//                chipDialogFilterCategory9.isChecked = false
-//            }
         }
 
         companion object {
