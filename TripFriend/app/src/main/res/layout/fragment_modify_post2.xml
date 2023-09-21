@@ -147,7 +147,7 @@
                     app:counterMaxLength="300">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textInputModifyPost2Content"
+                        android:id="@+id/textInputEditTextModifyPost2Content"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:inputType="text|textMultiLine"

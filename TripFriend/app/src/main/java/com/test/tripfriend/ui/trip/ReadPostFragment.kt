@@ -30,13 +30,7 @@ import com.test.tripfriend.repository.TripRequestRepository
 import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.viewmodel.TripPostViewModel
 import com.test.tripfriend.viewmodel.UserViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import kotlin.concurrent.thread
 
@@ -81,12 +75,13 @@ class ReadPostFragment : Fragment() {
 
         val newBundle = Bundle()
 
-        tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
-        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
+        userViewModel = ViewModelProvider(mainActivity)[UserViewModel::class.java]
+
         tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
             Log.d("testt","동행글 정보 가져오는 옵저버 도착")
             newBundle.putString("postId", tripPost.tripPostDocumentId)
-            thisPostId=tripPost.tripPostDocumentId
+            thisPostId = tripPost.tripPostDocumentId
             newBundle.putStringArrayList("tripPostMemberList", tripPost.tripPostMemberList as ArrayList<String>?)
             newBundle.putString("postTitle", tripPost.tripPostTitle)
             newBundle.putString("roomOwnerEmail", tripPost.tripPostWriterEmail)
@@ -144,7 +139,7 @@ class ReadPostFragment : Fragment() {
 
 
                 if(tripPost.tripPostImage!!.isNotEmpty()) {
-                    tripPostViewModel.getTargetUserProfileImage(tripPost.tripPostImage)
+                    tripPostViewModel.getTripPostImage(tripPost.tripPostImage)
                 }
             }
         }
@@ -438,7 +433,6 @@ class ReadPostFragment : Fragment() {
 
             //동행 신청 버튼
             buttonReadPostSubmit.setOnClickListener {
-
                 if(tripPostViewModel.tripPostList.value?.tripPostMemberList!!.size < tripPostViewModel.tripPostList.value?.tripPostMemberCount!!){
                     //다이얼로그 띄움
                     val builder = MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme)

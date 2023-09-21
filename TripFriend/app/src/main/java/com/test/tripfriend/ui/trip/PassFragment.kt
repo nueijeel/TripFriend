@@ -40,7 +40,7 @@ class PassFragment : Fragment() {
         val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
         currentUserEmail = userClass.userEmail
-        tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
+        tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
 
         tripPostViewModel.tripPostPassList.observe(viewLifecycleOwner){
             if(it != null) {

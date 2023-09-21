@@ -1,7 +1,6 @@
 package com.test.tripfriend.viewmodel
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -116,7 +115,7 @@ class TripPostViewModel: ViewModel() {
 
             if(data != null) {
                 resultData = data
-                resultData.tripPostDocumentId=documentId
+                resultData.tripPostDocumentId = documentId
             }
 
             withContext(Dispatchers.Main) {
@@ -129,7 +128,7 @@ class TripPostViewModel: ViewModel() {
     }
 
     // 동행글 이미지 가져오기
-    fun getTargetUserProfileImage(tripPostImagePath : String){
+    fun getTripPostImage(tripPostImagePath : String){
         val imageUri = runBlocking { tripPostRepository.getTripPostImage(tripPostImagePath) }
 
         if(imageUri != null){
