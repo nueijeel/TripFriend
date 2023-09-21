@@ -1,9 +1,7 @@
 package com.test.tripfriend.ui.trip
 
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +23,6 @@ import com.test.tripfriend.dataclassmodel.TripRequest
 import com.test.tripfriend.repository.GroupChatRepository
 import com.test.tripfriend.repository.TripPostRepository
 import com.test.tripfriend.repository.TripRequestRepository
-import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.viewmodel.GroupChatViewModel
 import com.test.tripfriend.viewmodel.TripPostViewModel
@@ -141,7 +138,7 @@ class ReceivedNotificationFragment : Fragment() {
 
                 //거절 버튼 클릭 이벤트
                 buttonNotificationRowRefuse.setOnClickListener {
-                    createDialog("동행 요청 거절", "요청을 거절하면 등록하신 동행글에 해당 유저가 다시 동행 신청을 할 수 없습니다.", "거절")
+                    createDialog("동행 요청 거절", "요청을 거절하면 해당 유저가 ", "거절")
                     {
                         //요청 상태값 바꾸기
                         runBlocking{
@@ -180,6 +177,8 @@ class ReceivedNotificationFragment : Fragment() {
                 Glide.with(mainActivity).load(userViewModel.userProfileImage.value)
                     .error(R.drawable.person_24px)
                     .into(holder.imageViewNotificationRowProfileImage)
+            }else{
+                holder.imageViewNotificationRowProfileImage.setImageResource(R.drawable.person_24px)
             }
 
             //아이템 닉네임 설정
@@ -232,7 +231,10 @@ class ReceivedNotificationFragment : Fragment() {
     fun initUserViewModel(userEmail : String){
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
         userViewModel.getTargetUserData(userEmail)
-        userViewModel.getTargetUserProfileImage(userViewModel.user.value?.userProfilePath!!)
+
+        if(userViewModel.user.value?.userProfilePath!!.isNotEmpty()){
+            userViewModel.getTargetUserProfileImage(userViewModel.user.value?.userProfilePath!!)
+        }
     }
 
     //유저의 동행 정보 화면으로 전환시키는 함수

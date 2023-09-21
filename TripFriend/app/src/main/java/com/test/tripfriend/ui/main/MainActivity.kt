@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var userClass : UserLogin
 
     var tripMainPosition = 0
+    var homeMainPosition = 0
 
     var selectMenu = 0
 
@@ -286,7 +287,7 @@ class MainActivity : AppCompatActivity() {
 
     fun checkLoginUserIsMember(memberName : String, callback1 : () -> Unit, callback2: () -> Unit){
         if(memberName == "NoneUserName"){
-            createDialog("접근 불가", "로그인이 필요한 서비스입니다."){
+            createDialog("로그인", "로그인이 필요한 서비스입니다."){
                 callback1()
             }
         }else{

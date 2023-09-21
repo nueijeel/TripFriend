@@ -27,7 +27,6 @@ import java.util.Locale
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.test.tripfriend.repository.TripPostRepository
 import com.test.tripfriend.viewmodel.TripPostViewModel
 
 class ModifyPost2Fragment : Fragment() {

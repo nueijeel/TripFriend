@@ -2,7 +2,6 @@ package com.test.tripfriend.ui.trip
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -44,7 +43,7 @@ class ReviewFragment : Fragment() {
         //여기서 넘어온 멤버 리스트 번들값을 받고 전역 변수들 초기화한다.
         memberList = arguments?.getStringArrayList("tripPostMemberList")!!
         myEmail = mainActivity.userClass.userEmail
-        tripPostDocumentId = arguments?.getString("tripPostDocumentId")!!
+        tripPostDocumentId = arguments?.getString("postId")!!
 
         reviewViewModel = ViewModelProvider(this)[ReviewViewModel::class.java]
         reviewViewModel.run {

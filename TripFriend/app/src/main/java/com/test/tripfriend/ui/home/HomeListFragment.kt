@@ -44,10 +44,15 @@ class HomeListFragment : Fragment() {
         initHomeViewModel()
 
         fragmentHomeListBinding.run {
+            refreshLayout01.setOnRefreshListener {
+                initHomeViewModel()
+                fragmentHomeListBinding.refreshLayout01.isRefreshing = false
+            }
             recyclerViewHomeList.run {
                 adapter = HomeListAdapter()
                 layoutManager = LinearLayoutManager(mainActivity)
             }
+
         }
 
         return fragmentHomeListBinding.root
@@ -254,7 +259,10 @@ class HomeListFragment : Fragment() {
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeViewModel.getTripPostData()
 
+        Log.d("qwer", "initViewModel")
+
         homeViewModel.tripPostList.observe(viewLifecycleOwner) {
+            Log.d("qwer", "initViewModel observe")
 //            fragmentHomeListBinding.textViewHomeListNoPost.visibility = View.GONE
 //            (fragmentHomeListBinding.recyclerViewHomeList.adapter as? HomeListAdapter)?.updateItemList(it)
             if(it != null) {
@@ -327,7 +335,7 @@ class HomeListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        initHomeViewModel()
+        mainActivity.homeMainPosition = 0
         Log.d("qwer", "listFragment onResume")
     }
 

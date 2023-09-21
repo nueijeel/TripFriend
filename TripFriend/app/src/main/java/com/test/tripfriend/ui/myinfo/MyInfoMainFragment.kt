@@ -73,7 +73,6 @@ class MyInfoMainFragment : Fragment() {
 
         userViewModel.user.observe(viewLifecycleOwner){ user ->
             if(user != null){
-
                 fragmentMyInfoMainBinding.run {
                     if(user.userProfilePath.isEmpty()){
                         //기본 이미지 지정
@@ -96,22 +95,26 @@ class MyInfoMainFragment : Fragment() {
                     textViewMBTI.text = if(user.userMBTI == "모름") "MBTI 미설정" else user.userMBTI
 
                     //속도, 점수, 횟수
-                    textViewFriendSpeed.text = "${user.userFriendSpeed}km"
-                    seekbarFriendSpeed.progress = user.userFriendSpeed.toInt()
+                    var speed = user.userFriendSpeed * 10
+                    textViewFriendSpeed.text = "${speed/10}km"
+                    seekbarFriendSpeed.progress = speed.toInt()
                     textViewAccompanyScore.text = user.userTripScore.toString()
                     textViewAccompanyNumber.text = user.userTripCount.toString()
 
-                    //속도 텍스트 뷰 위치 설정
-//                    val thumbBound = seekbarFriendSpeed.thumb.bounds
-//                    val thumbOffset = seekbarFriendSpeed.thumbOffset
-//                    Log.d("thumbOffset", thumbOffset.toString())
-//                    Log.d("thumbBound", thumbBound.toString())
-//                    textViewFriendSpeed.translationX = seekbarFriendSpeed.left + thumbBound.right.toFloat()
+                    //텍스트 뷰 위치 지정
+                    var speedPerTen = speed / 10
+                    val moveXTemp = (speedPerTen - 10)
+                    val moveX = moveXTemp +(moveXTemp/8)
 
-//                    val padding=seekbarFriendSpeed.paddingLeft+seekbarFriendSpeed.paddingRight
-//                    val sPos = seekbarFriendSpeed.left+seekbarFriendSpeed.paddingLeft
-//                    val xPos = (seekbarFriendSpeed.width-padding)*seekbarFriendSpeed.progress/seekbarFriendSpeed.max+sPos-(textViewFriendSpeed.width/2)
-//                    textViewFriendSpeed.x = xPos.toFloat()
+                    val dpValue = 53+(moveX*3)
+                    val density = resources.displayMetrics.density
+                    val pixelValue = (dpValue * density).toInt()
+
+                    val layoutParams = textViewFriendSpeed.layoutParams as ViewGroup.MarginLayoutParams
+                    // 왼쪽 마진 설정
+                    layoutParams.leftMargin = pixelValue
+                    // 변경된 레이아웃 파라미터를 다시 설정
+                    textViewFriendSpeed.layoutParams = layoutParams
                 }
 
             }

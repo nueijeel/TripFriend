@@ -1,6 +1,7 @@
 package com.test.tripfriend.ui.trip
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +21,7 @@ class ModifyPostFragment : Fragment() {
         fragmentModifyPostBinding = FragmentModifyPostBinding.inflate(layoutInflater)
 
         // 이전 화면 정보 가져오기
-        val tripPostDocumentId = arguments?.getString("tripPostDocumentId")
+        val tripPostDocumentId = arguments?.getString("postId")!!
         val tripPostWriterEmail = arguments?.getString("tripPostWriterEmail")
 
         fragmentModifyPostBinding.run {

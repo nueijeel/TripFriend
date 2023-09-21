@@ -29,6 +29,7 @@ class TripPostViewModel: ViewModel() {
 
     val tripPostImage = MutableLiveData<Uri>()
 
+
     // 오늘 날짜
     val currentTime : Long = System.currentTimeMillis()
     val dataFormat = SimpleDateFormat("yyyyMMdd")

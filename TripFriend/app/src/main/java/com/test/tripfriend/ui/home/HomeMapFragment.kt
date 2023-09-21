@@ -155,6 +155,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     override fun onResume() {
         super.onResume()
         Log.d("qwer", "onResume")
+        mainActivity.homeMainPosition = 1
 
         if (mapReady) {
             onMapReady(mMap)
