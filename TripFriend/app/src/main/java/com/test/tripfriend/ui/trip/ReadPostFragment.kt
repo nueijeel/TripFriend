@@ -219,11 +219,15 @@ class ReadPostFragment : Fragment() {
                             buttonReadPostSubmit.visibility = View.GONE
                             buttonReadPostMoveChat.visibility = View.VISIBLE
                             buttonReadPostReview.visibility = View.GONE
+
                         } else {
                             buttonReadPostDM.visibility = View.VISIBLE
                             buttonReadPostSubmit.visibility = View.VISIBLE
                             buttonReadPostMoveChat.visibility = View.GONE
                             buttonReadPostReview.visibility = View.GONE
+                            var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
+                            toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
+                            toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
                         }
                     }
                     "HomeListPass" -> { // 지난 동행
@@ -232,11 +236,16 @@ class ReadPostFragment : Fragment() {
                             buttonReadPostSubmit.visibility = View.GONE
                             buttonReadPostMoveChat.visibility = View.GONE
                             buttonReadPostReview.visibility = View.VISIBLE
+                            var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
+                            toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
                         } else {
                             buttonReadPostDM.visibility = View.GONE
                             buttonReadPostSubmit.visibility = View.GONE
                             buttonReadPostMoveChat.visibility = View.GONE
                             buttonReadPostReview.visibility = View.GONE
+                            var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
+                            toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
+                            toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
                         }
                     }
 
