@@ -115,6 +115,8 @@ class ReadPostFragment : Fragment() {
                 newBundle.putStringArrayList("tripPostMemberList", tripPost.tripPostMemberList as ArrayList<String>?)
                 newBundle.putString("tripPostTitle", tripPost.tripPostTitle)
                 newBundle.putString("tripPostWriterEmail", tripPost.tripPostWriterEmail)
+                newBundle.putString("userName", userClass.userName)
+                newBundle.putString("userProfile", userClass.userProfilePath)
 
                 if(tripPost.tripPostImage!!.isNotEmpty()) {
                     tripPostViewModel.getTargetUserProfileImage(tripPost.tripPostImage)
@@ -145,7 +147,6 @@ class ReadPostFragment : Fragment() {
                 }
             }
         }
-
 
         // 동행글 이미지 처리
         tripPostViewModel.tripPostImage.observe(viewLifecycleOwner) { uri ->
@@ -239,7 +240,6 @@ class ReadPostFragment : Fragment() {
                             buttonReadPostReview.visibility = View.GONE
                         }
                     }
-
                 }
 
 //                // 메뉴를 보이게 하려면
