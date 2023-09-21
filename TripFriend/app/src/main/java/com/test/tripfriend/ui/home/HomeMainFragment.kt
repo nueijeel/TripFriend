@@ -18,12 +18,14 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.archit.calendardaterangepicker.customviews.CalendarListener
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
+import com.test.tripfriend.databinding.BottomSheetMainFilterBinding
 import com.test.tripfriend.databinding.DialogHomeMainFilterBinding
 import com.test.tripfriend.databinding.FragmentHomeMainBinding
 import com.test.tripfriend.repository.UserRepository
@@ -31,6 +33,7 @@ import com.test.tripfriend.ui.trip.TripMainFragment
 import com.test.tripfriend.ui.user.LoginMainActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class HomeMainFragment : Fragment() {
@@ -39,20 +42,12 @@ class HomeMainFragment : Fragment() {
     lateinit var loginMainActivity: LoginMainActivity
     lateinit var viewPager: ViewPager2
     lateinit var viewPagerAdapter: HomeMainFragment.ViewPagerAdapter
-    // 최대 선택 가능 Chip 갯수
-    val maxSelectableChips = 3
-
-    // 칩 카운트 변수
-    var chipCount = 0
+    lateinit var bottomSheetMainFilterBinding: BottomSheetMainFilterBinding
 
     val spinnerList = arrayOf(
         "제목+내용", "해시태그"
     )
 
-
-
-
-    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,6 +55,7 @@ class HomeMainFragment : Fragment() {
     ): View {
         fragmentHomeMainBinding = FragmentHomeMainBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+        bottomSheetMainFilterBinding = BottomSheetMainFilterBinding.inflate(layoutInflater)
 
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.VISIBLE
 
@@ -67,21 +63,21 @@ class HomeMainFragment : Fragment() {
             mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
 
-        Log.d("aaaa","Main===============================================")
-        Log.d("aaaa","인증방식 = ${userClass.userAuthentication}")
-        Log.d("aaaa","이메일 = ${userClass.userEmail}")
-        Log.d("aaaa","비밀번호 = ${userClass.userPw}")
-        Log.d("aaaa","닉네임 = ${userClass.userNickname}")
-        Log.d("aaaa","이름 = ${userClass.userName}")
-        Log.d("aaaa","휴대폰 번호 = ${userClass.userPhoneNum}")
-        Log.d("aaaa","MBTI = ${userClass.userMBTI}")
-        Log.d("aaaa","userProfilePath = ${userClass.userProfilePath}")
-        Log.d("aaaa","userFriendSpeed = ${userClass.userFriendSpeed}")
-        Log.d("aaaa","userTripScore = ${userClass.userTripScore}")
-        Log.d("aaaa","userTripCount = ${userClass.userTripCount}")
-        Log.d("aaaa","userChatNotification = ${userClass.userChatNotification}")
-        Log.d("aaaa","userPushNotification = ${userClass.userPushNotification}")
-        Log.d("aaaa","자동 로그인 = ${userClass.checkAutoLogin}")
+        Log.d("aaaa", "Main===============================================")
+        Log.d("aaaa", "인증방식 = ${userClass.userAuthentication}")
+        Log.d("aaaa", "이메일 = ${userClass.userEmail}")
+        Log.d("aaaa", "비밀번호 = ${userClass.userPw}")
+        Log.d("aaaa", "닉네임 = ${userClass.userNickname}")
+        Log.d("aaaa", "이름 = ${userClass.userName}")
+        Log.d("aaaa", "휴대폰 번호 = ${userClass.userPhoneNum}")
+        Log.d("aaaa", "MBTI = ${userClass.userMBTI}")
+        Log.d("aaaa", "userProfilePath = ${userClass.userProfilePath}")
+        Log.d("aaaa", "userFriendSpeed = ${userClass.userFriendSpeed}")
+        Log.d("aaaa", "userTripScore = ${userClass.userTripScore}")
+        Log.d("aaaa", "userTripCount = ${userClass.userTripCount}")
+        Log.d("aaaa", "userChatNotification = ${userClass.userChatNotification}")
+        Log.d("aaaa", "userPushNotification = ${userClass.userPushNotification}")
+        Log.d("aaaa", "자동 로그인 = ${userClass.checkAutoLogin}")
 
         viewPager = fragmentHomeMainBinding.viewPager2HomeMain
         viewPagerAdapter = ViewPagerAdapter(mainActivity)
@@ -94,68 +90,11 @@ class HomeMainFragment : Fragment() {
                 spinnerClick()
             }
 
-            // 필터 다이얼로그
+            // 필터
             imageButtonHomeMainFilter.run {
                 setOnClickListener {
-                    val builder =
-                        MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
-                            val dialogHomeMainFilterBinding: DialogHomeMainFilterBinding =
-                                DialogHomeMainFilterBinding.inflate(layoutInflater)
-
-                            setView(dialogHomeMainFilterBinding.root)
-
-                            dialogHomeMainFilterBinding.run {
-                                chipMax(chipDialogFilterCategory1)
-                                chipMax(chipDialogFilterCategory2)
-                                chipMax(chipDialogFilterCategory3)
-                                chipMax(chipDialogFilterCategory4)
-                                chipMax(chipDialogFilterCategory5)
-                                chipMax(chipDialogFilterCategory6)
-                                chipMax(chipDialogFilterCategory7)
-                                chipMax(chipDialogFilterCategory8)
-                                chipMax(chipDialogFilterCategory9)
-
-                                // 데이트 피커
-                                dialogHomeMainFilterBinding.calendarTripMain.setCalendarListener(
-                                    object :
-                                        CalendarListener {
-                                        override fun onFirstDateSelected(startDate: Calendar) {
-                                            val date = startDate.time
-                                            val format =
-                                                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                                            Toast.makeText(
-                                                mainActivity,
-                                                "Start Date: " + format.format(date),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-
-                                        override fun onDateRangeSelected(
-                                            startDate: Calendar,
-                                            endDate: Calendar
-                                        ) {
-                                            val startDate = startDate.time
-                                            val endDate = endDate.time
-                                            val format =
-                                                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                                            Toast.makeText(
-                                                mainActivity,
-                                                "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(
-                                                    endDate
-                                                ),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
-                                    })
-                            }
-
-
-
-                            setNegativeButton("취소", null)
-                            setPositiveButton("적용", null)
-                        }
-
-                    builder.show()
+                    val modalBottomSheet = ModalBottomSheet()
+                    modalBottomSheet.show(mainActivity.supportFragmentManager, ModalBottomSheet.TAG)
                 }
             }
 
@@ -183,12 +122,10 @@ class HomeMainFragment : Fragment() {
 
 
             // 플로팅버튼
-
             floatingActionButtonHomeMain.run {
                 setOnClickListener {
-                    if(userClass.userEmail == "NoneUserEmail") {
+                    if (userClass.userEmail == "NoneUserEmail") {
                         MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
-//                    setTitle("내용 입력")
                             setMessage("로그인한 회원만 이용하실 수 있는 서비스입니다. \n로그인 하시겠습니까?")
                             setNegativeButton("취소", null)
                             setPositiveButton("로그인") { dialogInterface: DialogInterface, i: Int ->
@@ -212,26 +149,6 @@ class HomeMainFragment : Fragment() {
         }
 
         return fragmentHomeMainBinding.root
-    }
-
-    // 최대 3개 이상의 칩을 선택 못하게 하는 함수
-    fun chipMax(chipId: Chip) {
-        chipId.setOnClickListener {
-            if (chipId.isChecked) {
-                if (chipCount >= maxSelectableChips) {
-                    chipId.isChecked = false
-                    Snackbar.make(
-                        fragmentHomeMainBinding.root,
-                        "여행 카테고리는 최대 3개 선택 가능합니다.",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                } else {
-                    chipCount++
-                }
-            } else {
-                chipCount--
-            }
-        }
     }
 
     // 스피너 기능
@@ -299,5 +216,163 @@ class HomeMainFragment : Fragment() {
         viewPagerAdapter = ViewPagerAdapter(mainActivity)
         viewPager.adapter = viewPagerAdapter
         viewPager.setCurrentItem(mainActivity.homeMainPosition, false)
+    }
+
+    class ModalBottomSheet : BottomSheetDialogFragment() {
+        lateinit var bottomSheetMainFilterBinding: BottomSheetMainFilterBinding
+
+        // 최대 선택 가능 Chip 갯수
+        val maxSelectableChips = 3
+
+        // 칩 카운트 변수
+        var chipCount = 0
+
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? {
+            super.onCreateView(inflater, container, savedInstanceState)
+            bottomSheetMainFilterBinding = BottomSheetMainFilterBinding.inflate(layoutInflater)
+            return bottomSheetMainFilterBinding.root
+        }
+
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
+
+            bottomSheetMainFilterBinding.run {
+
+                // 초기화
+                buttonDialogFilterReset.setOnClickListener {
+                    calendarTripMain.resetAllSelectedViews()
+                    unCheckChips()
+                }
+
+                chipMax(chipDialogFilterCategory1)
+                chipMax(chipDialogFilterCategory2)
+                chipMax(chipDialogFilterCategory3)
+                chipMax(chipDialogFilterCategory4)
+                chipMax(chipDialogFilterCategory5)
+                chipMax(chipDialogFilterCategory6)
+                chipMax(chipDialogFilterCategory7)
+                chipMax(chipDialogFilterCategory8)
+                chipMax(chipDialogFilterCategory9)
+
+                // 데이트 피커
+                calendarTripMain.run {
+                    val calendar = Calendar.getInstance()
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val currentDate = Date()
+                    val todayDate = dateFormat.format(currentDate)
+
+                    calendar.time = currentDate
+                    calendar.add(Calendar.YEAR, 2)
+
+                    setSelectableDateRange(dateToCalendar(todayDate), calendar)
+
+                    setCalendarListener(
+                        object :
+                            CalendarListener {
+                            override fun onFirstDateSelected(startDate: Calendar) {
+                                val date = startDate.time
+                                val format =
+                                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                            }
+
+                            override fun onDateRangeSelected(
+                                startDate: Calendar,
+                                endDate: Calendar
+                            ) {
+                                val startDate = startDate.time
+                                val endDate = endDate.time
+                                val format =
+                                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                            }
+                        })
+                }
+
+                buttonHomeMainFilterCancel.setOnClickListener {
+                    dismiss()
+                }
+
+                buttonHomeMainFilterApply.setOnClickListener {
+                    chipDialogFilterGender1.isChecked
+                    dismiss()
+                }
+            }
+        }
+
+        private fun unCheckChips() {
+
+            bottomSheetMainFilterBinding.run {
+                val chipArray = arrayOf(
+                    chipDialogFilterCategory1,
+                    chipDialogFilterCategory2,
+                    chipDialogFilterCategory3,
+                    chipDialogFilterCategory4,
+                    chipDialogFilterCategory5,
+                    chipDialogFilterCategory6,
+                    chipDialogFilterCategory7,
+                    chipDialogFilterCategory8,
+                    chipDialogFilterCategory9,
+                    chipDialogFilterGender1,
+                    chipDialogFilterGender2,
+                )
+                chipArray.forEach { chip ->
+                    chip.isChecked = false
+                }
+                chipCount = 0
+            }
+
+//            bottomSheetMainFilterBinding.run {
+//                chipDialogFilterCategory1.isChecked = false
+//                chipDialogFilterCategory2.isChecked = false
+//                chipDialogFilterCategory3.isChecked = false
+//                chipDialogFilterCategory4.isChecked = false
+//                chipDialogFilterCategory5.isChecked = false
+//                chipDialogFilterCategory6.isChecked = false
+//                chipDialogFilterCategory7.isChecked = false
+//                chipDialogFilterCategory8.isChecked = false
+//                chipDialogFilterCategory9.isChecked = false
+//            }
+        }
+
+        companion object {
+            const val TAG = "ModalBottomSheet"
+        }
+
+        // 최대 3개 이상의 칩을 선택 못하게 하는 함수
+        private fun chipMax(chipId: Chip) {
+            chipId.setOnClickListener {
+                if (chipId.isChecked) {
+                    if (chipCount >= maxSelectableChips) {
+                        chipId.isChecked = false
+                        Snackbar.make(
+                            bottomSheetMainFilterBinding.root,
+                            "여행 카테고리는 최대 3개 선택 가능합니다.",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        chipCount++
+                    }
+                } else {
+                    chipCount--
+                }
+            }
+        }
+
+        private fun dateToCalendar(dateString: String): Calendar {
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            val date: Date? = sdf.parse(dateString)
+
+            val calendar = Calendar.getInstance()
+            if (date != null) {
+                calendar.time = date
+            }
+
+            Log.d("qwer", "calendar $calendar")
+            return calendar
+        }
+
     }
 }

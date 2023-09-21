@@ -60,7 +60,6 @@ class AccompanyRegisterFragment3 : Fragment() {
         val country = arguments?.getString("country")
         val title = arguments?.getString("title")
         val postImagePath = arguments?.getString("postImagePath") as String
-        val dates = arguments?.getStringArray("dates") as List<*>?
         val people = arguments?.getString("people")
         val content = arguments?.getString("content")
         val tripPostIdx = arguments?.getLong("tripPostIdx")
@@ -77,7 +76,6 @@ class AccompanyRegisterFragment3 : Fragment() {
         date.add(endDate.toString())
 
         Log.d("qwer", "$country")
-        Log.d("qwer", "${date.get(0)} ${date.get(1)} $dates")
         Log.d("qwer", "$postImagePath")
         Log.d("qwer", "${title} ${people} $content")
 
@@ -197,34 +195,6 @@ class AccompanyRegisterFragment3 : Fragment() {
                             completePost(userClass.userEmail, documentId)
                         }
                     } }
-
-//                    if(postImagePath.isEmpty()) {
-//                        accompanyRegisterRepository.uploadImages(imageUri, postImagePath) {
-//                            Log.d("qwer", "???")
-//                            completePost(userClass.userEmail, documentId)
-//                        }
-//                    } else {
-//
-//                    }
-
-
-
-//                    if(imageUri == null) {
-//                        Log.d("qwer", "ImageUri == null")
-//                    } else {
-//                        Log.d("qwer", "Image 있는 경우")
-//                        if (postImagePath != null) {
-//                            Log.d("qwer", "postImagePath != null 인 경우")
-//                            accompanyRegisterRepository.uploadImages(imageUri, postImagePath) {
-//                                Log.d("qwer", "이미지 저장 되고나서 이동")
-//                                completePost(userClass.userEmail, documentId)
-//                            }
-//                        } else {
-//                            Log.d("qwer", "Image 없는 경우")
-//                            // Image 없는 경우
-//                            completePost(userClass.userEmail, documentId)
-//                        }
-//                    }
 
                 }
 
