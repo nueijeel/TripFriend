@@ -16,11 +16,21 @@
         android:theme="@style/Theme.TripFriend.Toolbar">
 
         <TextView
+            android:id="@+id/toolbarTextModifyPost"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:text="글 수정"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <Button
+            android:id="@+id/iconButtonModifyPost"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            app:icon="@drawable/search_24px"
+            app:iconTint="@color/black" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -28,7 +38,7 @@
         android:id="@+id/progressBarModifyPost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginVertical="20dp"
         app:spb_animateToCurrentProgressState="true"
         app:spb_checkStateCompleted="true"
         app:spb_currentStateNumber="one"
@@ -41,18 +51,36 @@
         app:spb_stateSize="40dp"
         app:spb_stateTextSize="20dp" />
 
-    <Button
-        android:id="@+id/buttonModifyPostToNextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:background="@drawable/border2"
-        android:paddingLeft="30dp"
-        android:paddingTop="8dp"
-        android:paddingRight="30dp"
-        android:paddingBottom="8dp"
-        android:text="다음"
-        android:textSize="@dimen/text_size_2" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/mapViewModifyPost"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/buttonModifyPostToNextView"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/font"
+            android:paddingHorizontal="130dp"
+            android:text="다음"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_size_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
