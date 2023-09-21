@@ -33,6 +33,7 @@ import com.test.tripfriend.databinding.FragmentAccompanyRegister1Binding
 class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     lateinit var fragmentAccompanyRegister1Binding: FragmentAccompanyRegister1Binding
     lateinit var mainActivity: MainActivity
+
     var country: String? = ""
     var locality: String? = ""
     var latitude: Double = 0.0
@@ -94,7 +95,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
             .setTypesFilter(listOf(PlaceTypes.CITIES))        // 도시
 //            .setTypesFilter(listOf(PlaceTypes.COUNTRY))     // 국가
 //            .setTypesFilter(listOf(PlaceTypes.CAFE))
-            //TODO: https://developers.google.com/maps/documentation/places/android-sdk/autocomplete
 //            .setTypesFilter(listOf(TypeFilter.ADDRESS.toString().lowercase()))
             .build(mainActivity)
         startAutocomplete.launch(intent)
@@ -105,9 +105,8 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentAccompanyRegister1Binding =
-            FragmentAccompanyRegister1Binding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+        fragmentAccompanyRegister1Binding = FragmentAccompanyRegister1Binding.inflate(layoutInflater)
 
         // search icon
         fragmentAccompanyRegister1Binding.iconButton.setOnClickListener(
@@ -118,6 +117,11 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
 
         fragmentAccompanyRegister1Binding.run {
+
+            val mapFragment = childFragmentManager.findFragmentById(R.id.mapViewAccompanyRegister1) as SupportMapFragment?
+
+            coordinates = LatLng(latitude, longitude)
+            mapFragment?.getMapAsync(this@AccompanyRegisterFragment1)
 
             materialToolbarRegister1.run {
                 setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
@@ -214,6 +218,7 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     // [END maps_solutions_android_autocomplete_map_add]
 
     private fun updateMap(latLng: LatLng) {
+        Log.d("qwer", "updateMap")
 //        marker?.position = latLng
 //        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
@@ -222,6 +227,7 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
 
     // [START maps_solutions_android_autocomplete_map_ready]
     override fun onMapReady(googleMap: GoogleMap) {
+        Log.d("qwer", "onMapReady")
         map = googleMap
         try {
             // 정의된 JSON 객체를 사용하여 기본 지도의 스타일을 맞춤설정
@@ -245,4 +251,5 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
         Log.d("qwer", "onStop map : ${map}")
         Log.d("qwer", "onStop marker : ${marker}")
     }
+
 }
