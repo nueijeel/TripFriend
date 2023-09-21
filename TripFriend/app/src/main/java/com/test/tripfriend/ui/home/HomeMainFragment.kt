@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -26,6 +27,7 @@ import com.test.tripfriend.R
 import com.test.tripfriend.databinding.DialogHomeMainFilterBinding
 import com.test.tripfriend.databinding.FragmentHomeMainBinding
 import com.test.tripfriend.repository.UserRepository
+import com.test.tripfriend.ui.trip.TripMainFragment
 import com.test.tripfriend.ui.user.LoginMainActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -35,7 +37,8 @@ class HomeMainFragment : Fragment() {
     lateinit var fragmentHomeMainBinding: FragmentHomeMainBinding
     lateinit var mainActivity: MainActivity
     lateinit var loginMainActivity: LoginMainActivity
-
+    lateinit var viewPager: ViewPager2
+    lateinit var viewPagerAdapter: HomeMainFragment.ViewPagerAdapter
     // 최대 선택 가능 Chip 갯수
     val maxSelectableChips = 3
 
@@ -46,6 +49,10 @@ class HomeMainFragment : Fragment() {
         "제목+내용", "해시태그"
     )
 
+
+
+
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -75,6 +82,10 @@ class HomeMainFragment : Fragment() {
         Log.d("aaaa","userChatNotification = ${userClass.userChatNotification}")
         Log.d("aaaa","userPushNotification = ${userClass.userPushNotification}")
         Log.d("aaaa","자동 로그인 = ${userClass.checkAutoLogin}")
+
+        viewPager = fragmentHomeMainBinding.viewPager2HomeMain
+        viewPagerAdapter = ViewPagerAdapter(mainActivity)
+        viewPager.adapter = viewPagerAdapter
 
         fragmentHomeMainBinding.run {
 
@@ -150,7 +161,6 @@ class HomeMainFragment : Fragment() {
 
             // 뷰페이저
             viewPager2HomeMain.run {
-                val adapter = ViewPagerAdapter(mainActivity)
                 viewPager2HomeMain.adapter = adapter
                 isUserInputEnabled = false
 
@@ -282,5 +292,11 @@ class HomeMainFragment : Fragment() {
             }
             return resultFragment
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewPagerAdapter = ViewPagerAdapter(mainActivity)
+        viewPager.adapter = viewPagerAdapter
     }
 }
