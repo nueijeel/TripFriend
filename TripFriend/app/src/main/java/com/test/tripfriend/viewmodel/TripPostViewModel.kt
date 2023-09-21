@@ -114,6 +114,7 @@ class TripPostViewModel: ViewModel() {
 
             if(data != null) {
                 resultData = data
+                resultData.tripPostDocumentId=documentId
             }
 
             withContext(Dispatchers.Main) {

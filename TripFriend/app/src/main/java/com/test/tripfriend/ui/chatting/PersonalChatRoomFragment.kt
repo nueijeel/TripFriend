@@ -80,7 +80,9 @@ class PersonalChatRoomFragment : Fragment() {
         val roomId = arguments?.getString("chatRoomId")
         opponentName = arguments?.getString("userName").toString()
         opponentProfile = arguments?.getString("userProfile").toString()
-        Log.d("zzz", "${opponentProfile}")
+        if (opponentProfile==null || opponentProfile==""||::opponentProfile.isInitialized==false){
+            opponentProfile="null"
+        }
         if (roomId != null) {
             Log.d("testt", "$roomId $opponentName $opponentProfile")
         }

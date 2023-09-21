@@ -51,6 +51,8 @@ class ReadPostFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         mainActivity = activity as MainActivity
         fragmentReadPostBinding = FragmentReadPostBinding.inflate(layoutInflater)
 
@@ -79,6 +81,11 @@ class ReadPostFragment : Fragment() {
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
         tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
+            Log.d("testt","동행글 정보 가져오는 옵저버 도착")
+            newBundle.putString("tripPostDocumentId", tripPost.tripPostDocumentId)
+            newBundle.putStringArrayList("tripPostMemberList", tripPost.tripPostMemberList as ArrayList<String>?)
+            newBundle.putString("tripPostTitle", tripPost.tripPostTitle)
+            newBundle.putString("tripPostWriterEmail", tripPost.tripPostWriterEmail)
             fragmentReadPostBinding.run {
                 textViewReadPostTitle.text = tripPost.tripPostTitle
 
@@ -128,12 +135,8 @@ class ReadPostFragment : Fragment() {
                 textViewReadPostHashTag.text = tripPost.tripPostHashTag
                 textViewReadPostContent.text = tripPost.tripPostContent
 
-                newBundle.putString("tripPostDocumentId", tripPost.tripPostDocumentId)
-                newBundle.putStringArrayList("tripPostMemberList", tripPost.tripPostMemberList as ArrayList<String>?)
-                newBundle.putString("tripPostTitle", tripPost.tripPostTitle)
-                newBundle.putString("tripPostWriterEmail", tripPost.tripPostWriterEmail)
-                newBundle.putString("userName", userClass.userName)
-                newBundle.putString("userProfile", userClass.userProfilePath)
+
+
 
                 if(tripPost.tripPostImage!!.isNotEmpty()) {
                     tripPostViewModel.getTargetUserProfileImage(tripPost.tripPostImage)
@@ -180,6 +183,8 @@ class ReadPostFragment : Fragment() {
         tripPostViewModel.getSelectDocumentData(tripPostDocumentId)
 
         userViewModel.user.observe(viewLifecycleOwner) { user ->
+            Log.d("testt","작성자 옵저버 도착")
+            newBundle.putString("userName",user.userNickname)
             fragmentReadPostBinding.run {
                 textViewUserNickname.text = user.userNickname
 
@@ -193,6 +198,7 @@ class ReadPostFragment : Fragment() {
 
         // 사용자 프로필 이미지 처리
         userViewModel.userProfileImage.observe(viewLifecycleOwner) { uri ->
+            Log.d("testt","개인채팅방 사진 옵저버 도락")
             if(uri != null) {
                 Glide.with(mainActivity).load(uri)
                     .error(R.drawable.person_24px)
@@ -200,6 +206,8 @@ class ReadPostFragment : Fragment() {
             } else {
                 fragmentReadPostBinding.imageViewReadPostMainImage.setImageResource(R.drawable.person_24px)
             }
+            //개인채팅방 상대uri 번들에 저장
+            newBundle.putString("userProfile", uri.toString())
         }
 
         userViewModel.getTargetUserData(tripPostWriterEmail)
@@ -410,8 +418,11 @@ class ReadPostFragment : Fragment() {
                     setTitle("1 : 1 문의하기")
                     setMessage(R.string.DM_info)
                     setPositiveButton("입장") { dialogInterface: DialogInterface, i: Int ->
-                        val persnalChatUsers = PersonalChatRoom(tripPostWriterEmail,mainActivity.userClass.userEmail)
-                        personalChatRepository.inquiryToPersonalChatRoom(persnalChatUsers){
+                        val personalChatUsers = PersonalChatRoom(tripPostWriterEmail,mainActivity.userClass.userEmail)
+                        personalChatRepository.inquiryToPersonalChatRoom(personalChatUsers){
+                            //생성된 채팅방의 문서 아이디
+                            val roomId=it.result.id
+                            newBundle.putString("chatRoomId",roomId)
                             mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
                         }
                     }
@@ -470,7 +481,9 @@ class ReadPostFragment : Fragment() {
 
             //그룹 채팅으로 이동 버튼
             buttonReadPostMoveChat.setOnClickListener {
-                mainActivity.replaceFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT,true,true, newBundle)
+                Log.d("testt","그룹 채팅으로 이동")
+                Log.d("testt","${newBundle}")
+//                mainActivity.replaceFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT,true,true, newBundle)
             }
 
             //리뷰 버튼
