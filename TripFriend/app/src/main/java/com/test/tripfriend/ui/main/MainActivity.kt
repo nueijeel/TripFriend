@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var userClass : UserLogin
 
     var tripMainPosition = 0
+    var homeMainPosition = 0
 
     var selectMenu = 0
 
