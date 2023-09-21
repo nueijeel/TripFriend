@@ -3,6 +3,7 @@ package com.test.tripfriend.ui.trip
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,7 @@ class PassFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
     lateinit var tripPostViewModel: TripPostViewModel
+    lateinit var currentUserEmail : String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +39,7 @@ class PassFragment : Fragment() {
         // 로그인 중인 사용자 정보
         val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
-
+        currentUserEmail = userClass.userEmail
         tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
 
         tripPostViewModel.tripPostPassList.observe(viewLifecycleOwner){
@@ -218,5 +220,14 @@ class PassFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        Log.d("aaaa","Pass onResume")
+        mainActivity.tripMainPosition = 1
+        tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
+        tripPostViewModel.getAllTripPostData(currentUserEmail)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("aaaa","Pass onPause")
     }
 }

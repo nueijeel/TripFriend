@@ -211,8 +211,35 @@ class ReadPostFragment : Fragment() {
 
                         // 메뉴를 숨기려면
                         var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
-                        toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
+//                        toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
                     }
+                    "HomeList" -> {
+                        if(tripPostWriterEmail == userClass.userEmail) {
+                            buttonReadPostDM.visibility = View.GONE
+                            buttonReadPostSubmit.visibility = View.GONE
+                            buttonReadPostMoveChat.visibility = View.VISIBLE
+                            buttonReadPostReview.visibility = View.GONE
+                        } else {
+                            buttonReadPostDM.visibility = View.VISIBLE
+                            buttonReadPostSubmit.visibility = View.VISIBLE
+                            buttonReadPostMoveChat.visibility = View.GONE
+                            buttonReadPostReview.visibility = View.GONE
+                        }
+                    }
+                    "HomeListPass" -> { // 지난 동행
+                        if(tripPostWriterEmail == userClass.userEmail) {
+                            buttonReadPostDM.visibility = View.GONE
+                            buttonReadPostSubmit.visibility = View.GONE
+                            buttonReadPostMoveChat.visibility = View.GONE
+                            buttonReadPostReview.visibility = View.VISIBLE
+                        } else {
+                            buttonReadPostDM.visibility = View.GONE
+                            buttonReadPostSubmit.visibility = View.GONE
+                            buttonReadPostMoveChat.visibility = View.GONE
+                            buttonReadPostReview.visibility = View.GONE
+                        }
+                    }
+
                 }
 
 //                // 메뉴를 보이게 하려면
