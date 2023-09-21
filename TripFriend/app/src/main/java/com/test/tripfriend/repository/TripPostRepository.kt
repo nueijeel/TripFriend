@@ -49,6 +49,12 @@ class TripPostRepository {
             .delete()
     }
 
+    // 좋아요 필드에 본인 이메일 있는 것만 가져오기
+    suspend fun getTripPostLikedData(userEmail: String): QuerySnapshot {
+        val docRef = db.collection("TripPost").whereArrayContains("tripPostLiked", userEmail).get().await()
+        return docRef
+    }
+
     // 좋아요 클릭시 해당 필드에 이메일 저장
     fun addLikedClick(documentId: String, userEmail: String){
         db.collection("TripPost").document(documentId).update("tripPostLiked", FieldValue.arrayUnion(userEmail))
