@@ -143,7 +143,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
                 android:layout_weight="9"
-                android:text="친구 속도"
+                android:text="친구 속도(시속)"
                 android:textAppearance="@style/Theme.App.Medium" />
 
             <TextView
@@ -158,13 +158,14 @@
                 android:textColor="@color/subColor" />
         </LinearLayout>
 
+
         <TextView
             android:id="@+id/textViewFriendSpeed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
             android:gravity="center"
             android:textColor="@color/highLightColor" />
-
 
         <SeekBar
             android:id="@+id/seekbarFriendSpeed"
@@ -173,8 +174,8 @@
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:max="100"
-            android:progress="10"
+            android:max="1000"
+            android:progress="100"
             android:progressDrawable="@drawable/my_info_seekbar"
             android:splitTrack="false"
             android:thumb="@drawable/directions_run_24px" />
