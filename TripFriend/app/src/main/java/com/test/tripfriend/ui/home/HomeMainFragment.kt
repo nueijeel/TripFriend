@@ -49,6 +49,10 @@ class HomeMainFragment : Fragment() {
         "제목+내용", "해시태그"
     )
 
+
+
+
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
