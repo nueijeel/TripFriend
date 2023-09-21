@@ -22,4 +22,9 @@ class ReviewRepository {
         db.collection("TripReview").add(reviewContentState)
     }
 
+    //조건에 맞는 리뷰들을 가져오는 메서드
+    suspend fun getReviewByTargetEmail(targetEmail:String): QuerySnapshot? {
+        return db.collection("TripReview").whereEqualTo("tripReviewTargetUserEmail",targetEmail).get().await()
+    }
+
 }

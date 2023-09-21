@@ -12,6 +12,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
+import java.util.Objects
 
 class UserRepository {
     companion object {
@@ -243,4 +244,16 @@ class UserRepository {
         val imageRef = storage.reference.child(filePath)
         imageRef.putFile(uploadUri)
     }
+
+    suspend fun updateUserTripScore(docId:String,updateMap:Map<String, Any>): Void? {
+        val db = FirebaseFirestore.getInstance()
+        return db.collection("User").document(docId).update(updateMap).await()
+    }
+
+
+    suspend fun updateUserTripCount(docId:String,updateMap:Map<String, Any>): Void? {
+        val db = FirebaseFirestore.getInstance()
+        return db.collection("User").document(docId).update(updateMap).await()
+    }
+
 }

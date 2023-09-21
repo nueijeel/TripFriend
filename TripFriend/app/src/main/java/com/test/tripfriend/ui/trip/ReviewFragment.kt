@@ -53,9 +53,13 @@ class ReviewFragment : Fragment() {
                 )
             }
             saveState.observe(viewLifecycleOwner){
+                val reviewList=(fragmentReviewBinding.recyclerViewReview.adapter as ReviewAdapter).reviewResultList
+
+                reviewViewModel.updateUserInfoByReview(reviewList,mainActivity.userClass.userEmail)
+            }
+            saveState2.observe(viewLifecycleOwner){
                 Snackbar.make(fragmentReviewBinding.root, "리뷰 작성이 완료되었습니다", Snackbar.LENGTH_SHORT).show()
                 mainActivity.removeFragment(MainActivity.REVIEW_FRAGMENT)
-                //화면 종료(리무브)
             }
 
             getUserInfo(memberList, mainActivity.userClass.userNickname)
@@ -89,6 +93,8 @@ class ReviewFragment : Fragment() {
                             setNegativeButton("취소", null)
                             setPositiveButton("확인"){ dialogInterface: DialogInterface, i: Int ->
                                 reviewViewModel.saveToReview((fragmentReviewBinding.recyclerViewReview.adapter as ReviewAdapter).reviewResultList)
+
+
                             }
                         }
                         builder.show()
