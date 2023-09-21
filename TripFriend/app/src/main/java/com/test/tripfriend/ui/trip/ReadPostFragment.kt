@@ -77,8 +77,8 @@ class ReadPostFragment : Fragment() {
 
         val newBundle = Bundle()
 
-        tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
-        userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
+        userViewModel = ViewModelProvider(mainActivity)[UserViewModel::class.java]
 
         tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
             Log.d("testt","동행글 정보 가져오는 옵저버 도착")
@@ -139,7 +139,7 @@ class ReadPostFragment : Fragment() {
 
 
                 if(tripPost.tripPostImage!!.isNotEmpty()) {
-                    tripPostViewModel.getTargetUserProfileImage(tripPost.tripPostImage)
+                    tripPostViewModel.getTripPostImage(tripPost.tripPostImage)
                 }
             }
         }
