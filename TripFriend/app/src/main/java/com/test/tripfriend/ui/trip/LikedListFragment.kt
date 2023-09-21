@@ -28,6 +28,8 @@ class LikedListFragment : Fragment() {
 
     lateinit var tripPostViewModel: TripPostViewModel
 
+    lateinit var currentUserEmail :String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,6 +41,7 @@ class LikedListFragment : Fragment() {
         // 로그인 중인 사용자 정보
         val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
+        currentUserEmail = userClass.userEmail
 
         tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
 
@@ -97,7 +100,10 @@ class LikedListFragment : Fragment() {
                     val newBundle = Bundle()
                     newBundle.putString("tripPostWriterEmail", tripPostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
                     newBundle.putString("tripPostDocumentId", tripPostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
-                    newBundle.putString("viewState", "InProgress") // 어느 화면에서 왔는지 확인
+                    newBundle.putString("viewState", "LikedList") // 어느 화면에서 왔는지 확인
+                    newBundle.putString("endDate", tripPostItemList[adapterPosition].tripPostDate?.get(1))
+                    val memberList:ArrayList<String> = tripPostItemList[adapterPosition].tripPostMemberList as ArrayList<String>
+                    newBundle.putStringArrayList("memberList",memberList)
 
                     mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT,true,true, newBundle)
                 }
@@ -222,6 +228,8 @@ class LikedListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         mainActivity.tripMainPosition = 2
+        tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
+        tripPostViewModel.getTripPostLikedData(currentUserEmail)
         Log.d("aaaa","Liked onResume")
     }
 
