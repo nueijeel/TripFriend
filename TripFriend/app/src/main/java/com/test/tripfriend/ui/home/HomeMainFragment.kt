@@ -298,5 +298,6 @@ class HomeMainFragment : Fragment() {
         super.onResume()
         viewPagerAdapter = ViewPagerAdapter(mainActivity)
         viewPager.adapter = viewPagerAdapter
+        viewPager.setCurrentItem(mainActivity.homeMainPosition, false)
     }
 }
