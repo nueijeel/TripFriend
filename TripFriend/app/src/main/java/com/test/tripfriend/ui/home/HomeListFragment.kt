@@ -328,6 +328,7 @@ class HomeListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         initHomeViewModel()
+        mainActivity.homeMainPosition = 0
         Log.d("qwer", "listFragment onResume")
     }
 
