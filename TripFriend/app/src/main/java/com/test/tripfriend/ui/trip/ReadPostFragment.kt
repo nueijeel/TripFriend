@@ -37,13 +37,13 @@ import kotlin.concurrent.thread
 class ReadPostFragment : Fragment() {
     lateinit var fragmentReadPostBinding : FragmentReadPostBinding
     lateinit var mainActivity: MainActivity
-
     lateinit var tripPostViewModel: TripPostViewModel
     lateinit var userViewModel: UserViewModel
 
     val personalChatRepository = PersonalChatRepository()
     val tripPostRepository = TripPostRepository()
     val tripRequestRepository = TripRequestRepository()
+    lateinit var thisPostId:String
 
     var likedCheck = false
 
@@ -51,8 +51,6 @@ class ReadPostFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
         mainActivity = activity as MainActivity
         fragmentReadPostBinding = FragmentReadPostBinding.inflate(layoutInflater)
 
@@ -79,13 +77,19 @@ class ReadPostFragment : Fragment() {
 
         tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
         userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        tripPostViewModel.groupChatId.observe(viewLifecycleOwner){
+            newBundle.putString("groupRoomId",it)
+            Log.d("zzzzzz","${newBundle}")
+//            mainActivity.replaceFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT,true,true, newBundle)
+        }
 
         tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
             Log.d("testt","동행글 정보 가져오는 옵저버 도착")
-            newBundle.putString("tripPostDocumentId", tripPost.tripPostDocumentId)
+            newBundle.putString("postId", tripPost.tripPostDocumentId)
+            thisPostId=tripPost.tripPostDocumentId
             newBundle.putStringArrayList("tripPostMemberList", tripPost.tripPostMemberList as ArrayList<String>?)
-            newBundle.putString("tripPostTitle", tripPost.tripPostTitle)
-            newBundle.putString("tripPostWriterEmail", tripPost.tripPostWriterEmail)
+            newBundle.putString("postTitle", tripPost.tripPostTitle)
+            newBundle.putString("roomOwnerEmail", tripPost.tripPostWriterEmail)
             fragmentReadPostBinding.run {
                 textViewReadPostTitle.text = tripPost.tripPostTitle
 
@@ -483,7 +487,10 @@ class ReadPostFragment : Fragment() {
             buttonReadPostMoveChat.setOnClickListener {
                 Log.d("testt","그룹 채팅으로 이동")
                 Log.d("testt","${newBundle}")
-//                mainActivity.replaceFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT,true,true, newBundle)
+
+                //동행글 문서 아이디로 해당 단톡방을 검색해서 id값을 가져온다, 그 아이디를 번들에 넣ㄹ
+                tripPostViewModel.getTripPostGroupChatId(thisPostId)
+
             }
 
             //리뷰 버튼

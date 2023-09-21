@@ -1,6 +1,7 @@
 package com.test.tripfriend.viewmodel
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,6 +29,7 @@ class TripPostViewModel: ViewModel() {
     val tripPostLiked = MutableLiveData<Int>()
 
     val tripPostImage = MutableLiveData<Uri>()
+    val groupChatId = MutableLiveData<String?>()
 
     // 오늘 날짜
     val currentTime : Long = System.currentTimeMillis()
@@ -156,6 +158,20 @@ class TripPostViewModel: ViewModel() {
                 else{
                     _tripPost.value = null
                 }
+            }
+        }
+    }
+
+    //게시글 아이디로 단톡방 아이디 가져오기
+    fun getTripPostGroupChatId(postId:String){
+        var result:String?=null
+        val scope = CoroutineScope(Dispatchers.Default)
+        scope.launch {
+            val document= async { tripPostRepository.findGroupChatIdByPostId(postId) }
+
+            result=document.await().id
+            withContext(Dispatchers.Main) {
+                groupChatId.value=result
             }
         }
     }
