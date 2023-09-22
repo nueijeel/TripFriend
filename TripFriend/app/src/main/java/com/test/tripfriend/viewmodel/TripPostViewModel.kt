@@ -29,7 +29,11 @@ class TripPostViewModel : ViewModel() {
     val tripPostList = MutableLiveData<TripPost>()
     val tripPostLiked = MutableLiveData<Int>()
 
-    val tripPostImage = MutableLiveData<Uri>()
+    val tripPostImage = MutableLiveData<Uri?>()
+
+    init {
+        tripPostImage.value = null
+    }
 
     val myRequestState = MutableLiveData<Boolean>()
 
@@ -140,6 +144,9 @@ class TripPostViewModel : ViewModel() {
 
         if (imageUri != null) {
             tripPostImage.value = imageUri
+        }
+        else{
+            tripPostImage.value = null
         }
     }
 

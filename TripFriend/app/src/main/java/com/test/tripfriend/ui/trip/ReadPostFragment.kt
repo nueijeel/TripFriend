@@ -155,6 +155,9 @@ class ReadPostFragment : Fragment() {
                 if(tripPost.tripPostImage!!.isNotEmpty()) {
                     tripPostViewModel.getTripPostImage(tripPost.tripPostImage)
                 }
+                else{
+                    tripPostViewModel.getTripPostImage(tripPost.tripPostImage)
+                }
             }
         }
 
@@ -185,6 +188,7 @@ class ReadPostFragment : Fragment() {
 
         // 동행글 이미지 처리
         tripPostViewModel.tripPostImage.observe(viewLifecycleOwner) { uri ->
+            Log.d("aaaa","uri = ${uri}")
             if(uri != null) {
                 Glide.with(mainActivity).load(uri)
                     .error(R.drawable.login_background_image)
