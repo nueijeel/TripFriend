@@ -21,7 +21,7 @@ class HomeViewModel : ViewModel() {
     // 홈 목록 가져오기
     fun getTripPostData() {
 
-        val homePostInfoList= mutableListOf<DocumentSnapshot>()
+        val homePostInfoList = mutableListOf<DocumentSnapshot>()
         val resultList = mutableListOf<TripPost>()
 
         val scope = CoroutineScope(Dispatchers.Default)
@@ -31,7 +31,7 @@ class HomeViewModel : ViewModel() {
             homePostInfoList.addAll(currentTripPostSnapshot.await().documents)
 
             withContext(Dispatchers.Main) {
-                for(document in homePostInfoList) {
+                for (document in homePostInfoList) {
                     val tripPostObj = document.toObject(TripPost::class.java)
 
                     if (tripPostObj != null) {
@@ -67,7 +67,7 @@ class HomeViewModel : ViewModel() {
 
             filteredPostInfoList.addAll(currentTripPostSnapshot.await().documents)
 
-            for(document in filteredPostInfoList) {
+            for (document in filteredPostInfoList) {
                 val tripPostObj = document.toObject(TripPost::class.java)
                 if (tripPostObj != null) {
                     tripPostObj.tripPostDocumentId = document.id
@@ -76,7 +76,7 @@ class HomeViewModel : ViewModel() {
             }
 
             // 카테고리 필터링
-            if ( categoryArray.size != 0) {
+            if (categoryArray.size != 0) {
                 resultList = resultList.filter { tripPost ->
                     categoryArray.any { category ->
                         tripPost.tripPostTripCategory?.contains(category) ?: false
@@ -85,7 +85,7 @@ class HomeViewModel : ViewModel() {
             }
 
             // 성별 필터링
-            if(genderList[0] == true) {
+            if (genderList[0] == true) {
                 resultList = resultList.filter { tripPost ->
                     (tripPost.tripPostGender[0] == genderList[0])
                 }.toMutableList()
@@ -98,16 +98,53 @@ class HomeViewModel : ViewModel() {
             // 시작 날짜 기준 필터링
             if (dateList[0] != 0) {
                 resultList = resultList.filter { tripPost ->
-                    (tripPost.tripPostDate?.get(0)?.toInt()!! >= dateList[0] && tripPost.tripPostDate[0]
+                    (tripPost.tripPostDate?.get(0)
+                        ?.toInt()!! >= dateList[0] && tripPost.tripPostDate[0]
                         .toInt() <= dateList[1])
                 }.toMutableList()
             }
 
             withContext(Dispatchers.Main) {
-                for(result in resultList) {
-                    tripPostList.value = resultList
-                }
+                tripPostList.value = resultList
+            }
 
+            scope.cancel()
+        }
+    }
+
+    fun getSearchedPostList(query: String, searchFilter: String) {
+        val filteredPostInfoList = mutableListOf<DocumentSnapshot>()
+        val scope = CoroutineScope(Dispatchers.Default)
+
+        scope.launch {
+            var resultList = mutableListOf<TripPost>()
+            val currentTripPostSnapshot = async { homeListRepository.getDocumentData() }
+
+            filteredPostInfoList.addAll(currentTripPostSnapshot.await().documents)
+
+            for (document in filteredPostInfoList) {
+                val tripPostObj = document.toObject(TripPost::class.java)
+                if (tripPostObj != null) {
+                    tripPostObj.tripPostDocumentId = document.id
+                    resultList.add(tripPostObj)
+                }
+            }
+
+            if (searchFilter == "제목+내용") {
+                resultList = resultList.filter { tripPost ->
+                    (tripPost.tripPostTitle.contains(query) || tripPost.tripPostContent.contains(
+                        query
+                    ))
+                }.toMutableList()
+            } else {
+                resultList = resultList.filter { tripPost ->
+                    tripPost.tripPostHashTag.contains(query)
+                }.toMutableList()
+            }
+
+
+            withContext(Dispatchers.Main) {
+                tripPostList.value = resultList
             }
 
             scope.cancel()

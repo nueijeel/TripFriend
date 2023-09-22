@@ -1,6 +1,7 @@
 package com.test.tripfriend.ui.home
 
 import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -8,12 +9,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.archit.calendardaterangepicker.customviews.CalendarListener
@@ -29,6 +35,8 @@ import com.test.tripfriend.databinding.FragmentHomeMainBinding
 import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.ui.user.LoginMainActivity
 import com.test.tripfriend.viewmodel.HomeViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -41,6 +49,7 @@ class HomeMainFragment : Fragment() {
     lateinit var viewPager: ViewPager2
     lateinit var viewPagerAdapter: HomeMainFragment.ViewPagerAdapter
     lateinit var bottomSheetMainFilterBinding: BottomSheetMainFilterBinding
+    lateinit var homeViewModel: HomeViewModel
 
 
     val spinnerList = arrayOf(
@@ -58,6 +67,8 @@ class HomeMainFragment : Fragment() {
 
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.VISIBLE
 
+        homeViewModel = ViewModelProvider(mainActivity)[HomeViewModel::class.java]
+
         val sharedPreferences =
             mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
@@ -71,6 +82,25 @@ class HomeMainFragment : Fragment() {
             // 스피너
             spinnerHomeMainSearch.run {
                 spinnerClick()
+            }
+
+            textInputEditTextHomeMain.run {
+                addTextChangedListener {
+                    val searchFilter = spinnerList[spinnerHomeMainSearch.selectedItemPosition]
+                    lifecycleScope.launch {
+                        delay(500)
+                        homeViewModel.getSearchedPostList(it.toString(), searchFilter)
+                    }
+                }
+                setOnEditorActionListener { textView, action, keyEvent ->
+                    if (action == EditorInfo.IME_ACTION_DONE) {
+                        // 키보드 내리기
+                        val inputMethodManager = mainActivity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                        inputMethodManager.hideSoftInputFromWindow(textInputEditTextHomeMain.windowToken, 0)
+                        true
+                    }
+                    false
+                }
             }
 
             // 필터
