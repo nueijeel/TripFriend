@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.archit.calendardaterangepicker.customviews.CalendarListener
@@ -26,6 +28,7 @@ import com.test.tripfriend.databinding.BottomSheetMainFilterBinding
 import com.test.tripfriend.databinding.FragmentHomeMainBinding
 import com.test.tripfriend.repository.UserRepository
 import com.test.tripfriend.ui.user.LoginMainActivity
+import com.test.tripfriend.viewmodel.HomeViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -38,6 +41,7 @@ class HomeMainFragment : Fragment() {
     lateinit var viewPager: ViewPager2
     lateinit var viewPagerAdapter: HomeMainFragment.ViewPagerAdapter
     lateinit var bottomSheetMainFilterBinding: BottomSheetMainFilterBinding
+
 
     val spinnerList = arrayOf(
         "제목+내용", "해시태그"
@@ -200,12 +204,19 @@ class HomeMainFragment : Fragment() {
     // 필터 바텀시트
     class ModalBottomSheet : BottomSheetDialogFragment() {
         lateinit var bottomSheetMainFilterBinding: BottomSheetMainFilterBinding
+        lateinit var mainActivity: MainActivity
 
         // 최대 선택 가능 Chip 갯수
         val maxSelectableChips = 3
 
         // 칩 카운트 변수
         var chipCount = 0
+
+        val categoryList = mutableListOf<String>()
+        val genderList = mutableListOf<Boolean>()
+        val dateList = IntArray(2) {0}
+
+        lateinit var homeViewModel: HomeViewModel
 
         override fun onCreateView(
             inflater: LayoutInflater,
@@ -219,6 +230,11 @@ class HomeMainFragment : Fragment() {
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
+
+            mainActivity = activity as MainActivity
+
+            var firstDate = ""
+            var secondDate = ""
 
             bottomSheetMainFilterBinding.run {
 
@@ -255,8 +271,10 @@ class HomeMainFragment : Fragment() {
                             CalendarListener {
                             override fun onFirstDateSelected(startDate: Calendar) {
                                 val date = startDate.time
-                                val format =
-                                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                                val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+
+                                firstDate = format.format(date)
+                                secondDate = format.format(date)
                             }
 
                             override fun onDateRangeSelected(
@@ -265,8 +283,10 @@ class HomeMainFragment : Fragment() {
                             ) {
                                 val startDate = startDate.time
                                 val endDate = endDate.time
-                                val format =
-                                    SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                                val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+
+                                firstDate = format.format(startDate)
+                                secondDate = format.format(endDate)
                             }
                         })
                 }
@@ -276,10 +296,39 @@ class HomeMainFragment : Fragment() {
                 }
 
                 buttonHomeMainFilterApply.setOnClickListener {
-                    if(chipDialogFilterCategory1.isChecked) {
+                    categoryCheck()
+                    genderList.add(chipDialogFilterGender1.isChecked)
+                    genderList.add(chipDialogFilterGender2.isChecked)
 
+                    if(firstDate.isNotEmpty() && secondDate.isNotEmpty()) {
+                        dateList[0] = firstDate.toInt()
+                        dateList[1] = secondDate.toInt()
                     }
+
+                    homeViewModel = ViewModelProvider(mainActivity)[HomeViewModel::class.java]
+                    homeViewModel.getFilteredPostList(categoryList,genderList, dateList)
                     dismiss()
+                }
+            }
+        }
+
+        private fun categoryCheck() {
+            bottomSheetMainFilterBinding.run {
+                val chipArray = arrayOf(
+                    chipDialogFilterCategory1,
+                    chipDialogFilterCategory2,
+                    chipDialogFilterCategory3,
+                    chipDialogFilterCategory4,
+                    chipDialogFilterCategory5,
+                    chipDialogFilterCategory6,
+                    chipDialogFilterCategory7,
+                    chipDialogFilterCategory8,
+                    chipDialogFilterCategory9
+                )
+                chipArray.forEach { chip ->
+                    if (chip.isChecked == true) {
+                        categoryList.add(chip.text.toString())
+                    }
                 }
             }
         }

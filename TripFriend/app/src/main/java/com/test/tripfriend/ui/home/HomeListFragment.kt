@@ -221,7 +221,7 @@ class HomeListFragment : Fragment() {
     }
 
     fun initHomeViewModel() {
-        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+        homeViewModel = ViewModelProvider(mainActivity)[HomeViewModel::class.java]
         homeViewModel.getTripPostData()
 
         homeViewModel.tripPostList.observe(viewLifecycleOwner) {
