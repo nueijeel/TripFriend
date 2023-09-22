@@ -52,7 +52,7 @@ class InProgressFragment : Fragment() {
                 fragmentInProgressBinding.textViewInProgressNoPost.text = "동행 중인 여행이 없습니다."
             }
         }
-        Log.d("aaaa","inProgress onResume onCreateView 내부")
+
         tripPostViewModel.getAllTripPostData(userClass.userEmail)
 
         fragmentInProgressBinding.run {
@@ -230,7 +230,6 @@ class InProgressFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.d("aaaa","inProgress onResume함수")
         val mainActivity : MainActivity = activity as MainActivity
         mainActivity.tripMainPosition = 0
         tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
@@ -239,11 +238,9 @@ class InProgressFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        Log.d("aaaa","inProgress onPause")
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d("aaaa","inProgress onStart")
     }
 }

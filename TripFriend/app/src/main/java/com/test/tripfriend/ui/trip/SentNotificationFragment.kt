@@ -137,15 +137,12 @@ class SentNotificationFragment : Fragment() {
                 currentSentTripRequestPosts.clear()
 
                 sentTripRequestList.forEach { sentTripRequest ->
-                    Log.d("tripRequest", sentTripRequest.tripRequestPostId)
 
                     //요청 목록 중 등록된 동행 날짜가 지나지 않은 목록만 걸러냄
                     tripPostObserver(sentTripRequest.tripRequestPostId)
 
                     //tripPost 뷰모델 값이 null이면 날짜 조건을 만족하지 않는 값이므로 항목에 포함시키지 않음
                     if(tripPostViewModel.tripPost.value != null){
-                        Log.d("tripPostDate", tripPostViewModel.tripPost.value!!.tripPostTitle)
-                        Log.d("tripPostDate", tripPostViewModel.tripPost.value?.tripPostDate?.get(0)!!)
                         sortedSentTripRequestList.add(sentTripRequest)
                         currentSentTripRequestPosts.add(tripPostViewModel.tripPost.value!!)
                     }

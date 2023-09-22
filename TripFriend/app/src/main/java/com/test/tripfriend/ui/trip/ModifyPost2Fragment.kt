@@ -144,7 +144,6 @@ class ModifyPost2Fragment : Fragment() {
 
                             firstDate = format.format(date)
                             secondDate = format.format(date)
-//                        Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
                         }
 
                         override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
@@ -232,7 +231,6 @@ class ModifyPost2Fragment : Fragment() {
             calendar.time = date
         }
 
-        Log.d("qwer", "calendar $calendar")
         return calendar
     }
 

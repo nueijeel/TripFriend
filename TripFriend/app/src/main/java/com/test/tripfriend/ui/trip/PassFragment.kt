@@ -230,7 +230,6 @@ class PassFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.d("aaaa","Pass onResume")
         mainActivity.tripMainPosition = 1
         tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
         tripPostViewModel.getAllTripPostData(currentUserEmail)
@@ -238,6 +237,5 @@ class PassFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        Log.d("aaaa","Pass onPause")
     }
 }

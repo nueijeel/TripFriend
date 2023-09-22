@@ -62,12 +62,10 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
                 val place = Autocomplete.getPlaceFromIntent(intent)
 
                 // Place의 주소 구성요소
-                Log.d("map", "Place: " + place.addressComponents)
                 fillInAddress(place)
             }
         } else if (result.resultCode == AppCompatActivity.RESULT_CANCELED) {
             // 작업 취소
-            Log.i("map", "User canceled autocomplete")
         }
     }
     // [END maps_solutions_android_autocomplete_define]
@@ -218,7 +216,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     // [END maps_solutions_android_autocomplete_map_add]
 
     private fun updateMap(latLng: LatLng) {
-        Log.d("qwer", "updateMap")
 //        marker?.position = latLng
 //        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
@@ -227,7 +224,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
 
     // [START maps_solutions_android_autocomplete_map_ready]
     override fun onMapReady(googleMap: GoogleMap) {
-        Log.d("qwer", "onMapReady")
         map = googleMap
         try {
             // 정의된 JSON 객체를 사용하여 기본 지도의 스타일을 맞춤설정
@@ -235,10 +231,8 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
                 MapStyleOptions.loadRawResourceStyle(mainActivity, R.raw.style_json)
             )
             if (!success) {
-                Log.e("map", "Style parsing failed.")
             }
         } catch (e: Resources.NotFoundException) {
-            Log.e("map", "Can't find style. Error: ", e)
         }
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
         marker = map?.addMarker(MarkerOptions().position(coordinates))
@@ -247,9 +241,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
 
     override fun onStop() {
         super.onStop()
-        Log.d("qwer", "onStop mapFragment : ${mapFragment}")
-        Log.d("qwer", "onStop map : ${map}")
-        Log.d("qwer", "onStop marker : ${marker}")
     }
 
 }

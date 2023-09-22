@@ -1,12 +1,9 @@
 package com.test.tripfriend.viewmodel
 
-import android.content.ContentResolver
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.test.tripfriend.R
 import com.test.tripfriend.dataclassmodel.User
 import com.test.tripfriend.repository.UserRepository
 import kotlinx.coroutines.runBlocking

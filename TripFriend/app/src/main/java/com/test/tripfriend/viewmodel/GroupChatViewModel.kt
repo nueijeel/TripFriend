@@ -72,7 +72,6 @@ class GroupChatViewModel : ViewModel() {
                 groupChatRoomObj.tripPostId=postId
                 //참여한 인원수 저장
                 groupChatRoomObj.memberCount=postInfo?.tripPostMemberList?.size
-                Log.d("testtt","${groupChatRoomObj.tripPostTitle}")
 
                 //최근 채팅방 정보를 동기처리로 저장
                 val lastChatSnapshot =
@@ -80,19 +79,11 @@ class GroupChatViewModel : ViewModel() {
                 lastChatInfo.addAll(lastChatSnapshot.await().documents)
 
                 for (lastChat in lastChatInfo) {
-                    Log.d("testt","최근 채팅")
                     val chatData = lastChat.toObject(GroupChatting::class.java)
                     groupChatRoomObj.lastChatDate = chatData?.groupChatSendDateAndTime
                     groupChatRoomObj.lastChatContent = chatData?.groupChatContent
-                    Log.d("이거맞나","${groupChatRoomObj.roomId}")
-                    Log.d("이거맞나","${groupChatRoomObj.memberCount}")
-                    Log.d("이거맞나","${groupChatRoomObj.tripPostId}")
-                    Log.d("이거맞나","${groupChatRoomObj.lastChatContent}")
-                    Log.d("이거맞나","${groupChatRoomObj.lastChatDate}")
-                    Log.d("이거맞나","${groupChatRoomObj.tripPostTitle}")
 
                 }
-                Log.d("zzzzzz","${groupChatRoomObj.groupChatPostWriterEmail}")
                 groupChatInfo.add(groupChatRoomObj)
             }
             //메인 쓰레드에서 라이브 데이터 저장

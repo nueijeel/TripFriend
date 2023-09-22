@@ -110,7 +110,6 @@ class LikedListFragment : Fragment() {
                     var memberCheck = 1
                     if (memberList != null) {
                         for (member in memberList) {
-                            Log.d("aaaa", "member1 = $member")
                             memberCheck = 0
                         }
                     }
@@ -246,11 +245,9 @@ class LikedListFragment : Fragment() {
         mainActivity.tripMainPosition = 2
         tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
         tripPostViewModel.getTripPostLikedData(currentUserEmail)
-        Log.d("aaaa","Liked onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d("aaaa","Liked onPause")
     }
 }
