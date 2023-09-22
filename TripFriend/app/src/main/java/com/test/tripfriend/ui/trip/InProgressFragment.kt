@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -81,6 +82,7 @@ class InProgressFragment : Fragment() {
             val chipTripMainRowCategory3: Chip // 카테고리3
             val textViewTripMainRowHashTag: TextView // 해시태그
             val textViewTripMainRowLikedCount: TextView // 좋아요 수
+            val imageViewTripMainRowLiked: ImageView // 좋아요 아이콘
 
             init {
                 textViewTripMainRowTitle = rowTripMainBinding.textViewTripMainRowTitle
@@ -92,6 +94,7 @@ class InProgressFragment : Fragment() {
                 chipTripMainRowCategory3 = rowTripMainBinding.chipTripMainRowCategory3
                 textViewTripMainRowHashTag = rowTripMainBinding.textViewTripMainRowHashTag
                 textViewTripMainRowLikedCount = rowTripMainBinding.textViewTripMainRowLikedCount
+                imageViewTripMainRowLiked = rowTripMainBinding.imageViewTripMainRowLiked
 
                 rowTripMainBinding.root.setOnClickListener {
                     val newBundle = Bundle()
@@ -134,6 +137,12 @@ class InProgressFragment : Fragment() {
 
             holder.textViewTripMainRowNOP.text = tripPostItemList[position].tripPostMemberCount.toString()
             holder.textViewTripMainRowLocation.text = tripPostItemList[position].tripPostLocationName
+
+            for(email in tripPostItemList[position].tripPostLiked!!) {
+                if(email == currentUserEmail) {
+                    holder.imageViewTripMainRowLiked.setImageResource(R.drawable.favorite_fill_24px)
+                }
+            }
 
             when(tripPostItemList[position].tripPostTripCategory!!.size) {
                 1 -> {
