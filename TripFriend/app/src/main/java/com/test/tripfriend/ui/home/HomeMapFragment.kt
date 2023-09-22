@@ -73,7 +73,6 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        Log.d("qwer", "onMapReady")
 
         googleMap.uiSettings.isMapToolbarEnabled = false
 
@@ -154,17 +153,11 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
 
     override fun onResume() {
         super.onResume()
-        Log.d("qwer", "onResume")
         mainActivity.homeMainPosition = 1
 
         if (mapReady) {
             onMapReady(mMap)
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("qwer", "onStart")
     }
 
 }

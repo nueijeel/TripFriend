@@ -247,11 +247,4 @@ class ModifyPostFragment : Fragment(), OnMapReadyCallback {
         marker = map?.addMarker(MarkerOptions().position(coordinates))
     }
 
-    override fun onStop() {
-        super.onStop()
-        Log.d("qwer", "onStop mapFragment : ${mapFragment}")
-        Log.d("qwer", "onStop map : ${map}")
-        Log.d("qwer", "onStop marker : ${marker}")
-    }
-
 }

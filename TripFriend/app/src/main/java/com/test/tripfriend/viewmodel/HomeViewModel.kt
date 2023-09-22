@@ -20,14 +20,8 @@ class HomeViewModel : ViewModel() {
 
     val tripPostList = MutableLiveData<List<TripPost>>()
 
+    // 홈 목록 가져오기
     fun getTripPostData() {
-//        val currentTripPostSnapshot = homeListRepository.getDocumentData()
-
-//        if (currentTripPostSnapshot != null) {
-//            val currentTripPost = currentTripPostSnapshot.toObjects(TripPost::class.java)
-//
-//            tripPostList.value = currentTripPost
-//        }
 
         val homePostInfoList= mutableListOf<DocumentSnapshot>()
         val resultList = mutableListOf<TripPost>()
@@ -56,6 +50,35 @@ class HomeViewModel : ViewModel() {
 
             scope.cancel()
 
+        }
+    }
+
+    fun getFilteredPostList() {
+
+        val filteredPostInfoList = mutableListOf<DocumentSnapshot>()
+        val resultList = mutableListOf<TripPost>()
+
+        val scope = CoroutineScope(Dispatchers.Default)
+        scope.launch {
+            val currentTripPostSnapshot = async { homeListRepository.getDocumentData() }
+
+            filteredPostInfoList.addAll(currentTripPostSnapshot.await().documents)
+
+            withContext(Dispatchers.Main) {
+                for(document in filteredPostInfoList) {
+                    val tripPostObj = document.toObject(TripPost::class.java)
+
+                    if (tripPostObj != null) {
+                        tripPostObj.tripPostDocumentId = document.id
+                        resultList.add(tripPostObj)
+                    }
+                }
+            }
+            withContext(Dispatchers.Main) {
+                Log.d("qwer", "resultList : ${resultList[0].tripPostTripCategory}")
+            }
+
+            scope.cancel()
         }
     }
 

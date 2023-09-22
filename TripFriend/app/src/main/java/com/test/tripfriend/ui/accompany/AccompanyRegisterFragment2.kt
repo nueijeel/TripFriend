@@ -215,7 +215,6 @@ class AccompanyRegisterFragment2 : Fragment() {
             calendar.time = date
         }
 
-        Log.d("qwer", "calendar $calendar")
         return calendar
     }
 

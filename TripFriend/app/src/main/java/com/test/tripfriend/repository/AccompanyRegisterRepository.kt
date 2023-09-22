@@ -19,19 +19,6 @@ class AccompanyRegisterRepository {
     // 동행글 db에 저장하기
     suspend fun saveAccompanyToDB(tripPost: TripPost, callback1: (Task<DocumentReference>) -> Unit) {
         db.collection("TripPost").add(tripPost).addOnCompleteListener(callback1).await()
-//        db.collection("TripPost").add(tripPost)
-//            .addOnCompleteListener { documentReference ->
-//                if(documentReference.result.id.isNotEmpty()) {
-//                    // 데이터 추가 성공
-//                    Log.d("qwer", "DocumentSnapshot added with ID: ${documentReference.result.id}")
-//                    Log.d("qwer", "DocumentRef: ${documentReference}")
-//                } else {
-//                    Log.d("qwer", "DocumentSnapshot added with ID: ${documentReference.result.id}")
-//                }
-//            }.addOnFailureListener { e ->
-//                // 데이터 추가 실패
-//                Log.w("qwer", "Error adding document", e)
-//            }.await()
     }
 
     // 이미지 업로드
@@ -53,11 +40,8 @@ class AccompanyRegisterRepository {
     fun getPostIdx(callback1: (Task<QuerySnapshot>) -> Unit) {
         val collectionRef = db.collection("TripPost")
 
-//        collectionRef.get().addOnCompleteListener(callback1)
-
         collectionRef.orderBy("tripPostIdx", Query.Direction.DESCENDING).limit(1).get()
             .addOnCompleteListener(callback1)
-//        Log.d("qwer", "${collectionRef.orderBy("tripPostIdx", Query.Direction.DESCENDING).limit(1)}")
     }
 
     //단톡방 만들기

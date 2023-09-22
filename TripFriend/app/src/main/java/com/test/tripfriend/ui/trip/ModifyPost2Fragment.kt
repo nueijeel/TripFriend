@@ -232,7 +232,6 @@ class ModifyPost2Fragment : Fragment() {
             calendar.time = date
         }
 
-        Log.d("qwer", "calendar $calendar")
         return calendar
     }
 

@@ -218,16 +218,12 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     // [END maps_solutions_android_autocomplete_map_add]
 
     private fun updateMap(latLng: LatLng) {
-        Log.d("qwer", "updateMap")
-//        marker?.position = latLng
-//        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
         marker = map?.addMarker(MarkerOptions().position(coordinates))
     }
 
     // [START maps_solutions_android_autocomplete_map_ready]
     override fun onMapReady(googleMap: GoogleMap) {
-        Log.d("qwer", "onMapReady")
         map = googleMap
         try {
             // 정의된 JSON 객체를 사용하여 기본 지도의 스타일을 맞춤설정
@@ -244,12 +240,5 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
         marker = map?.addMarker(MarkerOptions().position(coordinates))
     }
     // [END maps_solutions_android_autocomplete_map_ready]
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("qwer", "onStop mapFragment : ${mapFragment}")
-        Log.d("qwer", "onStop map : ${map}")
-        Log.d("qwer", "onStop marker : ${marker}")
-    }
 
 }
