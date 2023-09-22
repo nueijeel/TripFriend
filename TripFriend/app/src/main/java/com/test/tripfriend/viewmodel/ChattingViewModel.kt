@@ -111,7 +111,6 @@ class ChattingViewModel : ViewModel() {
                     for (user in users) {
                         val data=user.toObject(UserInfo::class.java)
                         val email=data?.userEmail
-                        Log.d("zzzz","${email}")
                         val image=data?.userProfilePath
                         val imageUri:Uri?
                         //이미지uri가져오는 작업

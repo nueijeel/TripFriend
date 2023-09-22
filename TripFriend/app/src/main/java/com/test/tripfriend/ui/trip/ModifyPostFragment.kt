@@ -138,12 +138,10 @@ class ModifyPostFragment : Fragment(), OnMapReadyCallback {
                 val place = Autocomplete.getPlaceFromIntent(intent)
 
                 // Place의 주소 구성요소
-                Log.d("map", "Place: " + place.addressComponents)
                 fillInAddress(place)
             }
         } else if (result.resultCode == AppCompatActivity.RESULT_CANCELED) {
             // 작업 취소
-            Log.i("map", "User canceled autocomplete")
         }
     }
 
@@ -238,10 +236,8 @@ class ModifyPostFragment : Fragment(), OnMapReadyCallback {
                 MapStyleOptions.loadRawResourceStyle(mainActivity, R.raw.style_json)
             )
             if (!success) {
-                Log.e("map", "Style parsing failed.")
             }
         } catch (e: Resources.NotFoundException) {
-            Log.e("map", "Can't find style. Error: ", e)
         }
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
         marker = map?.addMarker(MarkerOptions().position(coordinates))
@@ -249,9 +245,6 @@ class ModifyPostFragment : Fragment(), OnMapReadyCallback {
 
     override fun onStop() {
         super.onStop()
-        Log.d("qwer", "onStop mapFragment : ${mapFragment}")
-        Log.d("qwer", "onStop map : ${map}")
-        Log.d("qwer", "onStop marker : ${marker}")
     }
 
 }

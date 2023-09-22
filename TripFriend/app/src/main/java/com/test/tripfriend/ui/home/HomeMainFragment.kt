@@ -63,22 +63,6 @@ class HomeMainFragment : Fragment() {
             mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
 
-        Log.d("aaaa", "Main===============================================")
-        Log.d("aaaa", "인증방식 = ${userClass.userAuthentication}")
-        Log.d("aaaa", "이메일 = ${userClass.userEmail}")
-        Log.d("aaaa", "비밀번호 = ${userClass.userPw}")
-        Log.d("aaaa", "닉네임 = ${userClass.userNickname}")
-        Log.d("aaaa", "이름 = ${userClass.userName}")
-        Log.d("aaaa", "휴대폰 번호 = ${userClass.userPhoneNum}")
-        Log.d("aaaa", "MBTI = ${userClass.userMBTI}")
-        Log.d("aaaa", "userProfilePath = ${userClass.userProfilePath}")
-        Log.d("aaaa", "userFriendSpeed = ${userClass.userFriendSpeed}")
-        Log.d("aaaa", "userTripScore = ${userClass.userTripScore}")
-        Log.d("aaaa", "userTripCount = ${userClass.userTripCount}")
-        Log.d("aaaa", "userChatNotification = ${userClass.userChatNotification}")
-        Log.d("aaaa", "userPushNotification = ${userClass.userPushNotification}")
-        Log.d("aaaa", "자동 로그인 = ${userClass.checkAutoLogin}")
-
         viewPager = fragmentHomeMainBinding.viewPager2HomeMain
         viewPagerAdapter = ViewPagerAdapter(mainActivity)
         viewPager.adapter = viewPagerAdapter
@@ -358,7 +342,6 @@ class HomeMainFragment : Fragment() {
                 calendar.time = date
             }
 
-            Log.d("qwer", "calendar $calendar")
             return calendar
         }
 

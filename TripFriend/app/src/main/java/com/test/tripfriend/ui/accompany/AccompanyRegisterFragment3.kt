@@ -76,10 +76,6 @@ class AccompanyRegisterFragment3 : Fragment() {
         date.add(startDate.toString())
         date.add(endDate.toString())
 
-        Log.d("qwer", "$country")
-        Log.d("qwer", "$postImagePath")
-        Log.d("qwer", "${title} ${people} $content")
-
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
 
         fragmentAccompanyRegisterFragment3.run {
@@ -124,9 +120,6 @@ class AccompanyRegisterFragment3 : Fragment() {
 
                 chipGender[0] = chipGender1.isChecked
                 chipGender[1] = chipGender2.isChecked
-
-                Log.d("qwer", "chipGender : ${chipGender[0]}, ${chipGender[1]}")
-                Log.d("qwer", "chipGenderif : ${!(chipGender[0] == true || chipGender[1] == true)}")
 
                 val hashTag = textInputEditTextRegister3Hashtag.text.toString()
 
@@ -180,15 +173,7 @@ class AccompanyRegisterFragment3 : Fragment() {
                         chipGender.toList()
                     )
 
-//                    Log.d("qwer", "isEmpty() : ${postImagePath?.isEmpty()}")
-//                    Log.d("qwer", "length : ${postImagePath?.length}")
-//                    Log.d("qwer", "postImagePath : ${postImagePath}")
-//                    Log.d("qwer", "toString() : ${postImagePath.toString()}")
-//                    Log.d("qwer", "isNullOrEmpty() : ${postImagePath.isNullOrEmpty()}")
-//                    Log.d("qwer", "orEmpty : ${postImagePath.orEmpty()}")
-
                     runBlocking { accompanyRegisterRepository.saveAccompanyToDB(tripPost) {
-                        Log.d("qwer", "result id : ${it.result.id}")
                         documentId = it.result.id
 
                         accompanyRegisterRepository.uploadImages(imageUri, postImagePath) {
@@ -209,7 +194,6 @@ class AccompanyRegisterFragment3 : Fragment() {
                                         resultObj.groupChatRoomId=chatRoom.result.id
                                         runBlocking {
                                             accompanyRegisterRepository.addGroupChatIdToPostTrip(documentId,resultObj){
-                                                Log.d("qwer", "이미지 저장 되고나서 이동")
                                                 completePost(userClass.userEmail, documentId)
                                             }
                                         }

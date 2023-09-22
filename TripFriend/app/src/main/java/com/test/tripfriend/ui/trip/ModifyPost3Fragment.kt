@@ -75,6 +75,9 @@ class ModifyPost3Fragment : Fragment() {
         tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
             fragmentModifyPost3Binding.run {
                 tripPostCategory = tripPost.tripPostTripCategory!!
+
+                chipCount = tripPostCategory.size
+
                 // Category chip 선택
                 for(chipName in tripPostCategory) {
                     when(chipName) {

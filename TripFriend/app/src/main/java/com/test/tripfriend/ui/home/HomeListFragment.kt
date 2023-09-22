@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +34,7 @@ class HomeListFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
     lateinit var homeViewModel: HomeViewModel
+    lateinit var currentUserEmail : String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +42,11 @@ class HomeListFragment : Fragment() {
     ): View? {
         fragmentHomeListBinding = FragmentHomeListBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+
+        // 로그인 중인 사용자 정보
+        val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userClass = UserRepository.getUserInfo(sharedPreferences)
+        currentUserEmail = userClass.userEmail
 
         initHomeViewModel()
 
@@ -52,7 +59,6 @@ class HomeListFragment : Fragment() {
                 adapter = HomeListAdapter()
                 layoutManager = LinearLayoutManager(mainActivity)
             }
-
         }
 
         return fragmentHomeListBinding.root
@@ -130,6 +136,7 @@ class HomeListFragment : Fragment() {
             val chipTripMainRowCategory3: Chip // 카테고리3
             val textViewTripMainRowHashTag: TextView // 해시태그
             val textViewTripMainRowLikedCount: TextView // 좋아요 수
+            val imageViewTripMainRowLiked: ImageView // 좋아요 아이콘
 
             init {
                 textViewTripMainRowTitle = rowTripMainBinding.textViewTripMainRowTitle
@@ -141,6 +148,7 @@ class HomeListFragment : Fragment() {
                 chipTripMainRowCategory3 = rowTripMainBinding.chipTripMainRowCategory3
                 textViewTripMainRowHashTag = rowTripMainBinding.textViewTripMainRowHashTag
                 textViewTripMainRowLikedCount = rowTripMainBinding.textViewTripMainRowLikedCount
+                imageViewTripMainRowLiked = rowTripMainBinding.imageViewTripMainRowLiked
 
                 rowTripMainBinding.root.setOnClickListener {
                     val currentDate = LocalDate.now()
@@ -204,6 +212,12 @@ class HomeListFragment : Fragment() {
             holder.textViewTripMainRowLocation.text =
                 homePostItemList[position].tripPostLocationName
 
+            for(email in homePostItemList[position].tripPostLiked!!) {
+                if(email == currentUserEmail) {
+                    holder.imageViewTripMainRowLiked.setImageResource(R.drawable.favorite_fill_24px)
+                }
+            }
+
             when (homePostItemList[position].tripPostTripCategory!!.size) {
                 1 -> {
                     holder.chipTripMainRowCategory1.text =
@@ -259,10 +273,7 @@ class HomeListFragment : Fragment() {
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         homeViewModel.getTripPostData()
 
-        Log.d("qwer", "initViewModel")
-
         homeViewModel.tripPostList.observe(viewLifecycleOwner) {
-            Log.d("qwer", "initViewModel observe")
 //            fragmentHomeListBinding.textViewHomeListNoPost.visibility = View.GONE
 //            (fragmentHomeListBinding.recyclerViewHomeList.adapter as? HomeListAdapter)?.updateItemList(it)
             if(it != null) {
@@ -336,12 +347,10 @@ class HomeListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         mainActivity.homeMainPosition = 0
-        Log.d("qwer", "listFragment onResume")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("qwer", "listFragment onStop")
     }
 
 }
