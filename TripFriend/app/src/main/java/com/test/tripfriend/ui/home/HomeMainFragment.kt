@@ -4,14 +4,11 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.text.Selection.setSelection
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -26,10 +23,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.BottomSheetMainFilterBinding
-import com.test.tripfriend.databinding.DialogHomeMainFilterBinding
 import com.test.tripfriend.databinding.FragmentHomeMainBinding
 import com.test.tripfriend.repository.UserRepository
-import com.test.tripfriend.ui.trip.TripMainFragment
 import com.test.tripfriend.ui.user.LoginMainActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar

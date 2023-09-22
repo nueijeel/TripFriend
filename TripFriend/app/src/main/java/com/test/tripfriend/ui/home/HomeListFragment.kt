@@ -72,55 +72,6 @@ class HomeListFragment : Fragment() {
             notifyDataSetChanged()
         }
 
-//        inner class HomeListViewHolder(rowHomeListBinding: RowHomeListBinding) : RecyclerView.ViewHolder(rowHomeListBinding.root) {
-//            val textViewHomeMainListRowTitle: TextView
-//            val textViewHomeMainListDate: TextView
-//            val textViewHomeMainListRowNOP: TextView
-//            val textViewHomeMainListRowLocation: TextView
-//            val chipHomeMainListRowCategory1: Chip // 카테고리1
-//            val chipHomeMainListRowCategory2: Chip // 카테고리2
-//            val chipHomeMainListRowCategory3: Chip // 카테고리3
-//            val textViewHomeMainListRowHashTag: TextView
-//
-//            init {
-//                textViewHomeMainListRowTitle = rowHomeListBinding.textViewHomeMainListRowTitle
-//                textViewHomeMainListDate = rowHomeListBinding.textViewHomeMainListDate
-//                textViewHomeMainListRowNOP = rowHomeListBinding.textViewHomeMainListRowNOP
-//                textViewHomeMainListRowLocation = rowHomeListBinding.textViewHomeMainListRowLocation
-//                chipHomeMainListRowCategory1: rowHomeListBinding.chipHomeMainListRowCategory1
-//                chipHomeMainListRowCategory2: rowHomeListBinding.chipHomeMainListRowCategory2
-//                chipHomeMainListRowCategory3: rowHomeListBinding.chipHomeMainListRowCategory3
-//                textViewHomeMainListRowHashTag = rowHomeListBinding.textViewHomeMainListRowHashTag
-//
-//                rowHomeListBinding.root.setOnClickListener {
-//                    mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, null)
-//
-//                }
-//            }
-//        }
-//
-//        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeListViewHolder {
-//            val rowHomeListBinding = RowHomeListBinding.inflate(layoutInflater)
-//
-//            rowHomeListBinding.root.layoutParams = ViewGroup.LayoutParams(
-//                ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT,
-//            )
-//            return HomeListViewHolder(rowHomeListBinding)
-//        }
-//
-//        override fun getItemCount(): Int {
-//            return homePostItemList.size
-//        }
-//
-//        override fun onBindViewHolder(holder: HomeListViewHolder, position: Int) {
-//            holder.textViewHomeMainListRowTitle.text = homePostItemList.get(position).tripPostTitle
-//            holder.textViewHomeMainListDate.text = "${homePostItemList.get(position).tripPostDate?.get(0)} ~ ${homePostItemList.get(position).tripPostDate?.get(1)}"
-//            holder.textViewHomeMainListRowNOP.text = homePostItemList.get(position).tripPostMemberCount.toString()
-//            holder.textViewHomeMainListRowLocation.text = homePostItemList.get(position).tripPostLocationName
-//            holder.textViewHomeMainListRowHashTag.text = homePostItemList.get(position).tripPostHashTag
-//        }
-
         val sharedPreferences =
             mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)

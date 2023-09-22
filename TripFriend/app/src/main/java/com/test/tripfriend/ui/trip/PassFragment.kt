@@ -54,7 +54,7 @@ class PassFragment : Fragment() {
             }
         }
 
-        tripPostViewModel.getAllTripPostData(userClass.userEmail)
+        tripPostViewModel.getAllTripPostData(userClass.userNickname)
 
         fragmentPassBinding.run {
             recyclerViewPass.run {
