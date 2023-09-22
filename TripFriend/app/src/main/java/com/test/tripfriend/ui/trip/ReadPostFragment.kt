@@ -457,7 +457,13 @@ class ReadPostFragment : Fragment() {
                                 requestReceiverEmail, requestContent, "대기중")
 
                             runBlocking {
-                                tripRequestRepository.setTripRequest(tripRequest)
+                                tripRequestRepository.setTripRequest(tripRequest){
+                                    Snackbar.make(fragmentReadPostBinding.root, "동행요청이 완료되었습니다", Snackbar.LENGTH_SHORT)
+                                        .setAction("X") {
+                                            // Responds to click on the action
+                                        }
+                                        .show()
+                                }
                             }
                         }
                         builder.setNegativeButton("취소", null)
