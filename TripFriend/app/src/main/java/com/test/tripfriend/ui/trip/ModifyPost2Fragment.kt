@@ -64,6 +64,7 @@ class ModifyPost2Fragment : Fragment() {
         tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
 
         tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
+            Log.d("qwer", "viewModel observe")
             tripPostIdx = tripPost.tripPostIdx.toLong()
             fragmentModifyPost2Binding.run {
                 textInputEditTextModifyPost2Title.setText(tripPost.tripPostTitle)
@@ -75,6 +76,20 @@ class ModifyPost2Fragment : Fragment() {
                 textInputEditTextModifyPost2Date.setText("여행 날짜 : ${formatDate(tripPost.tripPostDate!![0])} ~ ${formatDate(tripPost.tripPostDate!![1])}")
                 firstDate = tripPost.tripPostDate!![0]
                 secondDate = tripPost.tripPostDate!![1]
+
+                val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+                val formattedFirstDate = dateFormat.parse(firstDate)
+                val formattedSecondDate = dateFormat.parse(secondDate)
+                val firstCalendar = Calendar.getInstance()
+                val secondCalendar = Calendar.getInstance()
+                firstCalendar.time = formattedFirstDate
+                secondCalendar.time = formattedSecondDate
+
+                fragmentModifyPost2Binding.calendarModifyPost2.run {
+                    setSelectedDateRange(firstCalendar, secondCalendar)
+                }
+
+                Log.d("qwer", "${firstDate} ${secondDate}")
 
                 tripPostIdx = tripPost.tripPostIdx.toLong()
 
@@ -228,7 +243,7 @@ class ModifyPost2Fragment : Fragment() {
 
         val calendar = Calendar.getInstance()
         if (date != null) {
-            calendar.time = date
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 
         return calendar
