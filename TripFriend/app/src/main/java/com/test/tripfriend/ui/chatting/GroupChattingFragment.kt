@@ -42,7 +42,6 @@ class GroupChattingFragment : Fragment() {
                 fetchGroupChatRoomInfo(MY_NICKNAME)
             }
 
-            Log.d("testtt",MY_NICKNAME)
             fetchGroupChatRoomInfo(MY_NICKNAME)
         }
 

@@ -24,6 +24,7 @@ import com.test.tripfriend.databinding.DialogSubmitBinding
 import com.test.tripfriend.databinding.FragmentReadPostBinding
 import com.test.tripfriend.repository.TripPostRepository
 import com.test.tripfriend.dataclassmodel.PersonalChatRoom
+import com.test.tripfriend.dataclassmodel.TripPost
 import com.test.tripfriend.dataclassmodel.TripRequest
 import com.test.tripfriend.repository.PersonalChatRepository
 import com.test.tripfriend.repository.TripRequestRepository
@@ -68,7 +69,6 @@ class ReadPostFragment : Fragment() {
         var memberCheck = 1
         if (memberList != null) {
             for (member in memberList) {
-                Log.d("aaaa", "member4 = $member")
                 memberCheck = 0
             }
         }
@@ -79,7 +79,6 @@ class ReadPostFragment : Fragment() {
         userViewModel = ViewModelProvider(mainActivity)[UserViewModel::class.java]
 
         tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
-            Log.d("testt","동행글 정보 가져오는 옵저버 도착")
             newBundle.putString("postId", tripPost.tripPostDocumentId)
             thisPostId = tripPost.tripPostDocumentId
             newBundle.putStringArrayList("tripPostMemberList", tripPost.tripPostMemberList as ArrayList<String>?)
@@ -138,9 +137,6 @@ class ReadPostFragment : Fragment() {
                 textViewReadPostHashTag.text = tripPost.tripPostHashTag
                 textViewReadPostContent.text = tripPost.tripPostContent
 
-
-
-
                 if(tripPost.tripPostImage!!.isNotEmpty()) {
                     tripPostViewModel.getTripPostImage(tripPost.tripPostImage)
                 }
@@ -186,7 +182,6 @@ class ReadPostFragment : Fragment() {
         tripPostViewModel.getSelectDocumentData(tripPostDocumentId)
 
         userViewModel.user.observe(viewLifecycleOwner) { user ->
-            Log.d("testt","작성자 옵저버 도착")
             newBundle.putString("userName",user.userNickname)
             fragmentReadPostBinding.run {
                 textViewUserNickname.text = user.userNickname
@@ -201,7 +196,6 @@ class ReadPostFragment : Fragment() {
 
         // 사용자 프로필 이미지 처리
         userViewModel.userProfileImage.observe(viewLifecycleOwner) { uri ->
-            Log.d("testt","개인채팅방 사진 옵저버 도락")
             if(uri != null) {
                 Glide.with(mainActivity).load(uri)
                     .error(R.drawable.person_24px)
@@ -264,12 +258,10 @@ class ReadPostFragment : Fragment() {
                             if (memberList != null) {
                                 for(member in memberList){
                                     if(member == userClass.userNickname) {
-                                        Log.d("aaaa", "member2 = $member")
                                         memberCheck = 0 //본인이 참여중이다
                                     }
                                 }
                                 if(memberCheck == 1){
-                                    Log.d("aaaa","참여중 아님")
                                     buttonReadPostDM.visibility = View.VISIBLE
                                     buttonReadPostSubmit.visibility = View.VISIBLE
                                     buttonReadPostMoveChat.visibility = View.GONE
@@ -281,7 +273,6 @@ class ReadPostFragment : Fragment() {
                                     }
                                 }
                                 else{
-                                    Log.d("aaaa","참여중")
                                     buttonReadPostDM.visibility = View.GONE
                                     buttonReadPostSubmit.visibility = View.GONE
                                     buttonReadPostMoveChat.visibility = View.VISIBLE
@@ -299,7 +290,6 @@ class ReadPostFragment : Fragment() {
                             if (memberList != null) {
                                 for(member in memberList){
                                     if(member == userClass.userNickname) {
-                                        Log.d("aaaa", "member3 = $member")
                                         memberCheck = 0 //참여중이다
                                     }
                                 }
@@ -483,7 +473,6 @@ class ReadPostFragment : Fragment() {
 
             //그룹 채팅으로 이동 버튼
             buttonReadPostMoveChat.setOnClickListener {
-                Log.d("최종확인","${newBundle}")
                 mainActivity.replaceFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT,true,false, newBundle)
                 return@setOnClickListener
             }

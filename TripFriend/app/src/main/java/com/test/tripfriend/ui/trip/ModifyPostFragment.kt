@@ -138,12 +138,10 @@ class ModifyPostFragment : Fragment(), OnMapReadyCallback {
                 val place = Autocomplete.getPlaceFromIntent(intent)
 
                 // Place의 주소 구성요소
-                Log.d("map", "Place: " + place.addressComponents)
                 fillInAddress(place)
             }
         } else if (result.resultCode == AppCompatActivity.RESULT_CANCELED) {
             // 작업 취소
-            Log.i("map", "User canceled autocomplete")
         }
     }
 

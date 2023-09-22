@@ -4,14 +4,11 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.text.Selection.setSelection
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -26,10 +23,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.BottomSheetMainFilterBinding
-import com.test.tripfriend.databinding.DialogHomeMainFilterBinding
 import com.test.tripfriend.databinding.FragmentHomeMainBinding
 import com.test.tripfriend.repository.UserRepository
-import com.test.tripfriend.ui.trip.TripMainFragment
 import com.test.tripfriend.ui.user.LoginMainActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -43,8 +38,6 @@ class HomeMainFragment : Fragment() {
     lateinit var viewPager: ViewPager2
     lateinit var viewPagerAdapter: HomeMainFragment.ViewPagerAdapter
     lateinit var bottomSheetMainFilterBinding: BottomSheetMainFilterBinding
-
-
 
     val spinnerList = arrayOf(
         "제목+내용", "해시태그"
@@ -64,22 +57,6 @@ class HomeMainFragment : Fragment() {
         val sharedPreferences =
             mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
-
-//        Log.d("aaaa", "Main===============================================")
-//        Log.d("aaaa", "인증방식 = ${userClass.userAuthentication}")
-//        Log.d("aaaa", "이메일 = ${userClass.userEmail}")
-//        Log.d("aaaa", "비밀번호 = ${userClass.userPw}")
-//        Log.d("aaaa", "닉네임 = ${userClass.userNickname}")
-//        Log.d("aaaa", "이름 = ${userClass.userName}")
-//        Log.d("aaaa", "휴대폰 번호 = ${userClass.userPhoneNum}")
-//        Log.d("aaaa", "MBTI = ${userClass.userMBTI}")
-//        Log.d("aaaa", "userProfilePath = ${userClass.userProfilePath}")
-//        Log.d("aaaa", "userFriendSpeed = ${userClass.userFriendSpeed}")
-//        Log.d("aaaa", "userTripScore = ${userClass.userTripScore}")
-//        Log.d("aaaa", "userTripCount = ${userClass.userTripCount}")
-//        Log.d("aaaa", "userChatNotification = ${userClass.userChatNotification}")
-//        Log.d("aaaa", "userPushNotification = ${userClass.userPushNotification}")
-//        Log.d("aaaa", "자동 로그인 = ${userClass.checkAutoLogin}")
 
         viewPager = fragmentHomeMainBinding.viewPager2HomeMain
         viewPagerAdapter = ViewPagerAdapter(mainActivity)
@@ -299,7 +276,9 @@ class HomeMainFragment : Fragment() {
                 }
 
                 buttonHomeMainFilterApply.setOnClickListener {
-                    chipDialogFilterGender1.isChecked
+                    if(chipDialogFilterCategory1.isChecked) {
+
+                    }
                     dismiss()
                 }
             }

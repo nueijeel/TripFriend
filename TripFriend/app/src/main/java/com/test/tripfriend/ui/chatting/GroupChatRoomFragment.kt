@@ -70,12 +70,10 @@ class GroupChatRoomFragment : Fragment() {
                 (fragmentGroupChatRoomBinding.recyclerViewGroupChatRoom.adapter as GroupChatRoomAdapter).updateItemList(
                     it
                 )
-                Log.d("chatt", "$it")
             }
 
             groupUserInfoMapList.observe(viewLifecycleOwner) {
                 memberInfoMap = it
-                Log.d("testt", "${it}")
 //                데이터 가져오기
                 groupChatViewModel.groupChattingChangeListener(roomId)
 
@@ -85,7 +83,6 @@ class GroupChatRoomFragment : Fragment() {
                 memberInfoMap[1].forEach { (key, value) ->
                     memberimage.add(value)
                 }
-                Log.d("testt", "${memberimage}")
 
                 (fragmentGroupChatRoomBinding.recyclerViewGroupChatRoomParticipants.adapter as ParticipantsAdapter).updateItemList(
                     memberList
@@ -102,7 +99,6 @@ class GroupChatRoomFragment : Fragment() {
 
             }
             if (::tripPostId.isInitialized) {
-                Log.d("testtt", "초기화됨:$tripPostId")
                 getUserDataInGroupChat(tripPostId)
             }
             if (::postTitle.isInitialized) {
@@ -184,7 +180,6 @@ class GroupChatRoomFragment : Fragment() {
             textInputEditTextGroupChatRoomSearch.maxHeight = oneThirdScreenHeight
 
             buttonGroupChatRoomSend.setOnClickListener {
-                Log.d("testtt", "클릭")
                 val calendar = Calendar.getInstance()
                 val year = calendar.get(Calendar.YEAR)
                 val month = calendar.get(Calendar.MONTH) + 1 // 월은 0부터 시작하므로 +1
@@ -227,7 +222,6 @@ class GroupChatRoomFragment : Fragment() {
                 if (roomId != null) {
                     groupChatRepository.saveMyContentToDB(roomId, groupChatting)
                 } else {
-                    Log.d("testt", "넘어온 문서ID가 널임")
                 }
                 textInputEditTextGroupChatRoomSearch.setText("")
             }

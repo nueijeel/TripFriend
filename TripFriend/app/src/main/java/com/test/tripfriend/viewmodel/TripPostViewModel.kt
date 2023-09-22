@@ -40,7 +40,7 @@ class TripPostViewModel: ViewModel() {
         get() = _tripPost
 
     // 오늘 날짜 기준으로 참여/지난 동행글 구분하여 데이터 추출
-    fun getAllTripPostData(userEmail: String) {
+    fun getAllTripPostData(userNickname: String) {
         val tripPostInfoList= mutableListOf<DocumentSnapshot>()
         val resultInProgressList = mutableListOf<TripPost>()
         val resultPassList = mutableListOf<TripPost>()
@@ -48,7 +48,7 @@ class TripPostViewModel: ViewModel() {
         val scope = CoroutineScope(Dispatchers.Default)
 
         scope.launch {
-            val currentTripPostSnapshot = async { tripPostRepository.getAllDocumentData(userEmail) }
+            val currentTripPostSnapshot = async { tripPostRepository.getAllDocumentData(userNickname) }
             tripPostInfoList.addAll(currentTripPostSnapshot.await().documents)
 
             for(document in tripPostInfoList) {

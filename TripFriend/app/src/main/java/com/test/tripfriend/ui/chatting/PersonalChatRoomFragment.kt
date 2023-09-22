@@ -84,7 +84,6 @@ class PersonalChatRoomFragment : Fragment() {
             opponentProfile="null"
         }
         if (roomId != null) {
-            Log.d("testt", "$roomId $opponentName $opponentProfile")
         }
 
         if (roomId != null && opponentName != null && opponentProfile != null) {
@@ -155,7 +154,6 @@ class PersonalChatRoomFragment : Fragment() {
 
             //전송버튼
             buttonPersonalChatRoomSend.setOnClickListener {
-                Log.d("testtt", "클릭")
                 val calendar = Calendar.getInstance()
                 val year = calendar.get(Calendar.YEAR)
                 val month = calendar.get(Calendar.MONTH) + 1 // 월은 0부터 시작하므로 +1
@@ -198,7 +196,6 @@ class PersonalChatRoomFragment : Fragment() {
                 if (roomId != null) {
                     personalChatRepository.saveMyContentToDB(roomId, personalChatting)
                 } else {
-                    Log.d("testt", "넘어온 문서ID가 널임..")
                 }
                 textInputEditTextPersonalChatRoomSearch.setText("")
             }
