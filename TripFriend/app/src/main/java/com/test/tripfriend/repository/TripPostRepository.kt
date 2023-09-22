@@ -119,4 +119,11 @@ class TripPostRepository {
 
         return test
     }
+
+    //조건에 맞는 동행 요청 데이터를 가져오는 메서드
+    suspend fun findRequestData(postId:String,myEmail:String): QuerySnapshot{
+        return db.collection("TripRequest")
+            .whereEqualTo("tripRequestPostId",postId)
+            .whereEqualTo("tripRequestWriterEmail",myEmail).get().await()
+    }
 }

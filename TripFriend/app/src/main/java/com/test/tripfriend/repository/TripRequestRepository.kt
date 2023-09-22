@@ -1,5 +1,7 @@
 package com.test.tripfriend.repository
 
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -37,8 +39,8 @@ class TripRequestRepository {
             .delete().await()
     }
 
-    suspend fun setTripRequest(tripRequest : TripRequest){
+    suspend fun setTripRequest(tripRequest : TripRequest,callBack:(Task<DocumentReference>)->Unit){
         firestore.collection("TripRequest")
-            .add(tripRequest).await()
+            .add(tripRequest).addOnCompleteListener(callBack).await()
     }
 }
