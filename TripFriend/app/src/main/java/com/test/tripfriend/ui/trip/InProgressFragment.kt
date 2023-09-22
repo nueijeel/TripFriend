@@ -27,6 +27,7 @@ class InProgressFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var tripPostViewModel: TripPostViewModel
     lateinit var currentUserEmail : String
+    lateinit var currnetUserNickname : String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +40,7 @@ class InProgressFragment : Fragment() {
         val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
         currentUserEmail = userClass.userEmail
+        currnetUserNickname = userClass.userNickname
 
         tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
 
@@ -232,7 +234,7 @@ class InProgressFragment : Fragment() {
         val mainActivity : MainActivity = activity as MainActivity
         mainActivity.tripMainPosition = 0
         tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
-        tripPostViewModel.getAllTripPostData(currentUserEmail)
+        tripPostViewModel.getAllTripPostData(currnetUserNickname)
     }
 
     override fun onPause() {

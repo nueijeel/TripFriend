@@ -29,6 +29,7 @@ class PassFragment : Fragment() {
 
     lateinit var tripPostViewModel: TripPostViewModel
     lateinit var currentUserEmail : String
+    lateinit var currnetUserNickname : String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +42,7 @@ class PassFragment : Fragment() {
         val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
         currentUserEmail = userClass.userEmail
+        currnetUserNickname = userClass.userNickname
 
         tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
 
@@ -232,7 +234,7 @@ class PassFragment : Fragment() {
         super.onResume()
         mainActivity.tripMainPosition = 1
         tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
-        tripPostViewModel.getAllTripPostData(currentUserEmail)
+        tripPostViewModel.getAllTripPostData(currnetUserNickname)
     }
 
     override fun onPause() {
