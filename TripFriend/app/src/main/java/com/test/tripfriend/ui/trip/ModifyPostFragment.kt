@@ -236,15 +236,13 @@ class ModifyPostFragment : Fragment(), OnMapReadyCallback {
                 MapStyleOptions.loadRawResourceStyle(mainActivity, R.raw.style_json)
             )
             if (!success) {
+                Log.e("map", "Style parsing failed.")
             }
         } catch (e: Resources.NotFoundException) {
+            Log.e("map", "Can't find style. Error: ", e)
         }
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
         marker = map?.addMarker(MarkerOptions().position(coordinates))
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 
 }

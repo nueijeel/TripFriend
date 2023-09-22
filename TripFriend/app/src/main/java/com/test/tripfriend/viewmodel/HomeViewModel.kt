@@ -6,13 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentSnapshot
 import com.test.tripfriend.dataclassmodel.TripPost
 import com.test.tripfriend.repository.HomeListRepository
-import com.test.tripfriend.repository.TripPostRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class HomeViewModel : ViewModel() {
@@ -20,16 +18,10 @@ class HomeViewModel : ViewModel() {
 
     val tripPostList = MutableLiveData<List<TripPost>>()
 
+    // 홈 목록 가져오기
     fun getTripPostData() {
-//        val currentTripPostSnapshot = homeListRepository.getDocumentData()
 
-//        if (currentTripPostSnapshot != null) {
-//            val currentTripPost = currentTripPostSnapshot.toObjects(TripPost::class.java)
-//
-//            tripPostList.value = currentTripPost
-//        }
-
-        val homePostInfoList= mutableListOf<DocumentSnapshot>()
+        val homePostInfoList = mutableListOf<DocumentSnapshot>()
         val resultList = mutableListOf<TripPost>()
 
         val scope = CoroutineScope(Dispatchers.Default)
@@ -39,7 +31,7 @@ class HomeViewModel : ViewModel() {
             homePostInfoList.addAll(currentTripPostSnapshot.await().documents)
 
             withContext(Dispatchers.Main) {
-                for(document in homePostInfoList) {
+                for (document in homePostInfoList) {
                     val tripPostObj = document.toObject(TripPost::class.java)
 
                     if (tripPostObj != null) {
@@ -56,6 +48,106 @@ class HomeViewModel : ViewModel() {
 
             scope.cancel()
 
+        }
+    }
+
+    fun getFilteredPostList(
+        categoryArray: MutableList<String>,
+        genderList: MutableList<Boolean>,
+        dateList: IntArray
+    ) {
+
+        val filteredPostInfoList = mutableListOf<DocumentSnapshot>()
+
+
+        val scope = CoroutineScope(Dispatchers.Default)
+        scope.launch {
+            var resultList = mutableListOf<TripPost>()
+            val currentTripPostSnapshot = async { homeListRepository.getDocumentData() }
+
+            filteredPostInfoList.addAll(currentTripPostSnapshot.await().documents)
+
+            for (document in filteredPostInfoList) {
+                val tripPostObj = document.toObject(TripPost::class.java)
+                if (tripPostObj != null) {
+                    tripPostObj.tripPostDocumentId = document.id
+                    resultList.add(tripPostObj)
+                }
+            }
+
+            // 카테고리 필터링
+            if (categoryArray.size != 0) {
+                resultList = resultList.filter { tripPost ->
+                    categoryArray.any { category ->
+                        tripPost.tripPostTripCategory?.contains(category) ?: false
+                    }
+                }.toMutableList()
+            }
+
+            // 성별 필터링
+            if (genderList[0] == true) {
+                resultList = resultList.filter { tripPost ->
+                    (tripPost.tripPostGender[0] == genderList[0])
+                }.toMutableList()
+            } else if (genderList[1] == true) {
+                resultList = resultList.filter { tripPost ->
+                    (tripPost.tripPostGender[1] == genderList[1])
+                }.toMutableList()
+            }
+
+            // 시작 날짜 기준 필터링
+            if (dateList[0] != 0) {
+                resultList = resultList.filter { tripPost ->
+                    (tripPost.tripPostDate?.get(0)
+                        ?.toInt()!! >= dateList[0] && tripPost.tripPostDate[0]
+                        .toInt() <= dateList[1])
+                }.toMutableList()
+            }
+
+            withContext(Dispatchers.Main) {
+                tripPostList.value = resultList
+            }
+
+            scope.cancel()
+        }
+    }
+
+    fun getSearchedPostList(query: String, searchFilter: String) {
+        val filteredPostInfoList = mutableListOf<DocumentSnapshot>()
+        val scope = CoroutineScope(Dispatchers.Default)
+
+        scope.launch {
+            var resultList = mutableListOf<TripPost>()
+            val currentTripPostSnapshot = async { homeListRepository.getDocumentData() }
+
+            filteredPostInfoList.addAll(currentTripPostSnapshot.await().documents)
+
+            for (document in filteredPostInfoList) {
+                val tripPostObj = document.toObject(TripPost::class.java)
+                if (tripPostObj != null) {
+                    tripPostObj.tripPostDocumentId = document.id
+                    resultList.add(tripPostObj)
+                }
+            }
+
+            if (searchFilter == "제목+내용") {
+                resultList = resultList.filter { tripPost ->
+                    (tripPost.tripPostTitle.contains(query) || tripPost.tripPostContent.contains(
+                        query
+                    ))
+                }.toMutableList()
+            } else {
+                resultList = resultList.filter { tripPost ->
+                    tripPost.tripPostHashTag.contains(query)
+                }.toMutableList()
+            }
+
+
+            withContext(Dispatchers.Main) {
+                tripPostList.value = resultList
+            }
+
+            scope.cancel()
         }
     }
 

@@ -221,12 +221,10 @@ class HomeListFragment : Fragment() {
     }
 
     fun initHomeViewModel() {
-        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+        homeViewModel = ViewModelProvider(mainActivity)[HomeViewModel::class.java]
         homeViewModel.getTripPostData()
 
         homeViewModel.tripPostList.observe(viewLifecycleOwner) {
-//            fragmentHomeListBinding.textViewHomeListNoPost.visibility = View.GONE
-//            (fragmentHomeListBinding.recyclerViewHomeList.adapter as? HomeListAdapter)?.updateItemList(it)
             if(it != null) {
                 fragmentHomeListBinding.textViewHomeListNoPost.visibility = View.GONE
                 (fragmentHomeListBinding.recyclerViewHomeList.adapter as? HomeListAdapter)?.updateItemList(it)
