@@ -18,9 +18,9 @@ class TripPostRepository {
     val db = FirebaseFirestore.getInstance()
 
     // 문서 가져오기 메서드
-    suspend fun getAllDocumentData(userEmail: String): QuerySnapshot {
+    suspend fun getAllDocumentData(userNickname: String): QuerySnapshot {
         val docRef =
-            db.collection("TripPost").whereEqualTo("tripPostWriterEmail", userEmail).get().await()
+            db.collection("TripPost").whereArrayContains("tripPostMemberList", userNickname).get().await()
 
         return docRef
     }
