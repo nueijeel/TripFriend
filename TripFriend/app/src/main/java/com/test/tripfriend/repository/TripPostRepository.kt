@@ -31,12 +31,17 @@ class TripPostRepository {
         return docRef
     }
     // 동행글 이미지 url 가져오는 함수
-    suspend fun getTripPostImage(tripPostImagePath: String): Uri {
-        val storage = Firebase.storage
+    suspend fun getTripPostImage(tripPostImagePath: String): Uri? {
+        if(tripPostImagePath != "") {
+            val storage = Firebase.storage
 
-        //인자로 전달된 ImagePath의 경로 형태 확인 필
-        val fileRef = storage.reference.child(tripPostImagePath)
-        return fileRef.downloadUrl.await()
+            //인자로 전달된 ImagePath의 경로 형태 확인 필
+            val fileRef = storage.reference.child(tripPostImagePath)
+            return fileRef.downloadUrl.await()
+        }
+        else{
+            return null
+        }
     }
 
     // 동행글 삭제하는 함수
@@ -113,5 +118,12 @@ class TripPostRepository {
         val test = db.collection("GroupChatRoom").document(postId).get().await()
 
         return test
+    }
+
+    //조건에 맞는 동행 요청 데이터를 가져오는 메서드
+    suspend fun findRequestData(postId:String,myEmail:String): QuerySnapshot{
+        return db.collection("TripRequest")
+            .whereEqualTo("tripRequestPostId",postId)
+            .whereEqualTo("tripRequestWriterEmail",myEmail).get().await()
     }
 }
