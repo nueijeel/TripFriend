@@ -55,6 +55,7 @@ class ReadPostFragment : Fragment() {
         mainActivity = activity as MainActivity
         fragmentReadPostBinding = FragmentReadPostBinding.inflate(layoutInflater)
 
+
         // 로그인 중인 사용자 정보
         val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
@@ -65,6 +66,8 @@ class ReadPostFragment : Fragment() {
         val viewState = arguments?.getString("viewState")
         val endDate = arguments?.getString("endDate")
         val memberList = arguments?.getStringArrayList("memberList")
+
+
 
         var memberCheck = 1
         if (memberList != null) {
@@ -77,6 +80,18 @@ class ReadPostFragment : Fragment() {
 
         tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
         userViewModel = ViewModelProvider(mainActivity)[UserViewModel::class.java]
+        //동행신청 버튼 visible을 결정하는 옵저버를 부르는 함수 호출
+        tripPostViewModel.checkMyAccompanyRequestState(tripPostDocumentId,mainActivity.userClass.userEmail)
+
+        //나의 동행 요청 상태에 따라 visible설정
+        tripPostViewModel.myRequestState.observe(viewLifecycleOwner){
+            if(it){
+                fragmentReadPostBinding.buttonReadPostSubmit.visibility = View.GONE
+            }else{
+                fragmentReadPostBinding.buttonReadPostSubmit.visibility = View.VISIBLE
+            }
+
+        }
 
         tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
             newBundle.putString("postId", tripPost.tripPostDocumentId)
@@ -465,11 +480,14 @@ class ReadPostFragment : Fragment() {
                                         .show()
                                 }
                             }
+                            tripPostViewModel.checkMyAccompanyRequestState(tripPostDocumentId,mainActivity.userClass.userEmail)
                         }
                         builder.setNegativeButton("취소", null)
 
                         builder.show()
                     }
+                }else if(true){
+
                 }
                 else{
                     Snackbar.make(fragmentReadPostBinding.root, "모집 인원이 다 찬 동행입니다.", Snackbar.LENGTH_SHORT).show()
