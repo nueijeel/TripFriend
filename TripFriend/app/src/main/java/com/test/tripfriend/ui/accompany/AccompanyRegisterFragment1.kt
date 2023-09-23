@@ -216,8 +216,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     // [END maps_solutions_android_autocomplete_map_add]
 
     private fun updateMap(latLng: LatLng) {
-//        marker?.position = latLng
-//        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
         marker = map?.addMarker(MarkerOptions().position(coordinates))
     }
@@ -231,16 +229,14 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
                 MapStyleOptions.loadRawResourceStyle(mainActivity, R.raw.style_json)
             )
             if (!success) {
+                Log.e("map", "Style parsing failed.")
             }
         } catch (e: Resources.NotFoundException) {
+            Log.e("map", "Can't find style. Error: ", e)
         }
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
         marker = map?.addMarker(MarkerOptions().position(coordinates))
     }
     // [END maps_solutions_android_autocomplete_map_ready]
-
-    override fun onStop() {
-        super.onStop()
-    }
 
 }

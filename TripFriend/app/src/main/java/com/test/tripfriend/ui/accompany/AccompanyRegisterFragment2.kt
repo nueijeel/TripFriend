@@ -212,7 +212,7 @@ class AccompanyRegisterFragment2 : Fragment() {
 
         val calendar = Calendar.getInstance()
         if (date != null) {
-            calendar.time = date
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
         }
 
         return calendar

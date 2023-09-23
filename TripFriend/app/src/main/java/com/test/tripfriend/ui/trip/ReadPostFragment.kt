@@ -84,15 +84,7 @@ class ReadPostFragment : Fragment() {
         //동행신청 버튼 visible을 결정하는 옵저버를 부르는 함수 호출
         tripPostViewModel.checkMyAccompanyRequestState(tripPostDocumentId,mainActivity.userClass.userEmail)
 
-        //나의 동행 요청 상태에 따라 visible설정
-        tripPostViewModel.myRequestState.observe(viewLifecycleOwner){
-            if(it){
-                fragmentReadPostBinding.buttonReadPostSubmit.visibility = View.GONE
-            }else{
-                fragmentReadPostBinding.buttonReadPostSubmit.visibility = View.VISIBLE
-            }
 
-        }
 
         tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
             newBundle.putString("postId", tripPost.tripPostDocumentId)
@@ -281,6 +273,7 @@ class ReadPostFragment : Fragment() {
                                         toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
                                         toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
                                     }
+                                    myRequestState()
                                 }
                                 else{
                                     buttonReadPostDM.visibility = View.GONE
@@ -319,6 +312,7 @@ class ReadPostFragment : Fragment() {
                                         var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
                                         toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
                                     }
+                                    myRequestState()
                                 }
                                 else{
                                     buttonReadPostDM.visibility = View.GONE
@@ -352,6 +346,7 @@ class ReadPostFragment : Fragment() {
                             var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
                             toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
                             toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
+                            myRequestState()
                         }
                     }
                     "HomeListPass" -> { // 지난 동행
@@ -421,13 +416,49 @@ class ReadPostFragment : Fragment() {
                     setTitle("1 : 1 문의하기")
                     setMessage(R.string.DM_info)
                     setPositiveButton("입장") { dialogInterface: DialogInterface, i: Int ->
-                        val personalChatUsers = PersonalChatRoom(tripPostWriterEmail,mainActivity.userClass.userEmail)
-                        personalChatRepository.inquiryToPersonalChatRoom(personalChatUsers){
-                            //생성된 채팅방의 문서 아이디
-                            val roomId=it.result.id
-                            newBundle.putString("chatRoomId",roomId)
-                            mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
+                        //먼저 입장할때 이미 두 사람의 채팅방이 있는지 검사하고 없으면 생성/있으면 해당 id로 접근해서 입장.
+
+                        personalChatRepository.checkPersonalRoomExist(mainActivity.userClass.userEmail,tripPostWriterEmail){
+                            var personalChatDocumentId:String?=null
+                            runBlocking {
+                                for (document in it.result.documents){
+                                    if(document.exists()){
+                                        personalChatDocumentId=document.id
+                                    }
+                                }
+                            }
+                            if (personalChatDocumentId != null){
+                                //검색결과 채팅방이 존재할 시 해당 채팅방으로 입장시킨다
+                                newBundle.putString("chatRoomId",personalChatDocumentId)
+                                mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
+                            }else{
+                                personalChatRepository.checkPersonalRoomExist(tripPostWriterEmail,mainActivity.userClass.userEmail){
+                                    var personalChatDocumentId2:String?=null
+                                    runBlocking {
+                                        for (document in it.result.documents){
+                                            if(document.exists()){
+                                                personalChatDocumentId2=document.id
+                                            }
+                                        }
+                                    }
+                                    if (personalChatDocumentId2 != null){
+                                        //검색결과 채팅방이 존재할 시 해당 채팅방으로 입장시킨다
+                                        newBundle.putString("chatRoomId",personalChatDocumentId2)
+                                        mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
+                                    }else{
+                                        //검색결과 채팅방이 없을 시 생성 후 입장시킨다
+                                        val personalChatUsers = PersonalChatRoom(tripPostWriterEmail,mainActivity.userClass.userEmail)
+                                        personalChatRepository.inquiryToPersonalChatRoom(personalChatUsers){
+                                            //생성된 채팅방의 문서 아이디
+                                            val roomId=it.result.id
+                                            newBundle.putString("chatRoomId",roomId)
+                                            mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
+                                        }
+                                    }
+                                }
+                            }
                         }
+
                     }
                     setNegativeButton("취소", null)
                     show()
@@ -552,6 +583,17 @@ class ReadPostFragment : Fragment() {
             return formattedDate
         }
         return ""
+    }
+
+    fun myRequestState() {
+        //나의 동행 요청 상태에 따라 visible설정
+        tripPostViewModel.myRequestState.observe(viewLifecycleOwner){
+            if(it){
+                fragmentReadPostBinding.buttonReadPostSubmit.visibility = View.GONE
+            }else{
+                fragmentReadPostBinding.buttonReadPostSubmit.visibility = View.VISIBLE
+            }
+        }
     }
 
     override fun onPause() {

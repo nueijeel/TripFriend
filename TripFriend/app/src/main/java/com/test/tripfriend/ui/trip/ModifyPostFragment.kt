@@ -67,6 +67,8 @@ class ModifyPostFragment : Fragment(), OnMapReadyCallback {
         val tripPostLocationName = arguments?.getString("locationName")
         val tripPostLatitude = arguments?.getDouble("latitude")
         val tripPostLongitude = arguments?.getDouble("longitude")
+        val tripGroupRoomId = arguments?.getString("groupRoomId")
+        val tripMemberList = arguments?.getStringArrayList("tripPostMemberList")
 
         fragmentModifyPostBinding.run {
 
@@ -99,6 +101,8 @@ class ModifyPostFragment : Fragment(), OnMapReadyCallback {
                 val newBundle = Bundle()
                 newBundle.putString("tripPostDocumentId", tripPostDocumentId)
                 newBundle.putString("tripPostWriterEmail", tripPostWriterEmail)
+                newBundle.putString("groupRoomId", tripGroupRoomId)
+                newBundle.putStringArrayList("tripPostMemberList", tripMemberList)
 
                 if(country == "") {
                     newBundle.putString("country", tripPostLocationName)
@@ -236,15 +240,13 @@ class ModifyPostFragment : Fragment(), OnMapReadyCallback {
                 MapStyleOptions.loadRawResourceStyle(mainActivity, R.raw.style_json)
             )
             if (!success) {
+                Log.e("map", "Style parsing failed.")
             }
         } catch (e: Resources.NotFoundException) {
+            Log.e("map", "Can't find style. Error: ", e)
         }
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
         marker = map?.addMarker(MarkerOptions().position(coordinates))
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 
 }

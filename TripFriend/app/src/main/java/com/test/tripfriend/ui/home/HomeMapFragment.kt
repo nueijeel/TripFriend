@@ -45,34 +45,16 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         fragmentHomeMapBinding = FragmentHomeMapBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
-//        val MAPS_API_KEY = BuildConfig.MAPS_API_KEY
-//
-//        if (MAPS_API_KEY.isEmpty()) {
-//            Toast.makeText(mainActivity, "Add your own API key in properties as MAPS_API_KEY=YOUR_API_KEY", Toast.LENGTH_LONG).show()
-//        }
-
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.mapViewHomeMap) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-        // Initialize the SDK
-//        Places.initialize(context, MAPS_API_KEY)
-
-        // Create a new PlacesClient instance
-//        val placesClient = Places.createClient(context)
-
-//        val mapFragment = fm.findFragmentById(R.id.mapViewHomeMap) as MapFragment?
-//            ?: MapFragment.newInstance().also {
-////                fm.beginTransaction().add(R.id.mapViewHomeMap, it).commit()
-//            }
-//        mapFragment.getMapAsync(this)
-
 
         return fragmentHomeMapBinding.root
 
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+
         googleMap.uiSettings.isMapToolbarEnabled = false
 
         mMap = googleMap
@@ -157,10 +139,6 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
         if (mapReady) {
             onMapReady(mMap)
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 
 }

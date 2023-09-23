@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentPersonalChatRoomBinding
@@ -59,6 +60,21 @@ class PersonalChatRoomFragment : Fragment() {
                     )
                 }
             }
+            deleteData.observe(viewLifecycleOwner) {
+                Log.d("zzzzzz","메세지들이 삭제됨")
+                //토스트메시지를 띄우고 채팅방 나가도록
+                Snackbar.make(
+                    fragmentPersonalChatRoomBinding.root,
+                    "상대방이 채팅을 나가서 화면을 전환합니다",
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                    .setAction("X") {
+                        // Responds to click on the action
+                    }
+                    .show()
+                mainActivity.removeFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT)
+
+            }
             myProfile.observe(viewLifecycleOwner) {
                 if (it != null) {
                     Glide.with(mainActivity).load(it)
@@ -80,8 +96,8 @@ class PersonalChatRoomFragment : Fragment() {
         val roomId = arguments?.getString("chatRoomId")
         opponentName = arguments?.getString("userName").toString()
         opponentProfile = arguments?.getString("userProfile").toString()
-        if (opponentProfile==null || opponentProfile==""||::opponentProfile.isInitialized==false){
-            opponentProfile="null"
+        if (opponentProfile == null || opponentProfile == "" || ::opponentProfile.isInitialized == false) {
+            opponentProfile = "null"
         }
         if (roomId != null) {
         }
@@ -89,6 +105,7 @@ class PersonalChatRoomFragment : Fragment() {
         if (roomId != null && opponentName != null && opponentProfile != null) {
             //db의 데이터 변경을 감시하기 위한 리스너
             chattingViewModel.chattingChangeListener(roomId)
+            chattingViewModel.deleteChatRoomListener(roomId)
         }
 
         fragmentPersonalChatRoomBinding.run {
@@ -137,10 +154,10 @@ class PersonalChatRoomFragment : Fragment() {
                             setPositiveButton("나가기") { dialogInterface: DialogInterface, i: Int ->
                                 mainActivity.removeFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT)
 
-                                //일단 삭제를 막아놓음
-//                            if (roomId != null) {
-////                                chattingViewModel.removePersonalChatRoom(roomId)
-//                            }
+
+                                if (roomId != null) {
+                                    chattingViewModel.removePersonalChatRoom(roomId)
+                                }
                             }
                             show()
                         }
