@@ -10,7 +10,8 @@ data class GroupChatting(
     val groupChatWriterEmail : String?=null,
     val groupChatContent : String?=null,
     val groupChatSendDateAndTime : String?=null,
-    val groupChatSendTimeStamp: Long?=null
+    val groupChatSendTimeStamp: Long?=null,
+    val outToken:Boolean=false
 )
 
 class UserInfo{

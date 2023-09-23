@@ -45,7 +45,7 @@ class GroupChatRoomFragment : Fragment() {
     lateinit var tripPostId: String
     lateinit var roomId: String
     lateinit var postTitle: String
-    lateinit var roomOwnerEmail:String
+    lateinit var roomOwnerEmail: String
 
     lateinit var MY_EMAIL: String
 
@@ -90,7 +90,8 @@ class GroupChatRoomFragment : Fragment() {
                 //햄버거에서 내 사진
                 fragmentGroupChatRoomBinding.imageViewGroupChatRoom
                 if (memberInfoMap[1].get(mainActivity.userClass.userEmail) != "null") {
-                    Glide.with(mainActivity).load(memberInfoMap[1].get(mainActivity.userClass.userEmail)!!.toUri()
+                    Glide.with(mainActivity).load(
+                        memberInfoMap[1].get(mainActivity.userClass.userEmail)!!.toUri()
                     ).into(fragmentGroupChatRoomBinding.imageViewGroupChatRoom)
                 } else {
                     fragmentGroupChatRoomBinding.imageViewGroupChatRoom.setImageResource(R.drawable.person_24px)
@@ -102,11 +103,11 @@ class GroupChatRoomFragment : Fragment() {
                 getUserDataInGroupChat(tripPostId)
             }
             if (::postTitle.isInitialized) {
-                fragmentGroupChatRoomBinding.textViewSidePostTitle.text=postTitle
+                fragmentGroupChatRoomBinding.textViewSidePostTitle.text = postTitle
             }
             if (::roomOwnerEmail.isInitialized) {
-                if (mainActivity.userClass.userEmail==roomOwnerEmail){
-                    fragmentGroupChatRoomBinding.buttonGroupChatRoomExit.visibility=View.GONE
+                if (mainActivity.userClass.userEmail == roomOwnerEmail) {
+                    fragmentGroupChatRoomBinding.buttonGroupChatRoomExit.visibility = View.GONE
                 }
             }
 
@@ -164,9 +165,43 @@ class GroupChatRoomFragment : Fragment() {
                             setMessage("나가기를 하면 대화내용이 모두 삭제되며 동행 신청이 취소되고 채팅 목록에서도 삭제됩니다.")
                             setNegativeButton("취소", null)
                             setPositiveButton("나가기") { dialogInterface: DialogInterface, i: Int ->
+                                //여기서 메시지를 남기고 떠나야함.
+                                val calendar = Calendar.getInstance()
+                                val year = calendar.get(Calendar.YEAR)
+                                val month = calendar.get(Calendar.MONTH) + 1 // 월은 0부터 시작하므로 +1
+                                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                                val calendar2 = Calendar.getInstance()
+                                val hour = calendar2.get(Calendar.HOUR_OF_DAY) // 24시간 형식
+                                val minute = calendar2.get(Calendar.MINUTE)
+                                val second = calendar2.get(Calendar.SECOND)
+
+                                //타임 스탬프
+                                val groupChatSendTimeStamp =
+                                    ("$year${month.toString().padStart(2, '0')}${
+                                        day.toString().padStart(2, '0')
+                                    }${hour.toString().padStart(2, '0')}${
+                                        minute.toString().padStart(2, '0')
+                                    }${second.toString().padStart(2, '0')}").toLong()
+
+                                //저장할 데이터 생성
+                                val outChatting = GroupChatting(
+                                    MY_EMAIL,
+                                    "${mainActivity.userClass.userNickname}",
+                                    "",
+                                    groupChatSendTimeStamp,
+                                    true
+                                )
+                                if (roomId != null) {
+                                    groupChatRepository.saveMyContentToDB(roomId, outChatting)
+                                }
+
                                 //동행글에서 멤버에 자기 자신 삭제하고 채팅방 자기자신 삭제
                                 mainActivity.removeFragment(MainActivity.GROUP_CHAT_ROOM_FRAGMENT)
-                                groupChatViewModel.outMemberFromChatRoom(mainActivity.userClass.userNickname,roomId,tripPostId)
+                                groupChatViewModel.outMemberFromChatRoom(
+                                    mainActivity.userClass.userNickname,
+                                    roomId,
+                                    tripPostId
+                                )
 
                             }
                             show()
@@ -259,6 +294,7 @@ class GroupChatRoomFragment : Fragment() {
             val textViewOpponentName: TextView
             val textViewOpponentContent: TextView
             val textViewOpponentChatMoment: TextView
+            val textViewOutNotification: TextView
 
 
             init {
@@ -274,6 +310,8 @@ class GroupChatRoomFragment : Fragment() {
                 textViewOpponentContent = rowChatRoomUserBinding.textViewRowChatRoomOpponent
                 //상대방 채팅 시간대
                 textViewOpponentChatMoment = rowChatRoomUserBinding.textViewOpponentChatMoment
+                //상대방 나갔을 때 나오는 텍스트뷰
+                textViewOutNotification = rowChatRoomUserBinding.textViewOutNotification
 
             }
         }
@@ -300,43 +338,64 @@ class GroupChatRoomFragment : Fragment() {
             // 최대 너비 설정
             holder.textViewRowChatRoomUser.maxWidth = halfScreenWidth
             holder.textViewOpponentContent.maxWidth = halfScreenWidth
-            //받아온 데이터가 내가 보낸 게 아니라면
-            if (itemList[position].groupChatWriterEmail != MY_EMAIL) {
+
+            if (itemList[position].outToken) {
+                holder.textViewOutNotification.visibility = View.VISIBLE
                 holder.textViewRowChatRoomUser.visibility = View.GONE
                 holder.textViewChatMoment.visibility = View.GONE
-
-                holder.imageViewOpponent.visibility = View.VISIBLE
-                holder.textViewOpponentName.visibility = View.VISIBLE
-                holder.textViewOpponentContent.visibility = View.VISIBLE
-                holder.textViewOpponentChatMoment.visibility = View.VISIBLE
-//
-                //이미지 설정
-                if (memberInfoMap[1].get(itemList[position].groupChatWriterEmail) != "null") {
-                    Glide.with(mainActivity).load(
-                        memberInfoMap[1].get(itemList[position].groupChatWriterEmail)!!.toUri()
-                    )
-                        .into(holder.imageViewOpponent)
-                } else {
-                    holder.imageViewOpponent.setImageResource(R.drawable.person_24px)
-                }
-                holder.imageViewOpponent
-                //이름
-                holder.textViewOpponentName.text =
-                    memberInfoMap[0].get(itemList[position].groupChatWriterEmail)
-
-                holder.textViewOpponentContent.text = itemList[position].groupChatContent
-                holder.textViewOpponentChatMoment.text = itemList[position].groupChatSendDateAndTime
-                //받아온 데이터가 내가 보낸 거라면
-            } else {
-                holder.textViewRowChatRoomUser.visibility = View.VISIBLE
-                holder.textViewChatMoment.visibility = View.VISIBLE
-                holder.textViewRowChatRoomUser.text = itemList[position].groupChatContent
-                holder.textViewChatMoment.text = itemList[position].groupChatSendDateAndTime
-
                 holder.imageViewOpponent.visibility = View.GONE
                 holder.textViewOpponentName.visibility = View.GONE
                 holder.textViewOpponentContent.visibility = View.GONE
                 holder.textViewOpponentChatMoment.visibility = View.GONE
+
+                holder.textViewOutNotification.text =
+                    itemList[position].groupChatContent + "님이 동행 멤버에서 나가셨습니다😭"
+            } else {
+                //받아온 데이터가 내가 보낸 게 아니라면
+                if (itemList[position].groupChatWriterEmail != MY_EMAIL) {
+                    holder.textViewRowChatRoomUser.visibility = View.GONE
+                    holder.textViewChatMoment.visibility = View.GONE
+                    holder.textViewOutNotification.visibility = View.GONE
+
+                    holder.imageViewOpponent.visibility = View.VISIBLE
+                    holder.textViewOpponentName.visibility = View.VISIBLE
+                    holder.textViewOpponentContent.visibility = View.VISIBLE
+                    holder.textViewOpponentChatMoment.visibility = View.VISIBLE
+//
+                    //이미지 설정
+                    if (memberInfoMap[1].get(itemList[position].groupChatWriterEmail) != "null" && memberInfoMap[1].get(itemList[position].groupChatWriterEmail) != null && memberInfoMap[1].get(itemList[position].groupChatWriterEmail) != "") {
+                        Glide.with(mainActivity).load(
+                            memberInfoMap[1].get(itemList[position].groupChatWriterEmail)!!.toUri()
+                        )
+                            .into(holder.imageViewOpponent)
+                    } else {
+                        holder.imageViewOpponent.setImageResource(R.drawable.person_24px)
+                    }
+                    //이름
+                    if(memberInfoMap[0].get(itemList[position].groupChatWriterEmail) !=null && memberInfoMap[0].get(itemList[position].groupChatWriterEmail) !="null" && memberInfoMap[0].get(itemList[position].groupChatWriterEmail) != ""){
+                        holder.textViewOpponentName.text =
+                            memberInfoMap[0].get(itemList[position].groupChatWriterEmail)
+                    }else{
+                        holder.textViewOpponentName.text = "알 수 없음"
+                    }
+
+
+                    holder.textViewOpponentContent.text = itemList[position].groupChatContent
+                    holder.textViewOpponentChatMoment.text =
+                        itemList[position].groupChatSendDateAndTime
+                    //받아온 데이터가 내가 보낸 거라면
+                } else {
+                    holder.textViewRowChatRoomUser.visibility = View.VISIBLE
+                    holder.textViewChatMoment.visibility = View.VISIBLE
+                    holder.textViewRowChatRoomUser.text = itemList[position].groupChatContent
+                    holder.textViewChatMoment.text = itemList[position].groupChatSendDateAndTime
+
+                    holder.imageViewOpponent.visibility = View.GONE
+                    holder.textViewOpponentName.visibility = View.GONE
+                    holder.textViewOpponentContent.visibility = View.GONE
+                    holder.textViewOpponentChatMoment.visibility = View.GONE
+                    holder.textViewOutNotification.visibility = View.GONE
+                }
             }
         }
     }
