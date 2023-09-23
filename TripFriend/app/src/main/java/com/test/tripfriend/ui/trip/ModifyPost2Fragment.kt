@@ -47,7 +47,6 @@ class ModifyPost2Fragment : Fragment() {
     var secondDate = ""
     var tripPostIdx = 0L
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -83,6 +82,20 @@ class ModifyPost2Fragment : Fragment() {
                 textInputEditTextModifyPost2Date.setText("여행 날짜 : ${formatDate(tripPost.tripPostDate!![0])} ~ ${formatDate(tripPost.tripPostDate!![1])}")
                 firstDate = tripPost.tripPostDate!![0]
                 secondDate = tripPost.tripPostDate!![1]
+
+                val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+                val formattedFirstDate = dateFormat.parse(firstDate)
+                val formattedSecondDate = dateFormat.parse(secondDate)
+                val firstCalendar = Calendar.getInstance()
+                val secondCalendar = Calendar.getInstance()
+                firstCalendar.time = formattedFirstDate
+                secondCalendar.time = formattedSecondDate
+
+                fragmentModifyPost2Binding.calendarModifyPost2.run {
+                    setSelectedDateRange(firstCalendar, secondCalendar)
+                }
+
+                Log.d("qwer", "${firstDate} ${secondDate}")
 
                 tripPostIdx = tripPost.tripPostIdx.toLong()
 
@@ -210,15 +223,16 @@ class ModifyPost2Fragment : Fragment() {
                 val people = textInputEditTextModifyPost2NOP.text.toString()
                 val content = textInputEditTextModifyPost2Content.text.toString()
 
+                // 이미지 파일 경로
+                val postImagePath = "TripPost/$tripPostIdx"
+
                 // 다음 화면으로 정보 전달
                 val newBundle = Bundle()
 
                 newBundle.putString("tripPostDocumentId", tripPostDocumentId)
                 newBundle.putString("country", country)
                 newBundle.putString("title", title)
-
-                //이렇게 하면 안댐.만약 변경되었다면 기존 사진을 삭제하고 새로운 사진을 넣어야함 변경안되었다면 이대로 해도됨.
-                newBundle.putString("postImagePath", tripImageData)
+                newBundle.putString("postImagePath", postImagePath)
                 newBundle.putString("people", people)
                 newBundle.putString("content", content)
                 newBundle.putLong("tripPostIdx", tripPostIdx)
