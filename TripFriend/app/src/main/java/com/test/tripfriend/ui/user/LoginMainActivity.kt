@@ -1,5 +1,6 @@
 package com.test.tripfriend.ui.user
 
+import android.Manifest
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -48,10 +49,16 @@ class LoginMainActivity : AppCompatActivity() {
         val MORE_NAVER_INFO_INPUT_FRAGMENT = "MoreNaverInfoInputFragment"
     }
 
+    val permissionList = arrayOf(
+        Manifest.permission.POST_NOTIFICATIONS
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         installSplashScreen()
+
+        requestPermissions(permissionList, 0)
 
         activityLoginMainBinding = ActivityLoginMainBinding.inflate(layoutInflater)
         activityLoginMainBinding.run {

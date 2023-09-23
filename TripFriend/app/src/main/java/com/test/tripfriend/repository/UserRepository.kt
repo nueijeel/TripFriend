@@ -8,9 +8,12 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.test.tripfriend.dataclassmodel.User
 import com.test.tripfriend.dataclassmodel.UserLogin
 import android.net.Uri
+import android.util.Log
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 
 class UserRepository {
@@ -66,6 +69,19 @@ class UserRepository {
             editor.putBoolean("autoLogin",autoLogin)
 
             editor.apply()
+
+            val fcm = MyFirebaseMessagingService()
+
+            val task = runBlocking {
+                fcm.getToken()
+            }
+
+            if(task != null){
+                //Log.d("token", task!!)
+                runBlocking {
+                    setUserTokenData(userClass.userEmail, task)
+                }
+            }
         }
 
         fun saveNoneUserInfo(sharedPreferences: SharedPreferences){
@@ -170,6 +186,15 @@ class UserRepository {
 
             editor.apply()
         }
+
+        //유저의 토큰을 저장
+        suspend fun setUserTokenData(userEmail : String, userToken : String){
+            val firestore = Firebase.firestore
+
+            firestore.collection("UserToken")
+                .document(userEmail)
+                .set(mapOf("userToken" to userToken)).await()
+        }
     }
 
     //유저 정보 가져오는 함수
@@ -242,5 +267,21 @@ class UserRepository {
 
         val imageRef = storage.reference.child(filePath)
         imageRef.putFile(uploadUri)
+    }
+
+    //db에서 유저의 토큰을 가져옴
+    suspend fun getUserTokenData(userEmail: String) : DocumentSnapshot {
+        val firestore = Firebase.firestore
+
+        return firestore.collection("UserToken")
+            .document(userEmail)
+            .get().await()
+    }
+
+    fun deleteUserTokenData(userEmail: String){
+        val firestore = Firebase.firestore
+
+        firestore.collection("UserToken")
+            .document(userEmail).delete()
     }
 }
