@@ -98,32 +98,40 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickL
             setNegativeButton("닫기", null)
             setPositiveButton("이동") { dialogInterface: DialogInterface, i: Int ->
                 val newBundle = Bundle()
-                newBundle.putString(
-                    "tripPostWriterEmail",
-                    markerInfo.tripPostWriterEmail
-                ) // 작성자 이메일
-                newBundle.putString("tripPostDocumentId", markerInfo.tripPostDocumentId)   // 문서아이디
+                UserRepository.getAllUser {
+                    for (document in it.result.documents) {
+                        if(document.getString("userEmail") == markerInfo.tripPostWriterEmail) {
+                            val userProfilePath = document.getString("userProfilePath").toString()
+                            newBundle.putString("userProfilePath",userProfilePath)
+                            newBundle.putString("tripPostWriterEmail", markerInfo.tripPostWriterEmail) // 작성자 이메일
+                            newBundle.putString("tripPostDocumentId", markerInfo.tripPostDocumentId)   // 문서아이디
+                            newBundle.putString("viewState", "InProgress") // 어느 화면에서 왔는지 확인
+                            newBundle.putInt("tabPosition", 0)
+                            newBundle.putString("tripPostImage", markerInfo.tripPostImage) //이미지 경로
 
-                val currentDate = LocalDate.now()
-                val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-                val formattedDate = currentDate.format(formatter)
+                            val currentDate = LocalDate.now()
+                            val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+                            val formattedDate = currentDate.format(formatter)
 
-                if(markerInfo.tripPostMemberList?.contains(userClass.userNickname) == true) {   // 참여중인 동행글인 경우
-                    if(markerInfo.tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
-                        newBundle.putString("viewState", "Pass")
-                    } else {
-                        newBundle.putString("viewState", "InProgress")
-                    }
-                } else {    // 미 참여
-                    if(markerInfo.tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
-                        newBundle.putString("viewState", "HomeListPass")
-                    } else {
-                        newBundle.putString("viewState", "HomeList")
+                            if(markerInfo.tripPostMemberList?.contains(userClass.userNickname) == true) {   // 참여중인 동행글인 경우
+                                if(markerInfo.tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
+                                    newBundle.putString("viewState", "Pass")
+                                } else {
+                                    newBundle.putString("viewState", "InProgress")
+                                }
+                            } else {    // 미 참여
+                                if(markerInfo.tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
+                                    newBundle.putString("viewState", "HomeListPass")
+                                } else {
+                                    newBundle.putString("viewState", "HomeList")
+                                }
+                            }
+
+                            mainActivity.replaceFragment(MainActivity.HOME_MAIN_FRAGMENT, true, false, null)
+                            mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, newBundle)
+                        }
                     }
                 }
-
-                mainActivity.replaceFragment(MainActivity.HOME_MAIN_FRAGMENT, true, false, null)
-                mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, newBundle)
             }
             show()
         }

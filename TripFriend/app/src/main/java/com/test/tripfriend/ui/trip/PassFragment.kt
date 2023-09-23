@@ -101,11 +101,21 @@ class PassFragment : Fragment() {
 
                 rowTripMainBinding.root.setOnClickListener {
                     val newBundle = Bundle()
-                    newBundle.putString("tripPostWriterEmail", tripPostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
-                    newBundle.putString("tripPostDocumentId", tripPostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
-                    newBundle.putString("viewState", "Pass") // 어느 화면에서 왔는지 확인
+                    UserRepository.getAllUser {
+                        for (document in it.result.documents) {
+                            if(document.getString("userEmail") == tripPostItemList[adapterPosition].tripPostWriterEmail) {
+                                val userProfilePath = document.getString("userProfilePath").toString()
+                                newBundle.putString("userProfilePath",userProfilePath)
+                                newBundle.putString("tripPostWriterEmail", tripPostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
+                                newBundle.putString("tripPostDocumentId", tripPostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
+                                newBundle.putString("viewState", "InProgress") // 어느 화면에서 왔는지 확인
+                                newBundle.putInt("tabPosition", 0)
+                                newBundle.putString("tripPostImage", tripPostItemList[adapterPosition].tripPostImage) //이미지 경로
 
-                    mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT,true,true, newBundle)
+                                mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, newBundle)
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -193,8 +193,10 @@ class AccompanyRegisterFragment3 : Fragment() {
                                         val resultObj=tripPost
                                         resultObj.groupChatRoomId=chatRoom.result.id
                                         runBlocking {
+                                            fragmentAccompanyRegisterFragment3.buttonAccompanyRegister3ToSubmit.isEnabled = false
+                                            fragmentAccompanyRegisterFragment3.buttonAccompanyRegister3ToSubmit.text = "저장중"
                                             accompanyRegisterRepository.addGroupChatIdToPostTrip(documentId,resultObj){
-                                                completePost(userClass.userEmail, documentId)
+                                                completePost(userClass.userEmail, documentId,userClass.userProfilePath,postImagePath)
                                             }
                                         }
                                     }
@@ -231,7 +233,7 @@ class AccompanyRegisterFragment3 : Fragment() {
         }
     }
 
-    fun completePost(userEmail: String, documentId: String) {
+    fun completePost(userEmail: String, documentId: String, userProfilePath :String,tripPostImage:String) {
         Snackbar.make(
             mainActivity.activityMainBinding.root,
             "등록이 완료되었습니다..",
@@ -242,6 +244,8 @@ class AccompanyRegisterFragment3 : Fragment() {
         bundle.putString("tripPostWriterEmail", userEmail)
         bundle.putString("tripPostDocumentId", documentId)
         bundle.putString("viewState", "InProgress")
+        bundle.putString("userProfilePath",userProfilePath)
+        bundle.putString("tripPostImage", tripPostImage) //이미지 경로
 
         mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT3)
         mainActivity.removeFragment(MainActivity.ACCOMPANY_REGISTER_FRAGMENT2)

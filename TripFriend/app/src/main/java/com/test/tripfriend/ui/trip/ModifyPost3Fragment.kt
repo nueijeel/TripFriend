@@ -263,7 +263,9 @@ class ModifyPost3Fragment : Fragment() {
                                 val imageUri=Uri.parse(image)
 
                                 tripPostRepository.uploadTripPostImages(imageUri, postImagePath2) {
-                                    completePost(userClass.userEmail)
+                                    fragmentModifyPost3Binding.buttonModifyPost3ToSubmit.isEnabled = false
+                                    fragmentModifyPost3Binding.buttonModifyPost3ToSubmit.text = "저장중"
+                                    completePost(userClass.userEmail,userClass.userProfilePath,postImagePath2)
                                 }
 
 
@@ -289,7 +291,9 @@ class ModifyPost3Fragment : Fragment() {
                                 groupRoomId!!
                             )
                             tripPostRepository.updateTripPostData(documentId, tripPost) {
-                                completePost(userClass.userEmail)
+                                fragmentModifyPost3Binding.buttonModifyPost3ToSubmit.isEnabled = false
+                                fragmentModifyPost3Binding.buttonModifyPost3ToSubmit.text = "저장중"
+                                completePost(userClass.userEmail,userClass.userProfilePath,postImagePath)
                             }
                         }
                     }
@@ -317,7 +321,7 @@ class ModifyPost3Fragment : Fragment() {
     }
 
     // 정보 수정 완료 했을 때
-    fun completePost(userEmail: String) {
+    fun completePost(userEmail: String,userProfilePath:String,postImagePath:String) {
         Snackbar.make(
             mainActivity.activityMainBinding.root,
             "수정이 완료되었습니다..",
@@ -328,6 +332,8 @@ class ModifyPost3Fragment : Fragment() {
         newBundle.putString("tripPostWriterEmail", userEmail)
         newBundle.putString("tripPostDocumentId", documentId)
         newBundle.putString("viewState", "InProgress")
+        newBundle.putString("userProfilePath",userProfilePath)
+        newBundle.putString("tripPostImage", postImagePath) //이미지 경로
 
         mainActivity.removeFragment(MainActivity.MODFY_POST_FRAGMENT)
         mainActivity.removeFragment(MainActivity.MODFY_POST2_FRAGMENT)
