@@ -35,6 +35,7 @@ class HomeListFragment : Fragment() {
 
     lateinit var homeViewModel: HomeViewModel
     lateinit var currentUserEmail : String
+    val tripPostViewModel = TripPostViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -105,26 +106,36 @@ class HomeListFragment : Fragment() {
                     val currentDate = LocalDate.now()
                     val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
                     val formattedDate = currentDate.format(formatter)
-
                     val newBundle = Bundle()
-                    newBundle.putString("tripPostWriterEmail", homePostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
-                    newBundle.putString("tripPostDocumentId", homePostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
+                    UserRepository.getAllUser {
+                        for (document in it.result.documents) {
+                            if(document.getString("userEmail") == homePostItemList[adapterPosition].tripPostWriterEmail) {
+                                val userProfilePath = document.getString("userProfilePath").toString()
+                                Log.d("aaaa","userProfilePath = ${userProfilePath}")
+                                newBundle.putString("tripPostWriterEmail", homePostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
+                                newBundle.putString("userProfilePath",userProfilePath)
+                                newBundle.putString("tripPostDocumentId", homePostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
+                                newBundle.putString("tripPostImage", homePostItemList[adapterPosition].tripPostImage) //이미지 경로
+                                Log.d("aaaa","tripPostImage = ${homePostItemList[adapterPosition].tripPostImage}")
 
-                    if(homePostItemList[adapterPosition].tripPostMemberList?.contains(userClass.userNickname) == true) {   // 참여중인 동행글인 경우
-                        if(homePostItemList[adapterPosition].tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
-                            newBundle.putString("viewState", "Pass")
-                        } else {
-                            newBundle.putString("viewState", "InProgress")
-                        }
-                    } else {    // 미 참여
-                        if(homePostItemList[adapterPosition].tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
-                            newBundle.putString("viewState", "HomeListPass")
-                        } else {
-                            newBundle.putString("viewState", "HomeList")
+                                if(homePostItemList[adapterPosition].tripPostMemberList?.contains(userClass.userNickname) == true) {   // 참여중인 동행글인 경우
+                                    if(homePostItemList[adapterPosition].tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
+                                        newBundle.putString("viewState", "Pass")
+                                    } else {
+                                        newBundle.putString("viewState", "InProgress")
+                                    }
+                                } else {    // 미 참여
+                                    if(homePostItemList[adapterPosition].tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
+                                        newBundle.putString("viewState", "HomeListPass")
+                                    } else {
+                                        newBundle.putString("viewState", "HomeList")
+                                    }
+                                }
+
+                                mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, newBundle)
+                            }
                         }
                     }
-
-                    mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, newBundle)
                 }
             }
         }
