@@ -2,7 +2,6 @@ package com.test.tripfriend.ui.trip
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -44,7 +43,7 @@ class ReviewFragment : Fragment() {
         //여기서 넘어온 멤버 리스트 번들값을 받고 전역 변수들 초기화한다.
         memberList = arguments?.getStringArrayList("tripPostMemberList")!!
         myEmail = mainActivity.userClass.userEmail
-        tripPostDocumentId = arguments?.getString("tripPostDocumentId")!!
+        tripPostDocumentId = arguments?.getString("postId")!!
 
         reviewViewModel = ViewModelProvider(this)[ReviewViewModel::class.java]
         reviewViewModel.run {
@@ -54,9 +53,13 @@ class ReviewFragment : Fragment() {
                 )
             }
             saveState.observe(viewLifecycleOwner){
+                val reviewList=(fragmentReviewBinding.recyclerViewReview.adapter as ReviewAdapter).reviewResultList
+
+                reviewViewModel.updateUserInfoByReview(reviewList,mainActivity.userClass.userEmail)
+            }
+            saveState2.observe(viewLifecycleOwner){
                 Snackbar.make(fragmentReviewBinding.root, "리뷰 작성이 완료되었습니다", Snackbar.LENGTH_SHORT).show()
                 mainActivity.removeFragment(MainActivity.REVIEW_FRAGMENT)
-                //화면 종료(리무브)
             }
 
             getUserInfo(memberList, mainActivity.userClass.userNickname)
@@ -90,6 +93,8 @@ class ReviewFragment : Fragment() {
                             setNegativeButton("취소", null)
                             setPositiveButton("확인"){ dialogInterface: DialogInterface, i: Int ->
                                 reviewViewModel.saveToReview((fragmentReviewBinding.recyclerViewReview.adapter as ReviewAdapter).reviewResultList)
+
+
                             }
                         }
                         builder.show()

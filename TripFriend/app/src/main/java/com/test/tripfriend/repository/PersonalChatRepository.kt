@@ -27,6 +27,10 @@ class PersonalChatRepository {
         db.collection("PersonalChatRoom").add(personalChatRoom).addOnCompleteListener(callback)
     }
 
+    fun checkPersonalRoomExist(myEmail: String,yourEmail:String,callback: (Task<QuerySnapshot>) -> Unit){
+        db.collection("PersonalChatRoom").whereEqualTo("personalChatPostWriterEmail",yourEmail).whereEqualTo("personalChatRequesterEmail",myEmail).get().addOnCompleteListener(callback)
+    }
+
     //내가 속한 채팅방에서 상대방의 정보를 가져오는 메서드
     suspend fun getPersonalChatInfo(myEmail: String): QuerySnapshot {
         val infoRef = db.collection("User").whereEqualTo("userEmail", myEmail).get().await()
@@ -71,6 +75,10 @@ class PersonalChatRepository {
     //채팅 가져오기
     fun getChatting(documentId:String, callback: (QuerySnapshot?, FirebaseFirestoreException?) -> Unit){
         val lastChat= db.collection("PersonalChatRoom").document(documentId).collection("PersonalChatting").orderBy("personalChatSendTimeStamp",Query.Direction.ASCENDING).addSnapshotListener(callback)
+    }
+    //채팅방 삭제 감시
+    fun observeDeleteChaRoom(documentId: String, callback: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit){
+        val deleteQuery = db.collection("PersonalChatRoom").document(documentId).addSnapshotListener(callback)
     }
 
     //유저 프로필 이미지 url 가져오는 함수

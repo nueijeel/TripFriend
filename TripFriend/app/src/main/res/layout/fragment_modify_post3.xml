@@ -245,7 +245,7 @@
                     android:paddingLeft="10dp">
 
                     <com.google.android.material.chip.Chip
-                        android:id="@+id/chipDialogFilterGender1"
+                        android:id="@+id/chipModifyPost3Gender1"
                         style="@style/custom_suggestion_chip_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -260,7 +260,7 @@
                         app:ensureMinTouchTargetSize="true" />
 
                     <com.google.android.material.chip.Chip
-                        android:id="@+id/chipDialogFilterGender2"
+                        android:id="@+id/chipModifyPost3Gender2"
                         style="@style/custom_suggestion_chip_style"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -296,7 +296,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/buttonAccompanyModifyPost3ToSubmit"
+                android:id="@+id/buttonModifyPost3ToSubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

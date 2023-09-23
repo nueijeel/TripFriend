@@ -8,6 +8,7 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ import com.test.tripfriend.databinding.FragmentAccompanyRegister2Binding
 import com.test.tripfriend.repository.AccompanyRegisterRepository
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class AccompanyRegisterFragment2 : Fragment() {
@@ -34,7 +36,6 @@ class AccompanyRegisterFragment2 : Fragment() {
     lateinit var albumLauncher: ActivityResultLauncher<Intent>
 
     var profileImage : Uri? = null
-    var dates = mutableListOf<String>()
     var firstDate = ""
     var secondDate = ""
 
@@ -82,35 +83,38 @@ class AccompanyRegisterFragment2 : Fragment() {
             // 달력
             textInputLayoutRegister2Date.run {
                 // 데이트 피커
-                fragmentAccompanyRegisterFragment2.calendarRegister2.setCalendarListener(object :
-                    CalendarListener {
-                    override fun onFirstDateSelected(startDate: Calendar) {
-                        val date = startDate.time
-                        val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+                fragmentAccompanyRegisterFragment2.calendarRegister2.run {
+                    val calendar = Calendar.getInstance()
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    val currentDate = Date()
+                    val todayDate = dateFormat.format(currentDate)
 
-//                        dates[0] = format.format(date)
-                        dates.clear()
-                        dates.add(format.format(date))
-                        firstDate = format.format(date)
-                        secondDate = format.format(date)
+                    calendar.time = currentDate
+                    calendar.add(Calendar.YEAR, 2)
+
+                    setSelectableDateRange(dateToCalendar(todayDate), calendar)
+
+                    setCalendarListener(object :
+                        CalendarListener {
+                        override fun onFirstDateSelected(startDate: Calendar) {
+                            val date = startDate.time
+                            val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+
+                            firstDate = format.format(date)
+                            secondDate = format.format(date)
 //                        Toast.makeText(mainActivity, "Start Date: " + format.format(date), Toast.LENGTH_SHORT).show()
-                    }
+                        }
 
-                    override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
-                        val startDate = startDate.time
-                        val endDate = endDate.time
-                        val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+                        override fun onDateRangeSelected(startDate: Calendar, endDate: Calendar) {
+                            val startDate = startDate.time
+                            val endDate = endDate.time
+                            val format = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
 
-//                        dates[0] = format.format(startDate)
-//                        dates[1] = format.format(endDate)
-                        dates.clear()
-                        dates.add(format.format(startDate))
-                        dates.add(format.format(endDate))
-                        firstDate = format.format(startDate)
-                        secondDate = format.format(endDate)
-//                        Toast.makeText(mainActivity, "Start Date: " + format.format(startDate) + "\nEnd date: " + format.format(endDate), Toast.LENGTH_SHORT).show()
-                    }
-                })
+                            firstDate = format.format(startDate)
+                            secondDate = format.format(endDate)
+                        }
+                    })
+                }
             }
 
             // 다음 버튼
@@ -126,7 +130,7 @@ class AccompanyRegisterFragment2 : Fragment() {
                     }
                 }
 
-                if(dates[0] == "") {
+                if(firstDate == "") {
                     MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
                         setTitle("날짜 입력")
                         setMessage("동행날짜를 입력해주세요.")
@@ -183,7 +187,6 @@ class AccompanyRegisterFragment2 : Fragment() {
                     bundle.putString("country", country)
                     bundle.putString("title", title)
                     bundle.putString("postImagePath", postImagePath)
-                    bundle.putStringArrayList("dates", ArrayList(dates))
                     bundle.putString("people", people)
                     bundle.putString("content", content)
                     bundle.putLong("tripPostIdx", tripPostIdx)
@@ -201,6 +204,18 @@ class AccompanyRegisterFragment2 : Fragment() {
         }
 
         return fragmentAccompanyRegisterFragment2.root
+    }
+
+    private fun dateToCalendar(dateString: String): Calendar {
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val date: Date? = sdf.parse(dateString)
+
+        val calendar = Calendar.getInstance()
+        if (date != null) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+        }
+
+        return calendar
     }
 
     // 앨범 설정 함수

@@ -95,7 +95,6 @@ class PersonalChatViewModel : ViewModel() {
                         data.lastChatDate = chatData?.personalChatSendDateAndTime
                         data.lastChatContent = chatData?.personalChatContent
                     }
-                    Log.d("gogo","${data.imageUri}")
                     personalChatInfo.add(data)
                 }
             }

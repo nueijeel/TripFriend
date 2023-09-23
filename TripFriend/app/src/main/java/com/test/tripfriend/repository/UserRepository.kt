@@ -15,6 +15,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import java.util.Objects
 
 class UserRepository {
     companion object {
@@ -209,12 +210,17 @@ class UserRepository {
     }
 
     //유저 프로필 이미지 url 가져오는 함수
-    suspend fun getTargetUserProfileImage(targetUserProfileImagePath : String) : Uri {
-        val storage = Firebase.storage
+    suspend fun getTargetUserProfileImage(targetUserProfileImagePath : String) : Uri? {
+        if(targetUserProfileImagePath != "") {
+            val storage = Firebase.storage
 
-        //인자로 전달된 profileImagePath의 경로 형태 확인 필
-        val fileRef = storage.reference.child(targetUserProfileImagePath)
-        return fileRef.downloadUrl.await()
+            //인자로 전달된 profileImagePath의 경로 형태 확인 필
+            val fileRef = storage.reference.child(targetUserProfileImagePath)
+            return fileRef.downloadUrl.await()
+        }
+        else{
+            return null
+        }
     }
 
     //푸시 알람 설정 여부 업데이트하는 함수
@@ -268,6 +274,18 @@ class UserRepository {
         val imageRef = storage.reference.child(filePath)
         imageRef.putFile(uploadUri)
     }
+
+    suspend fun updateUserTripScore(docId:String,updateMap:Map<String, Any>): Void? {
+        val db = FirebaseFirestore.getInstance()
+        return db.collection("User").document(docId).update(updateMap).await()
+    }
+
+
+    suspend fun updateUserTripCount(docId:String,updateMap:Map<String, Any>): Void? {
+        val db = FirebaseFirestore.getInstance()
+        return db.collection("User").document(docId).update(updateMap).await()
+    }
+
 
     //db에서 유저의 토큰을 가져옴
     suspend fun getUserTokenData(userEmail: String) : DocumentSnapshot {

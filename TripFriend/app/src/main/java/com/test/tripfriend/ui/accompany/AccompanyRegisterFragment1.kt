@@ -33,6 +33,7 @@ import com.test.tripfriend.databinding.FragmentAccompanyRegister1Binding
 class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     lateinit var fragmentAccompanyRegister1Binding: FragmentAccompanyRegister1Binding
     lateinit var mainActivity: MainActivity
+
     var country: String? = ""
     var locality: String? = ""
     var latitude: Double = 0.0
@@ -61,12 +62,10 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
                 val place = Autocomplete.getPlaceFromIntent(intent)
 
                 // Place의 주소 구성요소
-                Log.d("map", "Place: " + place.addressComponents)
                 fillInAddress(place)
             }
         } else if (result.resultCode == AppCompatActivity.RESULT_CANCELED) {
             // 작업 취소
-            Log.i("map", "User canceled autocomplete")
         }
     }
     // [END maps_solutions_android_autocomplete_define]
@@ -94,7 +93,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
             .setTypesFilter(listOf(PlaceTypes.CITIES))        // 도시
 //            .setTypesFilter(listOf(PlaceTypes.COUNTRY))     // 국가
 //            .setTypesFilter(listOf(PlaceTypes.CAFE))
-            //TODO: https://developers.google.com/maps/documentation/places/android-sdk/autocomplete
 //            .setTypesFilter(listOf(TypeFilter.ADDRESS.toString().lowercase()))
             .build(mainActivity)
         startAutocomplete.launch(intent)
@@ -105,9 +103,8 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentAccompanyRegister1Binding =
-            FragmentAccompanyRegister1Binding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+        fragmentAccompanyRegister1Binding = FragmentAccompanyRegister1Binding.inflate(layoutInflater)
 
         // search icon
         fragmentAccompanyRegister1Binding.iconButton.setOnClickListener(
@@ -119,6 +116,11 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
 
         fragmentAccompanyRegister1Binding.run {
 
+            val mapFragment = childFragmentManager.findFragmentById(R.id.mapViewAccompanyRegister1) as SupportMapFragment?
+
+            coordinates = LatLng(latitude, longitude)
+            mapFragment?.getMapAsync(this@AccompanyRegisterFragment1)
+
             materialToolbarRegister1.run {
                 setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
                 setNavigationOnClickListener {
@@ -127,26 +129,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
             }
 
             buttonAccompanyRegister1ToNextView.setOnClickListener {
-
-//                if(country == "") {
-//                    MaterialAlertDialogBuilder(mainActivity,R.style.DialogTheme).run {
-//                        setTitle("여행지 선택")
-//                        setMessage("여행지를 선택해주세요.")
-//                        setNegativeButton("닫기") { dialogInterface: DialogInterface, i: Int ->
-//                        }
-//                        show()
-//                    }
-//                } else {
-//                    val bundle = Bundle()
-//                    bundle.putString("country", country)
-//
-//                    mainActivity.replaceFragment(
-//                        MainActivity.ACCOMPANY_REGISTER_FRAGMENT2,
-//                        true,
-//                        true,
-//                        bundle
-//                    )
-//                }
 
                 val bundle = Bundle()
                 bundle.putString("country", country + " " + locality)
@@ -234,8 +216,6 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     // [END maps_solutions_android_autocomplete_map_add]
 
     private fun updateMap(latLng: LatLng) {
-//        marker?.position = latLng
-//        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15f))
         marker = map?.addMarker(MarkerOptions().position(coordinates))
     }
@@ -259,10 +239,4 @@ class AccompanyRegisterFragment1 : Fragment(), OnMapReadyCallback {
     }
     // [END maps_solutions_android_autocomplete_map_ready]
 
-    override fun onStop() {
-        super.onStop()
-        Log.d("qwer", "onStop mapFragment : ${mapFragment}")
-        Log.d("qwer", "onStop map : ${map}")
-        Log.d("qwer", "onStop marker : ${marker}")
-    }
 }

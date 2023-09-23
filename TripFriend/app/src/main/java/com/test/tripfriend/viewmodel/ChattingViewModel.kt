@@ -30,12 +30,13 @@ class ChattingViewModel : ViewModel() {
     //통신을 위한 레포지토리 객체
     val personalChatRepository = PersonalChatRepository()
     val groupChatRepository = GroupChatRepository()
-    val tripPostRepository= TripPostRepository()
+    val tripPostRepository = TripPostRepository()
 
     val chattingList = MutableLiveData<MutableList<PersonalChatting2>>()
     val groupChattingList = MutableLiveData<MutableList<GroupChatting>>()
-    val groupUserInfoMapList = MutableLiveData<MutableList<MutableMap<String,String>>>()
+    val groupUserInfoMapList = MutableLiveData<MutableList<MutableMap<String, String>>>()
     val myProfile = MutableLiveData<Uri?>()
+    val deleteData = MutableLiveData<String>()
 
     //문의방 데이터를 가져오고 db에 변동이 발생하면 추가하는 메서드
     fun chattingChangeListener(roomId: String) {
@@ -57,6 +58,21 @@ class ChattingViewModel : ViewModel() {
                 }
             }
             chattingList.value = dataList
+        }
+    }
+
+    fun deleteChatRoomListener(roomId:String){
+        personalChatRepository.observeDeleteChaRoom(roomId){documentSnapshot, firebaseFirestoreException ->
+            if (firebaseFirestoreException != null) {
+                // 오류 처리
+                return@observeDeleteChaRoom
+            }
+            if (documentSnapshot != null && documentSnapshot.exists()) {
+                // 문서가 존재하는 경우
+            } else {
+                deleteData.value="삭제됨"
+            }
+
         }
     }
 
@@ -91,7 +107,7 @@ class ChattingViewModel : ViewModel() {
         scope.launch {
             val userEmailMap = mutableMapOf<String, String>()
             val userImageMap = mutableMapOf<String, String>()
-            val result= mutableListOf<MutableMap<String,String>>()
+            val result = mutableListOf<MutableMap<String, String>>()
             val postSnapshot = async { groupChatRepository.getRoomInfoFromPost(postId) }
 
             val postInfo = postSnapshot.await().toObject(PostInfo::class.java)
@@ -109,23 +125,22 @@ class ChattingViewModel : ViewModel() {
 
                     //스탭샷 내부 문서 전부 탑색(어차피 한번 실시)
                     for (user in users) {
-                        val data=user.toObject(UserInfo::class.java)
-                        val email=data?.userEmail
-                        Log.d("zzzz","${email}")
-                        val image=data?.userProfilePath
-                        val imageUri:Uri?
+                        val data = user.toObject(UserInfo::class.java)
+                        val email = data?.userEmail
+                        val image = data?.userProfilePath
+                        val imageUri: Uri?
                         //이미지uri가져오는 작업
-                        if(image==""||image==null||image=="null"){
-                            imageUri=null
-                        }else{
+                        if (image == "" || image == null || image == "null") {
+                            imageUri = null
+                        } else {
                             runBlocking {
-                                val uri=personalChatRepository.getUserProfileImage(image)
-                                imageUri=uri
+                                val uri = personalChatRepository.getUserProfileImage(image)
+                                imageUri = uri
                             }
                         }
                         if (email != null && image != null) {
-                            userEmailMap.put(email,name)
-                            userImageMap.put(email,imageUri.toString())
+                            userEmailMap.put(email, name)
+                            userImageMap.put(email, imageUri.toString())
                         }
                     }
 
@@ -143,27 +158,27 @@ class ChattingViewModel : ViewModel() {
         }
     }
 
-    fun getMyImageUri(myImagePath:String){
+    fun getMyImageUri(myImagePath: String) {
         //이미지uri가져오는 작업
-        if(myImagePath==""||myImagePath==null||myImagePath=="null"){
-            myProfile.value=null
-        }else{
+        if (myImagePath == "" || myImagePath == null || myImagePath == "null") {
+            myProfile.value = null
+        } else {
             runBlocking {
-                val uri=personalChatRepository.getUserProfileImage(myImagePath)
-                myProfile.value=uri
+                val uri = personalChatRepository.getUserProfileImage(myImagePath)
+                myProfile.value = uri
             }
         }
     }
 
     //개인 채팅방을 나가면 해당 채팅방을 삭제한다.
-    fun removePersonalChatRoom(roomId:String){
+    fun removePersonalChatRoom(roomId: String) {
         personalChatRepository.removePersonalChatRoomById(roomId)
     }
 
     //그룹 채팅방에서 나가기를 클릭하면 멤버 삭제(채팅방, 동핼글)
-    fun outMemberFromChatRoom(nickName:String,roomId:String,tripId:String){
-        groupChatRepository.deleteGroupChatMemberNickname(nickName,roomId)
-        tripPostRepository.deleteTripMemberNickname(nickName,tripId)
+    fun outMemberFromChatRoom(nickName: String, roomId: String, tripId: String) {
+        groupChatRepository.deleteGroupChatMemberNickname(nickName, roomId)
+        tripPostRepository.deleteTripMemberNickname(nickName, tripId)
     }
 
 

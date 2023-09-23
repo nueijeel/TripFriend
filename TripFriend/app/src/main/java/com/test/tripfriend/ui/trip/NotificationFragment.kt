@@ -26,7 +26,6 @@ class NotificationFragment : Fragment() {
         fragmentNotificationBinding = FragmentNotificationBinding.inflate(layoutInflater)
 
         if (arguments?.getInt("position") != null){
-            Log.d("aaaa","position = ${arguments?.getInt("position")!!}")
             position = arguments?.getInt("position")!!
             mainActivity.tripMainPosition = position
         }

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +28,7 @@ class InProgressFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var tripPostViewModel: TripPostViewModel
     lateinit var currentUserEmail : String
+    lateinit var currnetUserNickname : String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +41,7 @@ class InProgressFragment : Fragment() {
         val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
         currentUserEmail = userClass.userEmail
+        currnetUserNickname = userClass.userNickname
 
         tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
 
@@ -51,8 +54,8 @@ class InProgressFragment : Fragment() {
                 fragmentInProgressBinding.textViewInProgressNoPost.text = "동행 중인 여행이 없습니다."
             }
         }
-        Log.d("aaaa","inProgress onResume onCreateView 내부")
-        tripPostViewModel.getAllTripPostData(userClass.userEmail)
+
+        tripPostViewModel.getAllTripPostData(userClass.userNickname)
 
         fragmentInProgressBinding.run {
             recyclerViewInProgress.run {
@@ -81,6 +84,7 @@ class InProgressFragment : Fragment() {
             val chipTripMainRowCategory3: Chip // 카테고리3
             val textViewTripMainRowHashTag: TextView // 해시태그
             val textViewTripMainRowLikedCount: TextView // 좋아요 수
+            val imageViewTripMainRowLiked: ImageView // 좋아요 아이콘
 
             init {
                 textViewTripMainRowTitle = rowTripMainBinding.textViewTripMainRowTitle
@@ -92,6 +96,7 @@ class InProgressFragment : Fragment() {
                 chipTripMainRowCategory3 = rowTripMainBinding.chipTripMainRowCategory3
                 textViewTripMainRowHashTag = rowTripMainBinding.textViewTripMainRowHashTag
                 textViewTripMainRowLikedCount = rowTripMainBinding.textViewTripMainRowLikedCount
+                imageViewTripMainRowLiked = rowTripMainBinding.imageViewTripMainRowLiked
 
                 rowTripMainBinding.root.setOnClickListener {
                     val newBundle = Bundle()
@@ -99,6 +104,8 @@ class InProgressFragment : Fragment() {
                     newBundle.putString("tripPostDocumentId", tripPostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
                     newBundle.putString("viewState", "InProgress") // 어느 화면에서 왔는지 확인
                     newBundle.putInt("tabPosition",0)
+                    newBundle.putString("tripPostImage", tripPostItemList[adapterPosition].tripPostImage) //이미지 경로
+                    Log.d("aaaa","tripPostImage = ${tripPostItemList[adapterPosition].tripPostImage}")
 
                     mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT,true,true, newBundle)
                 }
@@ -134,6 +141,12 @@ class InProgressFragment : Fragment() {
 
             holder.textViewTripMainRowNOP.text = tripPostItemList[position].tripPostMemberCount.toString()
             holder.textViewTripMainRowLocation.text = tripPostItemList[position].tripPostLocationName
+
+            for(email in tripPostItemList[position].tripPostLiked!!) {
+                if(email == currentUserEmail) {
+                    holder.imageViewTripMainRowLiked.setImageResource(R.drawable.favorite_fill_24px)
+                }
+            }
 
             when(tripPostItemList[position].tripPostTripCategory!!.size) {
                 1 -> {
@@ -221,20 +234,17 @@ class InProgressFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.d("aaaa","inProgress onResume함수")
         val mainActivity : MainActivity = activity as MainActivity
         mainActivity.tripMainPosition = 0
         tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
-        tripPostViewModel.getAllTripPostData(currentUserEmail)
+        tripPostViewModel.getAllTripPostData(currnetUserNickname)
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d("aaaa","inProgress onPause")
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d("aaaa","inProgress onStart")
     }
 }

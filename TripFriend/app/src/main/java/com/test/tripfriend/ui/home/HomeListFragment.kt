@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +34,8 @@ class HomeListFragment : Fragment() {
     lateinit var mainActivity: MainActivity
 
     lateinit var homeViewModel: HomeViewModel
+    lateinit var currentUserEmail : String
+    val tripPostViewModel = TripPostViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,9 +44,18 @@ class HomeListFragment : Fragment() {
         fragmentHomeListBinding = FragmentHomeListBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        // 로그인 중인 사용자 정보
+        val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userClass = UserRepository.getUserInfo(sharedPreferences)
+        currentUserEmail = userClass.userEmail
+
         initHomeViewModel()
 
         fragmentHomeListBinding.run {
+            refreshLayout01.setOnRefreshListener {
+                initHomeViewModel()
+                fragmentHomeListBinding.refreshLayout01.isRefreshing = false
+            }
             recyclerViewHomeList.run {
                 adapter = HomeListAdapter()
                 layoutManager = LinearLayoutManager(mainActivity)
@@ -61,55 +73,6 @@ class HomeListFragment : Fragment() {
             notifyDataSetChanged()
         }
 
-//        inner class HomeListViewHolder(rowHomeListBinding: RowHomeListBinding) : RecyclerView.ViewHolder(rowHomeListBinding.root) {
-//            val textViewHomeMainListRowTitle: TextView
-//            val textViewHomeMainListDate: TextView
-//            val textViewHomeMainListRowNOP: TextView
-//            val textViewHomeMainListRowLocation: TextView
-//            val chipHomeMainListRowCategory1: Chip // 카테고리1
-//            val chipHomeMainListRowCategory2: Chip // 카테고리2
-//            val chipHomeMainListRowCategory3: Chip // 카테고리3
-//            val textViewHomeMainListRowHashTag: TextView
-//
-//            init {
-//                textViewHomeMainListRowTitle = rowHomeListBinding.textViewHomeMainListRowTitle
-//                textViewHomeMainListDate = rowHomeListBinding.textViewHomeMainListDate
-//                textViewHomeMainListRowNOP = rowHomeListBinding.textViewHomeMainListRowNOP
-//                textViewHomeMainListRowLocation = rowHomeListBinding.textViewHomeMainListRowLocation
-//                chipHomeMainListRowCategory1: rowHomeListBinding.chipHomeMainListRowCategory1
-//                chipHomeMainListRowCategory2: rowHomeListBinding.chipHomeMainListRowCategory2
-//                chipHomeMainListRowCategory3: rowHomeListBinding.chipHomeMainListRowCategory3
-//                textViewHomeMainListRowHashTag = rowHomeListBinding.textViewHomeMainListRowHashTag
-//
-//                rowHomeListBinding.root.setOnClickListener {
-//                    mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, null)
-//
-//                }
-//            }
-//        }
-//
-//        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeListViewHolder {
-//            val rowHomeListBinding = RowHomeListBinding.inflate(layoutInflater)
-//
-//            rowHomeListBinding.root.layoutParams = ViewGroup.LayoutParams(
-//                ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT,
-//            )
-//            return HomeListViewHolder(rowHomeListBinding)
-//        }
-//
-//        override fun getItemCount(): Int {
-//            return homePostItemList.size
-//        }
-//
-//        override fun onBindViewHolder(holder: HomeListViewHolder, position: Int) {
-//            holder.textViewHomeMainListRowTitle.text = homePostItemList.get(position).tripPostTitle
-//            holder.textViewHomeMainListDate.text = "${homePostItemList.get(position).tripPostDate?.get(0)} ~ ${homePostItemList.get(position).tripPostDate?.get(1)}"
-//            holder.textViewHomeMainListRowNOP.text = homePostItemList.get(position).tripPostMemberCount.toString()
-//            holder.textViewHomeMainListRowLocation.text = homePostItemList.get(position).tripPostLocationName
-//            holder.textViewHomeMainListRowHashTag.text = homePostItemList.get(position).tripPostHashTag
-//        }
-
         val sharedPreferences =
             mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
@@ -125,6 +88,7 @@ class HomeListFragment : Fragment() {
             val chipTripMainRowCategory3: Chip // 카테고리3
             val textViewTripMainRowHashTag: TextView // 해시태그
             val textViewTripMainRowLikedCount: TextView // 좋아요 수
+            val imageViewTripMainRowLiked: ImageView // 좋아요 아이콘
 
             init {
                 textViewTripMainRowTitle = rowTripMainBinding.textViewTripMainRowTitle
@@ -136,31 +100,42 @@ class HomeListFragment : Fragment() {
                 chipTripMainRowCategory3 = rowTripMainBinding.chipTripMainRowCategory3
                 textViewTripMainRowHashTag = rowTripMainBinding.textViewTripMainRowHashTag
                 textViewTripMainRowLikedCount = rowTripMainBinding.textViewTripMainRowLikedCount
+                imageViewTripMainRowLiked = rowTripMainBinding.imageViewTripMainRowLiked
 
                 rowTripMainBinding.root.setOnClickListener {
                     val currentDate = LocalDate.now()
                     val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
                     val formattedDate = currentDate.format(formatter)
-
                     val newBundle = Bundle()
-                    newBundle.putString("tripPostWriterEmail", homePostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
-                    newBundle.putString("tripPostDocumentId", homePostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
+                    UserRepository.getAllUser {
+                        for (document in it.result.documents) {
+                            if(document.getString("userEmail") == homePostItemList[adapterPosition].tripPostWriterEmail) {
+                                val userProfilePath = document.getString("userProfilePath").toString()
+                                Log.d("aaaa","userProfilePath = ${userProfilePath}")
+                                newBundle.putString("tripPostWriterEmail", homePostItemList[adapterPosition].tripPostWriterEmail) // 작성자 이메일
+                                newBundle.putString("userProfilePath",userProfilePath)
+                                newBundle.putString("tripPostDocumentId", homePostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
+                                newBundle.putString("tripPostImage", homePostItemList[adapterPosition].tripPostImage) //이미지 경로
+                                Log.d("aaaa","tripPostImage = ${homePostItemList[adapterPosition].tripPostImage}")
 
-                    if(homePostItemList[adapterPosition].tripPostMemberList?.contains(userClass.userNickname) == true) {   // 참여중인 동행글인 경우
-                        if(homePostItemList[adapterPosition].tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
-                            newBundle.putString("viewState", "Pass")
-                        } else {
-                            newBundle.putString("viewState", "InProgress")
-                        }
-                    } else {    // 미 참여
-                        if(homePostItemList[adapterPosition].tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
-                            newBundle.putString("viewState", "HomeListPass")
-                        } else {
-                            newBundle.putString("viewState", "HomeList")
+                                if(homePostItemList[adapterPosition].tripPostMemberList?.contains(userClass.userNickname) == true) {   // 참여중인 동행글인 경우
+                                    if(homePostItemList[adapterPosition].tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
+                                        newBundle.putString("viewState", "Pass")
+                                    } else {
+                                        newBundle.putString("viewState", "InProgress")
+                                    }
+                                } else {    // 미 참여
+                                    if(homePostItemList[adapterPosition].tripPostDate?.get(1)!! < formattedDate) {  // 지난 동행
+                                        newBundle.putString("viewState", "HomeListPass")
+                                    } else {
+                                        newBundle.putString("viewState", "HomeList")
+                                    }
+                                }
+
+                                mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, newBundle)
+                            }
                         }
                     }
-
-                    mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT, true, true, newBundle)
                 }
             }
         }
@@ -198,6 +173,12 @@ class HomeListFragment : Fragment() {
                 homePostItemList[position].tripPostMemberCount.toString()
             holder.textViewTripMainRowLocation.text =
                 homePostItemList[position].tripPostLocationName
+
+            for(email in homePostItemList[position].tripPostLiked!!) {
+                if(email == currentUserEmail) {
+                    holder.imageViewTripMainRowLiked.setImageResource(R.drawable.favorite_fill_24px)
+                }
+            }
 
             when (homePostItemList[position].tripPostTripCategory!!.size) {
                 1 -> {
@@ -251,12 +232,10 @@ class HomeListFragment : Fragment() {
     }
 
     fun initHomeViewModel() {
-        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+        homeViewModel = ViewModelProvider(mainActivity)[HomeViewModel::class.java]
         homeViewModel.getTripPostData()
 
         homeViewModel.tripPostList.observe(viewLifecycleOwner) {
-//            fragmentHomeListBinding.textViewHomeListNoPost.visibility = View.GONE
-//            (fragmentHomeListBinding.recyclerViewHomeList.adapter as? HomeListAdapter)?.updateItemList(it)
             if(it != null) {
                 fragmentHomeListBinding.textViewHomeListNoPost.visibility = View.GONE
                 (fragmentHomeListBinding.recyclerViewHomeList.adapter as? HomeListAdapter)?.updateItemList(it)
@@ -327,14 +306,11 @@ class HomeListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        initHomeViewModel()
         mainActivity.homeMainPosition = 0
-        Log.d("qwer", "listFragment onResume")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("qwer", "listFragment onStop")
     }
 
 }

@@ -59,7 +59,6 @@ class PersonalChattingFragment : Fragment() {
             }
 
             changeString.observe(viewLifecycleOwner){
-                Log.d("testt","변화 감지 옵저버")
                 fetchChatRoomInfo(MY_EMAIL)
             }
 
@@ -126,7 +125,6 @@ class PersonalChattingFragment : Fragment() {
                     if (itemList[adapterPosition].imageUri!=null){
 
                         val userProfile=itemList[adapterPosition].imageUri.toString()
-                        Log.d("zzz","${userProfile}")
                         bundle.putString("userProfile",userProfile)
                     }else{
                         val userProfile="null"

@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.test.tripfriend.R
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.databinding.FragmentAccompanyRegister3Binding
+import com.test.tripfriend.dataclassmodel.GroupChatRoom
 import com.test.tripfriend.dataclassmodel.TripPost
 import com.test.tripfriend.repository.AccompanyRegisterRepository
 import com.test.tripfriend.repository.UserRepository
@@ -60,7 +61,6 @@ class AccompanyRegisterFragment3 : Fragment() {
         val country = arguments?.getString("country")
         val title = arguments?.getString("title")
         val postImagePath = arguments?.getString("postImagePath") as String
-        val dates = arguments?.getStringArray("dates") as List<*>?
         val people = arguments?.getString("people")
         val content = arguments?.getString("content")
         val tripPostIdx = arguments?.getLong("tripPostIdx")
@@ -75,11 +75,6 @@ class AccompanyRegisterFragment3 : Fragment() {
 
         date.add(startDate.toString())
         date.add(endDate.toString())
-
-        Log.d("qwer", "$country")
-        Log.d("qwer", "${date.get(0)} ${date.get(1)} $dates")
-        Log.d("qwer", "$postImagePath")
-        Log.d("qwer", "${title} ${people} $content")
 
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
 
@@ -125,9 +120,6 @@ class AccompanyRegisterFragment3 : Fragment() {
 
                 chipGender[0] = chipGender1.isChecked
                 chipGender[1] = chipGender2.isChecked
-
-                Log.d("qwer", "chipGender : ${chipGender[0]}, ${chipGender[1]}")
-                Log.d("qwer", "chipGenderif : ${!(chipGender[0] == true || chipGender[1] == true)}")
 
                 val hashTag = textInputEditTextRegister3Hashtag.text.toString()
 
@@ -181,50 +173,35 @@ class AccompanyRegisterFragment3 : Fragment() {
                         chipGender.toList()
                     )
 
-//                    Log.d("qwer", "isEmpty() : ${postImagePath?.isEmpty()}")
-//                    Log.d("qwer", "length : ${postImagePath?.length}")
-//                    Log.d("qwer", "postImagePath : ${postImagePath}")
-//                    Log.d("qwer", "toString() : ${postImagePath.toString()}")
-//                    Log.d("qwer", "isNullOrEmpty() : ${postImagePath.isNullOrEmpty()}")
-//                    Log.d("qwer", "orEmpty : ${postImagePath.orEmpty()}")
-
                     runBlocking { accompanyRegisterRepository.saveAccompanyToDB(tripPost) {
-                        Log.d("qwer", "result id : ${it.result.id}")
                         documentId = it.result.id
 
                         accompanyRegisterRepository.uploadImages(imageUri, postImagePath) {
-                            Log.d("qwer", "이미지 저장 되고나서 이동")
-                            completePost(userClass.userEmail, documentId)
+                            val mamberList=tripPost.tripPostMemberList
+                            val writerEmail=tripPost.tripPostWriterEmail
+                            val tripPostId=documentId
+                            val groupRoomObj=
+                                mamberList?.let { list ->
+                                    GroupChatRoom(writerEmail,tripPostId,
+                                        list
+                                    )
+                                }
+                            runBlocking {
+                                if (groupRoomObj != null) {
+                                    //단톡방 생성
+                                    accompanyRegisterRepository.createGroupChatByPostTrip(groupRoomObj){chatRoom->
+                                        val resultObj=tripPost
+                                        resultObj.groupChatRoomId=chatRoom.result.id
+                                        runBlocking {
+                                            accompanyRegisterRepository.addGroupChatIdToPostTrip(documentId,resultObj){
+                                                completePost(userClass.userEmail, documentId)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     } }
-
-//                    if(postImagePath.isEmpty()) {
-//                        accompanyRegisterRepository.uploadImages(imageUri, postImagePath) {
-//                            Log.d("qwer", "???")
-//                            completePost(userClass.userEmail, documentId)
-//                        }
-//                    } else {
-//
-//                    }
-
-
-
-//                    if(imageUri == null) {
-//                        Log.d("qwer", "ImageUri == null")
-//                    } else {
-//                        Log.d("qwer", "Image 있는 경우")
-//                        if (postImagePath != null) {
-//                            Log.d("qwer", "postImagePath != null 인 경우")
-//                            accompanyRegisterRepository.uploadImages(imageUri, postImagePath) {
-//                                Log.d("qwer", "이미지 저장 되고나서 이동")
-//                                completePost(userClass.userEmail, documentId)
-//                            }
-//                        } else {
-//                            Log.d("qwer", "Image 없는 경우")
-//                            // Image 없는 경우
-//                            completePost(userClass.userEmail, documentId)
-//                        }
-//                    }
 
                 }
 

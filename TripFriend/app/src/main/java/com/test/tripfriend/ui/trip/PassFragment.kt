@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -28,6 +29,7 @@ class PassFragment : Fragment() {
 
     lateinit var tripPostViewModel: TripPostViewModel
     lateinit var currentUserEmail : String
+    lateinit var currnetUserNickname : String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +42,9 @@ class PassFragment : Fragment() {
         val sharedPreferences = mainActivity.getSharedPreferences("user_info", Context.MODE_PRIVATE)
         val userClass = UserRepository.getUserInfo(sharedPreferences)
         currentUserEmail = userClass.userEmail
-        tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
+        currnetUserNickname = userClass.userNickname
+
+        tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
 
         tripPostViewModel.tripPostPassList.observe(viewLifecycleOwner){
             if(it != null) {
@@ -52,7 +56,7 @@ class PassFragment : Fragment() {
             }
         }
 
-        tripPostViewModel.getAllTripPostData(userClass.userEmail)
+        tripPostViewModel.getAllTripPostData(userClass.userNickname)
 
         fragmentPassBinding.run {
             recyclerViewPass.run {
@@ -81,6 +85,7 @@ class PassFragment : Fragment() {
             val chipTripMainRowCategory3: Chip // 카테고리3
             val textViewTripMainRowHashTag: TextView //해시태그
             val textViewTripMainRowLikedCount: TextView // 좋아요 수
+            val imageViewTripMainRowLiked: ImageView // 좋아요 아이콘
 
             init {
                 textViewTripMainRowTitle = rowTripMainBinding.textViewTripMainRowTitle
@@ -92,6 +97,7 @@ class PassFragment : Fragment() {
                 chipTripMainRowCategory3 = rowTripMainBinding.chipTripMainRowCategory3
                 textViewTripMainRowHashTag = rowTripMainBinding.textViewTripMainRowHashTag
                 textViewTripMainRowLikedCount = rowTripMainBinding.textViewTripMainRowLikedCount
+                imageViewTripMainRowLiked = rowTripMainBinding.imageViewTripMainRowLiked
 
                 rowTripMainBinding.root.setOnClickListener {
                     val newBundle = Bundle()
@@ -133,6 +139,12 @@ class PassFragment : Fragment() {
 
             holder.textViewTripMainRowNOP.text = tripPostItemList[position].tripPostMemberCount.toString()
             holder.textViewTripMainRowLocation.text = tripPostItemList[position].tripPostLocationName
+
+            for(email in tripPostItemList[position].tripPostLiked!!) {
+                if(email == currentUserEmail) {
+                    holder.imageViewTripMainRowLiked.setImageResource(R.drawable.favorite_fill_24px)
+                }
+            }
 
             when(tripPostItemList[position].tripPostTripCategory!!.size) {
                 1 -> {
@@ -220,14 +232,12 @@ class PassFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.d("aaaa","Pass onResume")
         mainActivity.tripMainPosition = 1
         tripPostViewModel = ViewModelProvider(this)[TripPostViewModel::class.java]
-        tripPostViewModel.getAllTripPostData(currentUserEmail)
+        tripPostViewModel.getAllTripPostData(currnetUserNickname)
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d("aaaa","Pass onPause")
     }
 }
