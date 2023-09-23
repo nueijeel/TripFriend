@@ -83,15 +83,7 @@ class ReadPostFragment : Fragment() {
         //동행신청 버튼 visible을 결정하는 옵저버를 부르는 함수 호출
         tripPostViewModel.checkMyAccompanyRequestState(tripPostDocumentId,mainActivity.userClass.userEmail)
 
-        //나의 동행 요청 상태에 따라 visible설정
-        tripPostViewModel.myRequestState.observe(viewLifecycleOwner){
-            if(it){
-                fragmentReadPostBinding.buttonReadPostSubmit.visibility = View.GONE
-            }else{
-                fragmentReadPostBinding.buttonReadPostSubmit.visibility = View.VISIBLE
-            }
 
-        }
 
         tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
             newBundle.putString("postId", tripPost.tripPostDocumentId)
@@ -290,6 +282,7 @@ class ReadPostFragment : Fragment() {
                                         toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
                                         toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
                                     }
+                                    myRequestState()
                                 }
                                 else{
                                     buttonReadPostDM.visibility = View.GONE
@@ -328,6 +321,7 @@ class ReadPostFragment : Fragment() {
                                         var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
                                         toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
                                     }
+                                    myRequestState()
                                 }
                                 else{
                                     buttonReadPostDM.visibility = View.GONE
@@ -361,6 +355,7 @@ class ReadPostFragment : Fragment() {
                             var toolbar = findViewById<MaterialToolbar>(R.id.materialToolbarReadPost)
                             toolbar.menu.findItem(R.id.menu_item_modify).isVisible = false
                             toolbar.menu.findItem(R.id.menu_item_delete).isVisible = false
+                            myRequestState()
                         }
                     }
                     "HomeListPass" -> { // 지난 동행
@@ -561,6 +556,17 @@ class ReadPostFragment : Fragment() {
             return formattedDate
         }
         return ""
+    }
+
+    fun myRequestState() {
+        //나의 동행 요청 상태에 따라 visible설정
+        tripPostViewModel.myRequestState.observe(viewLifecycleOwner){
+            if(it){
+                fragmentReadPostBinding.buttonReadPostSubmit.visibility = View.GONE
+            }else{
+                fragmentReadPostBinding.buttonReadPostSubmit.visibility = View.VISIBLE
+            }
+        }
     }
 
     override fun onPause() {
