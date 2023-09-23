@@ -3,10 +3,12 @@ package com.test.tripfriend.ui.trip
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -59,8 +61,12 @@ class ModifyPost3Fragment : Fragment() {
         val endDate = arguments?.getString("endDate")
         val latitude = arguments?.getDouble("latitude")
         val longitude = arguments?.getDouble("longitude")
-        val image = arguments?.getString("image")!!
-        val imageUri = Uri.parse(image)
+        //이미지 Uri string 형
+        val image = arguments?.getString("image")
+        val groupRoomId = arguments?.getString("groupRoomId")
+        val memberList = arguments?.getStringArrayList("tripPostMemberList")
+
+
 
         documentId = tripPostDocumentId
 
@@ -181,7 +187,10 @@ class ModifyPost3Fragment : Fragment() {
                     }
                 }
 
-                member.add(userClass.userNickname)
+//                memberList!!.forEach {
+//                    member.add(it)
+//                }
+
 
                 chipGender[0] = chipModifyPost3Gender1.isChecked
                 chipGender[1] = chipModifyPost3Gender2.isChecked
@@ -220,11 +229,50 @@ class ModifyPost3Fragment : Fragment() {
 
                 if (title != null && country != null && content != null && tripPostIdx != null && latitude != null && longitude != null) {
                     runBlocking {
-                        if(image.isNotEmpty()) {
+                        if(image != null) {
+                            val postImagePath2="TripPost/$tripPostIdx"
                             val tripPost = TripPost(
                                 userClass.userEmail,
                                 title,
-                                member,
+                                memberList,
+                                people!!.toInt(),
+                                postImagePath2,
+                                date,
+                                country,
+                                latitude,
+                                longitude,
+                                tripPostLikedList,
+                                chipCategory,
+                                hashTag,
+                                content,
+                                tripPostDocumentId,
+                                tripPostIdx.toInt(),
+                                chipGender.toList(),
+                                groupRoomId!!
+                            )
+                            tripPostRepository.updateTripPostData(documentId, tripPost) {
+
+
+//                                //만약 원래 데이터가 있었다면 원래 가지고있는 파이어베이스 스토리지 이미지 삭제
+//                                if (postImagePath.isNotEmpty()){
+//                                    tripPostRepository.deleteTripPostImage(postImagePath) {
+//
+//                                    }
+//                                }
+                                // 파이어베이스 스토리지에 이미지 추가
+                                val imageUri=Uri.parse(image)
+
+                                tripPostRepository.uploadTripPostImages(imageUri, postImagePath2) {
+                                    completePost(userClass.userEmail)
+                                }
+
+
+                            }
+                        } else {
+                            val tripPost = TripPost(
+                                userClass.userEmail,
+                                title,
+                                memberList,
                                 people!!.toInt(),
                                 postImagePath,
                                 date,
@@ -237,35 +285,8 @@ class ModifyPost3Fragment : Fragment() {
                                 content,
                                 tripPostDocumentId,
                                 tripPostIdx.toInt(),
-                                chipGender.toList()
-                            )
-                            tripPostRepository.updateTripPostData(documentId, tripPost) {
-                                // 원래 가지고있는 파이어베이스 스토리지 이미지 삭제
-                                tripPostRepository.deleteTripPostImage(postImagePath) {
-                                }
-                                // 파이어베이스 스토리지에 이미지 추가
-                                tripPostRepository.uploadTripPostImages(imageUri, postImagePath) {
-                                    completePost(userClass.userEmail)
-                                }
-                            }
-                        } else {
-                            val tripPost = TripPost(
-                                userClass.userEmail,
-                                title,
-                                member,
-                                people!!.toInt(),
-                                "",
-                                date,
-                                country,
-                                latitude,
-                                longitude,
-                                tripPostLikedList,
-                                chipCategory,
-                                hashTag,
-                                content,
-                                tripPostDocumentId,
-                                tripPostIdx.toInt(),
-                                chipGender.toList()
+                                chipGender.toList(),
+                                groupRoomId!!
                             )
                             tripPostRepository.updateTripPostData(documentId, tripPost) {
                                 completePost(userClass.userEmail)
