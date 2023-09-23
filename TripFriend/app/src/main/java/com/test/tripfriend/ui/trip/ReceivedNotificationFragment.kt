@@ -1,7 +1,15 @@
 package com.test.tripfriend.ui.trip
 
+import android.Manifest
+import android.app.Notification
+import android.app.NotificationManager
+import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.Message
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,19 +23,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseApp
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.RemoteMessage
 import com.test.tripfriend.R
 import com.test.tripfriend.databinding.FragmentReceivedNotificationBinding
 import com.test.tripfriend.databinding.RowReceivedNotificationBinding
 import com.test.tripfriend.dataclassmodel.TripPost
 import com.test.tripfriend.dataclassmodel.TripRequest
+import com.test.tripfriend.dataclassmodel.UserToken
 import com.test.tripfriend.repository.GroupChatRepository
+import com.test.tripfriend.repository.MyFirebaseMessagingService
 import com.test.tripfriend.repository.TripPostRepository
 import com.test.tripfriend.repository.TripRequestRepository
+import com.test.tripfriend.repository.UserRepository
+import com.test.tripfriend.repository.createFCMService
+import com.test.tripfriend.repository.sendFCMMessage
 import com.test.tripfriend.ui.main.MainActivity
 import com.test.tripfriend.viewmodel.GroupChatViewModel
 import com.test.tripfriend.viewmodel.TripPostViewModel
 import com.test.tripfriend.viewmodel.TripRequestViewModel
 import com.test.tripfriend.viewmodel.UserViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 
@@ -46,6 +65,7 @@ class ReceivedNotificationFragment : Fragment() {
     val tripPostRepository = TripPostRepository()
     val tripRequestRepository = TripRequestRepository()
     val groupChatRepository = GroupChatRepository()
+    val userRepository = UserRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -126,6 +146,9 @@ class ReceivedNotificationFragment : Fragment() {
                                     tripRequestViewModel.tripRequestDocumentId.value!!.get(adapterPosition))
                             }
 
+                            sendMessageToServer(requestItemList[adapterPosition].tripRequestWriterEmail,
+                                "동행 요청 수락", "보낸 동행 요청이 수락되었습니다.")
+
                             //리스트 갱신
                             initTripRequestViewModel(mainActivity.userClass.userEmail)
                         }
@@ -138,8 +161,12 @@ class ReceivedNotificationFragment : Fragment() {
 
                 //거절 버튼 클릭 이벤트
                 buttonNotificationRowRefuse.setOnClickListener {
+
                     createDialog("동행 요청 거절", "요청을 거절하면 해당 유저가 ", "거절")
                     {
+                        sendMessageToServer(requestItemList[adapterPosition].tripRequestWriterEmail,
+                        "동행 요청 거절", "보낸 동행 요청이 거절되었습니다.")
+
                         //요청 상태값 바꾸기
                         runBlocking{
                             tripRequestRepository.updateTripRequestAcceptState("거절됨",
@@ -148,6 +175,7 @@ class ReceivedNotificationFragment : Fragment() {
 
                         //리스트 갱신
                         initTripRequestViewModel(mainActivity.userClass.userEmail)
+
                     }
                 }
             }
@@ -275,5 +303,28 @@ class ReceivedNotificationFragment : Fragment() {
 
         groupChatRepository.addGroupChatMemberNickname(userNickname,
             groupChatViewModel.groupChatDocumentId.value!!)
+    }
+
+    fun sendMessageToServer(messageTargerUserEmail : String, messageTitle : String, messageBody : String) : Boolean{
+        val tokenSnapshot = runBlocking {
+            userRepository.getUserTokenData(messageTargerUserEmail)
+        }
+
+        var isMessageSend = false
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+            if(tokenSnapshot != null){
+                val userToken = tokenSnapshot.toObject(UserToken::class.java)
+
+                val fcm = createFCMService()
+                val sendState = sendFCMMessage(fcm, messageTitle, messageBody, userToken?.userToken!!)
+
+                if(sendState != null) {
+                    isMessageSend = true
+                }
+            }
+        }
+        return isMessageSend
     }
 }

@@ -32,3 +32,7 @@ data class UserLogin(
     val userPushNotification : Boolean = true,       //푸시 알림 여부
     val checkAutoLogin : Boolean = false            //자동 로그인 여부
 )
+
+data class UserToken(
+    val userToken : String = ""
+)

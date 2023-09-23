@@ -74,8 +74,12 @@ class MyAppSettingFragment : Fragment() {
                     setMessage("현재 로그인 된 계정에서 로그아웃 됩니다")
                     setNegativeButton("취소", null)
                     setPositiveButton("로그아웃"){ dialogInterface: DialogInterface, i: Int ->
+                        //db에 저장된 유저 토큰 값을 삭제
+                        userRepository.deleteUserTokenData(mainActivity.userClass.userEmail)
+
                         //로그인 된 정보 지우기
                         UserRepository.resetUserInfo(mainActivity.sharedPreferences)
+
                         //화면 전환
                         val intent = Intent(mainActivity, LoginMainActivity::class.java)
                         startActivity(intent)
