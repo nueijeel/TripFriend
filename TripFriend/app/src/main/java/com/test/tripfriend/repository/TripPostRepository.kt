@@ -78,9 +78,12 @@ class TripPostRepository {
     // 원래 있던 이미지 삭제
     fun deleteTripPostImage(fileDir : String, callback1: (Task<Void>) -> Unit) {
         val storage = FirebaseStorage.getInstance()
+        if (fileDir.isNotEmpty()){
+            val fileRef = storage.reference.child(fileDir)
+            fileRef.delete().addOnCompleteListener(callback1)
+        }
 
-        val fileRef = storage.reference.child(fileDir)
-        fileRef.delete().addOnCompleteListener(callback1)
+
     }
     // 이미지 업로드
     fun uploadTripPostImages(uploadUri : Uri, fileDir : String, callback1: (Task<UploadTask.TaskSnapshot>?) -> Unit) {

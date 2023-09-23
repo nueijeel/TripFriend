@@ -38,11 +38,15 @@ class ModifyPost2Fragment : Fragment() {
 
     lateinit var tripPostViewModel: TripPostViewModel
 
+    lateinit var tripImageData:String
+
+    var isImageChange:Boolean=false
     var imageUri : Uri? = null
     var dates = mutableListOf<String>()
     var firstDate = ""
     var secondDate = ""
     var tripPostIdx = 0L
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,11 +63,15 @@ class ModifyPost2Fragment : Fragment() {
         val country = arguments?.getString("country")
         val latitude = arguments?.getDouble("latitude")
         val longitude = arguments?.getDouble("longitude")
+        val groupRoomId = arguments?.getString("groupRoomId")
+        val memberList = arguments?.getStringArrayList("tripPostMemberList")
 
         //뷰모델
         tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
 
         tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
+            tripImageData= tripPost.tripPostImage.toString()
+
             tripPostIdx = tripPost.tripPostIdx.toLong()
             fragmentModifyPost2Binding.run {
                 textInputEditTextModifyPost2Title.setText(tripPost.tripPostTitle)
@@ -77,8 +85,6 @@ class ModifyPost2Fragment : Fragment() {
                 secondDate = tripPost.tripPostDate!![1]
 
                 tripPostIdx = tripPost.tripPostIdx.toLong()
-
-                imageUri = Uri.parse(tripPost.tripPostImage!!)
 
                 // 동행글 이미지 가져오기
                 if(tripPost.tripPostImage!!.isNotEmpty()) {
@@ -160,6 +166,16 @@ class ModifyPost2Fragment : Fragment() {
             
             // 다음버튼 - 유효성 검사 및 다음 화면에 정보 전달
             buttonAccompanyModifyPost2ToNextView.setOnClickListener {
+                if(textInputEditTextModifyPost2NOP.text.toString().toInt()<memberList!!.size){
+                    MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
+                        setTitle("인원 작성 오류")
+                        setMessage("현재 동행자 수보다 작은 값은 입력하실 수 없습니다!")
+                        setNegativeButton("닫기", null)
+                        show()
+                        return@setOnClickListener
+                    }
+                }
+
                 if(textInputEditTextModifyPost2Title.text?.length == 0) {
                     MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme).apply {
                         setTitle("제목 입력")
@@ -194,22 +210,27 @@ class ModifyPost2Fragment : Fragment() {
                 val people = textInputEditTextModifyPost2NOP.text.toString()
                 val content = textInputEditTextModifyPost2Content.text.toString()
 
-                // 이미지 파일 경로
-                val postImagePath = "TripPost/$tripPostIdx"
-
                 // 다음 화면으로 정보 전달
                 val newBundle = Bundle()
 
                 newBundle.putString("tripPostDocumentId", tripPostDocumentId)
                 newBundle.putString("country", country)
                 newBundle.putString("title", title)
-                newBundle.putString("postImagePath", postImagePath)
+
+                //이렇게 하면 안댐.만약 변경되었다면 기존 사진을 삭제하고 새로운 사진을 넣어야함 변경안되었다면 이대로 해도됨.
+                newBundle.putString("postImagePath", tripImageData)
                 newBundle.putString("people", people)
                 newBundle.putString("content", content)
                 newBundle.putLong("tripPostIdx", tripPostIdx)
                 newBundle.putString("startDate", firstDate)
                 newBundle.putString("endDate", secondDate)
-                newBundle.putString("image", imageUri.toString())
+                if (imageUri==null){
+                    newBundle.putString("image", null)
+                }else{
+                    newBundle.putString("image", imageUri.toString())
+                }
+                newBundle.putString("groupRoomId", groupRoomId)
+                newBundle.putStringArrayList("tripPostMemberList", memberList)
                 if (latitude != null && longitude != null) {
                     newBundle.putDouble("latitude", latitude)
                     newBundle.putDouble("longitude", longitude)
@@ -246,11 +267,17 @@ class ModifyPost2Fragment : Fragment() {
             //이미지 가져오기 성공
             if(it.resultCode == Activity.RESULT_OK){
                 it.data?.data?.let { uri ->
-                    if(uri != null){
+                    if(uri != null) {
                         imageUri = uri
                         setImage(uri, imageView)
+                        Log.d("testt",uri.toString())
+                        //이미지가 바뀐걸 알린다.
+                        isImageChange=true
                     }
                 }
+            }else{
+                //이미지가 안바뀐걸 알린디
+                isImageChange=false
             }
         }
         return albumLauncher

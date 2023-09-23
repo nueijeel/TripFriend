@@ -67,6 +67,8 @@ class ModifyPostFragment : Fragment(), OnMapReadyCallback {
         val tripPostLocationName = arguments?.getString("locationName")
         val tripPostLatitude = arguments?.getDouble("latitude")
         val tripPostLongitude = arguments?.getDouble("longitude")
+        val tripGroupRoomId = arguments?.getString("groupRoomId")
+        val tripMemberList = arguments?.getStringArrayList("tripPostMemberList")
 
         fragmentModifyPostBinding.run {
 
@@ -99,6 +101,8 @@ class ModifyPostFragment : Fragment(), OnMapReadyCallback {
                 val newBundle = Bundle()
                 newBundle.putString("tripPostDocumentId", tripPostDocumentId)
                 newBundle.putString("tripPostWriterEmail", tripPostWriterEmail)
+                newBundle.putString("groupRoomId", tripGroupRoomId)
+                newBundle.putStringArrayList("tripPostMemberList", tripMemberList)
 
                 if(country == "") {
                     newBundle.putString("country", tripPostLocationName)
