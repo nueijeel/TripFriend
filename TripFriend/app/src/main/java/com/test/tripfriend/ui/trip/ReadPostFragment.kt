@@ -441,13 +441,29 @@ class ReadPostFragment : Fragment() {
                                 newBundle.putString("chatRoomId",personalChatDocumentId)
                                 mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
                             }else{
-                                //검색결과 채팅방이 없을 시 생성 후 입장시킨다
-                                val personalChatUsers = PersonalChatRoom(tripPostWriterEmail,mainActivity.userClass.userEmail)
-                                personalChatRepository.inquiryToPersonalChatRoom(personalChatUsers){
-                                    //생성된 채팅방의 문서 아이디
-                                    val roomId=it.result.id
-                                    newBundle.putString("chatRoomId",roomId)
-                                    mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
+                                personalChatRepository.checkPersonalRoomExist(tripPostWriterEmail,mainActivity.userClass.userEmail){
+                                    var personalChatDocumentId2:String?=null
+                                    runBlocking {
+                                        for (document in it.result.documents){
+                                            if(document.exists()){
+                                                personalChatDocumentId2=document.id
+                                            }
+                                        }
+                                    }
+                                    if (personalChatDocumentId2 != null){
+                                        //검색결과 채팅방이 존재할 시 해당 채팅방으로 입장시킨다
+                                        newBundle.putString("chatRoomId",personalChatDocumentId2)
+                                        mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
+                                    }else{
+                                        //검색결과 채팅방이 없을 시 생성 후 입장시킨다
+                                        val personalChatUsers = PersonalChatRoom(tripPostWriterEmail,mainActivity.userClass.userEmail)
+                                        personalChatRepository.inquiryToPersonalChatRoom(personalChatUsers){
+                                            //생성된 채팅방의 문서 아이디
+                                            val roomId=it.result.id
+                                            newBundle.putString("chatRoomId",roomId)
+                                            mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
+                                        }
+                                    }
                                 }
                             }
                         }
