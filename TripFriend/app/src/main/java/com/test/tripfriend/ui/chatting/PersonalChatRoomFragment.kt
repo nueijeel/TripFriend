@@ -248,6 +248,7 @@ class PersonalChatRoomFragment : Fragment() {
             val textViewOpponentName: TextView
             val textViewOpponentContent: TextView
             val textViewOpponentChatMoment: TextView
+            val textViewOutNotification:TextView
 
             init {
                 //내 채팅
@@ -262,6 +263,8 @@ class PersonalChatRoomFragment : Fragment() {
                 textViewOpponentContent = rowChatRoomUserBinding.textViewRowChatRoomOpponent
                 //상대방 채팅 시간대
                 textViewOpponentChatMoment = rowChatRoomUserBinding.textViewOpponentChatMoment
+                //그룹채팅방에서 사용되는 것 visible처리예정
+                textViewOutNotification = rowChatRoomUserBinding.textViewOutNotification
 
             }
         }
@@ -295,6 +298,7 @@ class PersonalChatRoomFragment : Fragment() {
             if (itemList[position].personalChatWriterEmail != MY_EMAIL) {
                 holder.textViewRowChatRoomUser.visibility = View.GONE
                 holder.textViewChatMoment.visibility = View.GONE
+                holder.textViewOutNotification.visibility = View.GONE
 
                 holder.imageViewOpponent.visibility = View.VISIBLE
                 holder.textViewOpponentName.visibility = View.VISIBLE
@@ -321,6 +325,7 @@ class PersonalChatRoomFragment : Fragment() {
                 holder.textViewOpponentName.visibility = View.GONE
                 holder.textViewOpponentContent.visibility = View.GONE
                 holder.textViewOpponentChatMoment.visibility = View.GONE
+                holder.textViewOutNotification.visibility = View.GONE
             }
         }
     }
