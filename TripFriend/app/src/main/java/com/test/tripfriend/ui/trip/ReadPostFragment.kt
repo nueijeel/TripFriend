@@ -66,8 +66,8 @@ class ReadPostFragment : Fragment() {
         val viewState = arguments?.getString("viewState")
         val endDate = arguments?.getString("endDate")
         val memberList = arguments?.getStringArrayList("memberList")
-
-
+        val tripPostImage = arguments?.getString("tripPostImage")
+        val userProfilePath = arguments?.getString("userProfilePath")!!
 
         var memberCheck = 1
         if (memberList != null) {
@@ -79,6 +79,7 @@ class ReadPostFragment : Fragment() {
         val newBundle = Bundle()
 
         tripPostViewModel = ViewModelProvider(mainActivity)[TripPostViewModel::class.java]
+        tripPostViewModel.getSelectDocumentData(tripPostDocumentId)
         userViewModel = ViewModelProvider(mainActivity)[UserViewModel::class.java]
         //동행신청 버튼 visible을 결정하는 옵저버를 부르는 함수 호출
         tripPostViewModel.checkMyAccompanyRequestState(tripPostDocumentId,mainActivity.userClass.userEmail)
@@ -144,12 +145,8 @@ class ReadPostFragment : Fragment() {
                 textViewReadPostHashTag.text = tripPost.tripPostHashTag
                 textViewReadPostContent.text = tripPost.tripPostContent
 
-                if(tripPost.tripPostImage!!.isNotEmpty()) {
-                    tripPostViewModel.getTripPostImage(tripPost.tripPostImage)
-                }
-                else{
-                    tripPostViewModel.getTripPostImage(tripPost.tripPostImage)
-                }
+                tripPostViewModel.getTripPostImage(tripPostImage!!)
+                userViewModel.getTargetUserProfileImage(userProfilePath)
             }
         }
 
@@ -190,18 +187,12 @@ class ReadPostFragment : Fragment() {
             }
         }
 
-        tripPostViewModel.getSelectDocumentData(tripPostDocumentId)
-
         userViewModel.user.observe(viewLifecycleOwner) { user ->
             newBundle.putString("userName",user.userNickname)
             fragmentReadPostBinding.run {
                 textViewUserNickname.text = user.userNickname
 
                 textViewUserMBTI.text = user.userMBTI
-
-                if(user.userProfilePath.isNotEmpty() ) {
-                    userViewModel.getTargetUserProfileImage(user.userProfilePath)
-                }
             }
         }
 
@@ -212,7 +203,7 @@ class ReadPostFragment : Fragment() {
                     .error(R.drawable.person_24px)
                     .into(fragmentReadPostBinding.imageViewUserProfileImage)
             } else {
-                fragmentReadPostBinding.imageViewReadPostMainImage.setImageResource(R.drawable.person_24px)
+                fragmentReadPostBinding.imageViewUserProfileImage.setImageResource(R.drawable.person_24px)
             }
             //개인채팅방 상대uri 번들에 저장
             newBundle.putString("userProfile", uri.toString())
@@ -608,6 +599,10 @@ class ReadPostFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.VISIBLE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }
 

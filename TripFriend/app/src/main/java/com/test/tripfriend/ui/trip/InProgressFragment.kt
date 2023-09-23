@@ -3,6 +3,7 @@ package com.test.tripfriend.ui.trip
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -103,6 +104,8 @@ class InProgressFragment : Fragment() {
                     newBundle.putString("tripPostDocumentId", tripPostItemList[adapterPosition].tripPostDocumentId)   // 문서아이디
                     newBundle.putString("viewState", "InProgress") // 어느 화면에서 왔는지 확인
                     newBundle.putInt("tabPosition",0)
+                    newBundle.putString("tripPostImage", tripPostItemList[adapterPosition].tripPostImage) //이미지 경로
+                    Log.d("aaaa","tripPostImage = ${tripPostItemList[adapterPosition].tripPostImage}")
 
                     mainActivity.replaceFragment(MainActivity.READ_POST_FRAGMENT,true,true, newBundle)
                 }
