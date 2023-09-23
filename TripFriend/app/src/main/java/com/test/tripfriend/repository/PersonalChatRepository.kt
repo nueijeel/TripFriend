@@ -27,6 +27,10 @@ class PersonalChatRepository {
         db.collection("PersonalChatRoom").add(personalChatRoom).addOnCompleteListener(callback)
     }
 
+    fun checkPersonalRoomExist(myEmail: String,yourEmail:String,callback: (Task<QuerySnapshot>) -> Unit){
+        db.collection("PersonalChatRoom").whereEqualTo("personalChatPostWriterEmail",yourEmail).whereEqualTo("personalChatRequesterEmail",myEmail).get().addOnCompleteListener(callback)
+    }
+
     //내가 속한 채팅방에서 상대방의 정보를 가져오는 메서드
     suspend fun getPersonalChatInfo(myEmail: String): QuerySnapshot {
         val infoRef = db.collection("User").whereEqualTo("userEmail", myEmail).get().await()
