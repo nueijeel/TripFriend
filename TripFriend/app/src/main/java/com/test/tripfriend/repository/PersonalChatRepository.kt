@@ -76,6 +76,10 @@ class PersonalChatRepository {
     fun getChatting(documentId:String, callback: (QuerySnapshot?, FirebaseFirestoreException?) -> Unit){
         val lastChat= db.collection("PersonalChatRoom").document(documentId).collection("PersonalChatting").orderBy("personalChatSendTimeStamp",Query.Direction.ASCENDING).addSnapshotListener(callback)
     }
+    //채팅방 삭제 감시
+    fun observeDeleteChaRoom(documentId: String, callback: (DocumentSnapshot?, FirebaseFirestoreException?) -> Unit){
+        val deleteQuery = db.collection("PersonalChatRoom").document(documentId).addSnapshotListener(callback)
+    }
 
     //유저 프로필 이미지 url 가져오는 함수
     suspend fun getUserProfileImage(userProfileImagePath : String) : Uri {
