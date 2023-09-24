@@ -168,7 +168,7 @@ class AccompanyRegisterFragment2 : Fragment() {
 
                 accompanyRegisterRepository.getPostIdx() {
 
-                    if(it.result.documents[0].getLong("tripPostIdx") == null) {
+                    if(it.result.documents.size == 0) {
                         tripPostIdx = 0
                         tripPostIdx++
                     } else {
