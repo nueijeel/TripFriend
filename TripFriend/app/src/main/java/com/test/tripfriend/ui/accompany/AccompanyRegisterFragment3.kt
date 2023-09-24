@@ -153,7 +153,7 @@ class AccompanyRegisterFragment3 : Fragment() {
                     }
                 }
 
-                if (title != null && country != null && content != null && tripPostIdx != null && latitude != null && longitude != null) {
+                if (title != null && country != null && content != null && latitude != null && longitude != null) {
                     val tripPost = TripPost(
                         userClass.userEmail,
                         title,
@@ -169,7 +169,7 @@ class AccompanyRegisterFragment3 : Fragment() {
                         hashTag,
                         content,
                         "",
-                        tripPostIdx.toInt(),
+                        tripPostIdx?.toInt() ?: 0,
                         chipGender.toList()
                     )
 
