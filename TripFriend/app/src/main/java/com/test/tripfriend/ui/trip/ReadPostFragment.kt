@@ -48,6 +48,8 @@ class ReadPostFragment : Fragment() {
 
     var likedCheck = false
 
+    lateinit var roomId:String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -87,6 +89,7 @@ class ReadPostFragment : Fragment() {
 
 
         tripPostViewModel.tripPostList.observe(viewLifecycleOwner) { tripPost ->
+            roomId=tripPost.groupChatRoomId
             newBundle.putString("postId", tripPost.tripPostDocumentId)
             thisPostId = tripPost.tripPostDocumentId
             newBundle.putStringArrayList("tripPostMemberList", tripPost.tripPostMemberList as ArrayList<String>?)
@@ -384,7 +387,12 @@ class ReadPostFragment : Fragment() {
                                 setTitle("게시글 삭제")
                                 setMessage("게시글을 삭제하시면 관련된 정보 및 그룹채팅이 삭제 됩니다.")
                                 setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
-                                    tripPostRepository.deleteTripPostData(tripPostDocumentId)
+                                   runBlocking {
+                                       tripPostRepository.deleteTripPostData(tripPostDocumentId){
+                                           tripPostRepository.deleteTripChatRoom(roomId)
+                                       }
+                                   }
+
                                     mainActivity.removeFragment(MainActivity.READ_POST_FRAGMENT)
                                 }
                                 setNegativeButton("취소", null)

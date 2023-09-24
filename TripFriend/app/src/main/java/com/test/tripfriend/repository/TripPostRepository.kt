@@ -45,12 +45,16 @@ class TripPostRepository {
     }
 
     // 동행글 삭제하는 함수
-    fun deleteTripPostData(documentId: String) {
+    suspend fun deleteTripPostData(documentId: String,callback1: (Task<Void>) -> Unit) {
         val firestore = Firebase.firestore
 
         firestore.collection("TripPost")
             .document(documentId)
-            .delete()
+            .delete().addOnCompleteListener (callback1).await()
+    }
+    fun deleteTripChatRoom(roomId:String){
+        val firestore = Firebase.firestore
+        firestore.collection("GroupChatRoom").document(roomId).delete()
     }
 
     // 좋아요 필드에 본인 이메일 있는 것만 가져오기
