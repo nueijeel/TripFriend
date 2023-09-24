@@ -95,8 +95,6 @@ class ModifyPost2Fragment : Fragment() {
                     setSelectedDateRange(firstCalendar, secondCalendar)
                 }
 
-                Log.d("qwer", "${firstDate} ${secondDate}")
-
                 tripPostIdx = tripPost.tripPostIdx.toLong()
 
                 // 동행글 이미지 가져오기
@@ -355,5 +353,11 @@ class ModifyPost2Fragment : Fragment() {
             return formattedDate
         }
         return ""
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 바텀 네비 GONE
+        mainActivity.activityMainBinding.bottomNavigationViewMain.visibility = View.GONE
     }
 }

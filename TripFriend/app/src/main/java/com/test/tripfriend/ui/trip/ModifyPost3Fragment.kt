@@ -276,7 +276,7 @@ class ModifyPost3Fragment : Fragment() {
                                 title,
                                 memberList,
                                 people!!.toInt(),
-                                postImagePath,
+                                "",
                                 date,
                                 country,
                                 latitude,
