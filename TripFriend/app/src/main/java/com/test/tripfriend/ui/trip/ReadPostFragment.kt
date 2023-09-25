@@ -387,11 +387,11 @@ class ReadPostFragment : Fragment() {
                                 setTitle("게시글 삭제")
                                 setMessage("게시글을 삭제하시면 관련된 정보 및 그룹채팅이 삭제 됩니다.")
                                 setPositiveButton("삭제") { dialogInterface: DialogInterface, i: Int ->
-                                   runBlocking {
-                                       tripPostRepository.deleteTripPostData(tripPostDocumentId){
-                                           tripPostRepository.deleteTripChatRoom(roomId)
-                                       }
-                                   }
+                                    runBlocking {
+                                        tripPostRepository.deleteTripPostData(tripPostDocumentId){
+                                            tripPostRepository.deleteTripChatRoom(roomId)
+                                        }
+                                    }
 
                                     mainActivity.removeFragment(MainActivity.READ_POST_FRAGMENT)
                                 }
@@ -418,115 +418,123 @@ class ReadPostFragment : Fragment() {
 
             //DM버튼
             buttonReadPostDM.setOnClickListener {
-                //다이얼로그 띄움
-                val builder = MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme)
-                builder.run {
-                    setTitle("1 : 1 문의하기")
-                    setMessage(R.string.DM_info)
-                    setPositiveButton("입장") { dialogInterface: DialogInterface, i: Int ->
-                        //먼저 입장할때 이미 두 사람의 채팅방이 있는지 검사하고 없으면 생성/있으면 해당 id로 접근해서 입장.
+                if (userClass.userEmail == "NoneUserEmail"){
+                    Snackbar.make(fragmentReadPostBinding.root, "로그인이 필요한 활동입니다", Snackbar.LENGTH_SHORT).show()
+                }else{
+                    //다이얼로그 띄움
+                    val builder = MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme)
+                    builder.run {
+                        setTitle("1 : 1 문의하기")
+                        setMessage(R.string.DM_info)
+                        setPositiveButton("입장") { dialogInterface: DialogInterface, i: Int ->
+                            //먼저 입장할때 이미 두 사람의 채팅방이 있는지 검사하고 없으면 생성/있으면 해당 id로 접근해서 입장.
 
-                        personalChatRepository.checkPersonalRoomExist(mainActivity.userClass.userEmail,tripPostWriterEmail){
-                            var personalChatDocumentId:String?=null
-                            runBlocking {
-                                for (document in it.result.documents){
-                                    if(document.exists()){
-                                        personalChatDocumentId=document.id
+                            personalChatRepository.checkPersonalRoomExist(mainActivity.userClass.userEmail,tripPostWriterEmail){
+                                var personalChatDocumentId:String?=null
+                                runBlocking {
+                                    for (document in it.result.documents){
+                                        if(document.exists()){
+                                            personalChatDocumentId=document.id
+                                        }
                                     }
                                 }
-                            }
-                            if (personalChatDocumentId != null){
-                                //검색결과 채팅방이 존재할 시 해당 채팅방으로 입장시킨다
-                                newBundle.putString("chatRoomId",personalChatDocumentId)
-                                mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
-                            }else{
-                                personalChatRepository.checkPersonalRoomExist(tripPostWriterEmail,mainActivity.userClass.userEmail){
-                                    var personalChatDocumentId2:String?=null
-                                    runBlocking {
-                                        for (document in it.result.documents){
-                                            if(document.exists()){
-                                                personalChatDocumentId2=document.id
+                                if (personalChatDocumentId != null){
+                                    //검색결과 채팅방이 존재할 시 해당 채팅방으로 입장시킨다
+                                    newBundle.putString("chatRoomId",personalChatDocumentId)
+                                    mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
+                                }else{
+                                    personalChatRepository.checkPersonalRoomExist(tripPostWriterEmail,mainActivity.userClass.userEmail){
+                                        var personalChatDocumentId2:String?=null
+                                        runBlocking {
+                                            for (document in it.result.documents){
+                                                if(document.exists()){
+                                                    personalChatDocumentId2=document.id
+                                                }
+                                            }
+                                        }
+                                        if (personalChatDocumentId2 != null){
+                                            //검색결과 채팅방이 존재할 시 해당 채팅방으로 입장시킨다
+                                            newBundle.putString("chatRoomId",personalChatDocumentId2)
+                                            mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
+                                        }else{
+                                            //검색결과 채팅방이 없을 시 생성 후 입장시킨다
+                                            val personalChatUsers = PersonalChatRoom(tripPostWriterEmail,mainActivity.userClass.userEmail)
+                                            personalChatRepository.inquiryToPersonalChatRoom(personalChatUsers){
+                                                //생성된 채팅방의 문서 아이디
+                                                val roomId=it.result.id
+                                                newBundle.putString("chatRoomId",roomId)
+                                                mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
                                             }
                                         }
                                     }
-                                    if (personalChatDocumentId2 != null){
-                                        //검색결과 채팅방이 존재할 시 해당 채팅방으로 입장시킨다
-                                        newBundle.putString("chatRoomId",personalChatDocumentId2)
-                                        mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
-                                    }else{
-                                        //검색결과 채팅방이 없을 시 생성 후 입장시킨다
-                                        val personalChatUsers = PersonalChatRoom(tripPostWriterEmail,mainActivity.userClass.userEmail)
-                                        personalChatRepository.inquiryToPersonalChatRoom(personalChatUsers){
-                                            //생성된 채팅방의 문서 아이디
-                                            val roomId=it.result.id
-                                            newBundle.putString("chatRoomId",roomId)
-                                            mainActivity.replaceFragment(MainActivity.PERSONAL_CHAT_ROOM_FRAGMENT, true, true, newBundle)
-                                        }
-                                    }
                                 }
                             }
-                        }
 
+                        }
+                        setNegativeButton("취소", null)
+                        show()
                     }
-                    setNegativeButton("취소", null)
-                    show()
                 }
+
             }
 
             //동행 신청 버튼
             buttonReadPostSubmit.setOnClickListener {
-                if(tripPostViewModel.tripPostList.value?.tripPostMemberList!!.size < tripPostViewModel.tripPostList.value?.tripPostMemberCount!!){
-                    //다이얼로그 띄움
-                    val builder = MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme)
-                    builder.run {
-                        val dialogBinding = DialogSubmitBinding.inflate(layoutInflater)
-                        setTitle("동행 신청하기")
-                        setMessage("동행 신청을 위한 자기소개를 해주세요")
+                if (userClass.userEmail == "NoneUserEmail"){
+                    Snackbar.make(fragmentReadPostBinding.root, "로그인이 필요한 활동입니다", Snackbar.LENGTH_SHORT).show()
+                }else{
+                    if(tripPostViewModel.tripPostList.value?.tripPostMemberList!!.size < tripPostViewModel.tripPostList.value?.tripPostMemberCount!!){
+                        //다이얼로그 띄움
+                        val builder = MaterialAlertDialogBuilder(mainActivity, R.style.DialogTheme)
+                        builder.run {
+                            val dialogBinding = DialogSubmitBinding.inflate(layoutInflater)
+                            setTitle("동행 신청하기")
+                            setMessage("동행 신청을 위한 자기소개를 해주세요")
 
-                        // 새로운 뷰를 설정한다.
-                        builder.setView(dialogBinding.root)
+                            // 새로운 뷰를 설정한다.
+                            builder.setView(dialogBinding.root)
 
-                        dialogBinding.editTextInputSelfIntroduce.requestFocus()
+                            dialogBinding.editTextInputSelfIntroduce.requestFocus()
 
-                        thread {
-                            SystemClock.sleep(500)
-                            val imm = mainActivity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-                            imm.showSoftInput(dialogBinding.editTextInputSelfIntroduce, 0)
-                        }
-
-                        builder.setPositiveButton("신청") { dialogInterface: DialogInterface, i: Int ->
-
-                            // 입력한 내용을 가져온다.
-                            val requestContent = dialogBinding.editTextInputSelfIntroduce.text.toString()
-                            val requestReceiverEmail = userViewModel.user.value?.userEmail!!
-                            val requestWriterEmail = mainActivity.userClass.userEmail
-                            val requestPostId = tripPostDocumentId
-
-                            val tripRequest = TripRequest(requestPostId, requestWriterEmail,
-                                requestReceiverEmail, requestContent, "대기중")
-
-                            runBlocking {
-                                tripRequestRepository.setTripRequest(tripRequest){
-                                    Snackbar.make(fragmentReadPostBinding.root, "동행요청이 완료되었습니다", Snackbar.LENGTH_SHORT)
-                                        .setAction("X") {
-                                            // Responds to click on the action
-                                        }
-                                        .show()
-                                }
+                            thread {
+                                SystemClock.sleep(500)
+                                val imm = mainActivity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+                                imm.showSoftInput(dialogBinding.editTextInputSelfIntroduce, 0)
                             }
-                            tripPostViewModel.checkMyAccompanyRequestState(tripPostDocumentId,mainActivity.userClass.userEmail)
+
+                            builder.setPositiveButton("신청") { dialogInterface: DialogInterface, i: Int ->
+
+                                // 입력한 내용을 가져온다.
+                                val requestContent = dialogBinding.editTextInputSelfIntroduce.text.toString()
+                                val requestReceiverEmail = userViewModel.user.value?.userEmail!!
+                                val requestWriterEmail = mainActivity.userClass.userEmail
+                                val requestPostId = tripPostDocumentId
+
+                                val tripRequest = TripRequest(requestPostId, requestWriterEmail,
+                                    requestReceiverEmail, requestContent, "대기중")
+
+                                runBlocking {
+                                    tripRequestRepository.setTripRequest(tripRequest){
+                                        Snackbar.make(fragmentReadPostBinding.root, "동행요청이 완료되었습니다", Snackbar.LENGTH_SHORT)
+                                            .setAction("X") {
+                                                // Responds to click on the action
+                                            }
+                                            .show()
+                                    }
+                                }
+                                tripPostViewModel.checkMyAccompanyRequestState(tripPostDocumentId,mainActivity.userClass.userEmail)
+                            }
+                            builder.setNegativeButton("취소", null)
+
+                            builder.show()
                         }
-                        builder.setNegativeButton("취소", null)
+                    }else if(true){
 
-                        builder.show()
                     }
-                }else if(true){
-
+                    else{
+                        Snackbar.make(fragmentReadPostBinding.root, "모집 인원이 다 찬 동행입니다.", Snackbar.LENGTH_SHORT).show()
+                    }
                 }
-                else{
-                    Snackbar.make(fragmentReadPostBinding.root, "모집 인원이 다 찬 동행입니다.", Snackbar.LENGTH_SHORT).show()
-                }
-
             }
 
             //그룹 채팅으로 이동 버튼
