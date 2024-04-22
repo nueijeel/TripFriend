@@ -6,6 +6,10 @@
 
 <br/>
 
+## 🎖️ 수상 내역
+<img src="https://github.com/APPSCHOOL2-Android/FinalProject-TripFriend/assets/106245278/726fd761-7ccd-4664-a959-f7aa55701f34" width = 500>
+<br/>
+
 ## 🌟 주요 기능
 #### 👀 시연 영상
 <a href="https://youtu.be/JOU5Lf0hqXs"><img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white">
